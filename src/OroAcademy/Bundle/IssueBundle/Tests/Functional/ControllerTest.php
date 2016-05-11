@@ -1,8 +1,8 @@
 <?php
 /*******************************************************************************
- * This is closed source software, created by WWSH. 
+ * This is closed source software, created by WWSH.
  * Please do not copy nor redistribute.
- * Copyright (c) Oro 2016. 
+ * Copyright (c) Oro 2016.
  ******************************************************************************/
 
 namespace OroAcademy\Bundle\IssueBundle\Tests\Functional;
@@ -14,8 +14,8 @@ class ControllerTest extends WebTestCase
     protected function setUp()
     {
         $this->initClient(
-            array(),
-            array_merge($this->generateBasicAuthHeader(), array('HTTP_X-CSRF-Header' => 1))
+            [ ],
+            array_merge($this->generateBasicAuthHeader(), [ 'HTTP_X-CSRF-Header' => 1 ])
         );
     }
     

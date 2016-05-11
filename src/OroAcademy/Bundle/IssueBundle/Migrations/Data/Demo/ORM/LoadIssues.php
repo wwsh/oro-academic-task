@@ -1,8 +1,8 @@
 <?php
 /*******************************************************************************
- * This is closed source software, created by WWSH. 
+ * This is closed source software, created by WWSH.
  * Please do not copy nor redistribute.
- * Copyright (c) Oro 2016. 
+ * Copyright (c) Oro 2016.
  ******************************************************************************/
 
 namespace OroAcademy\Bundle\IssueBundle\Migrations\Data\Demo\ORM;
@@ -12,6 +12,7 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use OroAcademy\Bundle\IssueBundle\Entity\Issue;
 use OroAcademy\Bundle\IssueBundle\Entity\IssuePriority;
+use OroAcademy\Bundle\IssueBundle\Entity\IssueResolution;
 use OroAcademy\Bundle\IssueBundle\Entity\IssueType;
 
 class LoadIssues extends AbstractFixture implements OrderedFixtureInterface
@@ -25,23 +26,28 @@ class LoadIssues extends AbstractFixture implements OrderedFixtureInterface
     {
         $this->manager = $manager;
 
-        $adminUser = $this->getUser('admin');
+        $jsonDemoFixtureFile = __DIR__ . '/../../../../Resources/fixtures/demo-issues.json';
+        
+        $json = json_decode(file_get_contents($jsonDemoFixtureFile), true);
 
-        $issue = new Issue();
-        $issue->setCode('ABC-123');
-        $issue->setSummary('Oro Academical Task');
-        $issue->setCreatedAt(new \DateTime());
-        $issue->setUpdatedAt(new \DateTime());
-        $issue->setDescription('An example academical issue, reported within the academical task');
-        $issue->setPriority($this->getIssuePriority(IssuePriority::PRIORITY_HIGH));
-        $issue->setType($this->getIssueType(IssueType::TYPE_TASK));
-        $issue->setReporter($adminUser);
-        $issue->setAssignee($adminUser);
-        $issue->setResolution(''); // todo
-        $issue->setStatus(''); // todo
+        foreach ($json as $issueJson) {
+            $issue = new Issue();
+            $issue->setCode($issueJson['code']);
+            $issue->setSummary($issueJson['summary']);
+            $issue->setCreatedAt(new \DateTime());
+            $issue->setUpdatedAt(new \DateTime());
+            $issue->setDescription($issueJson['description']);
+            $issue->setPriority($this->getIssuePriority($issueJson['priority']));
+            $issue->setType($this->getIssueType($issueJson['type']));
+            $issue->setReporter($this->getUser($issueJson['reporter']));
+            $issue->setAssignee($this->getUser($issueJson['assignee']));
+            $issue->setStatus($issueJson['status']); // todo
+            $issue->setResolution($this->getResolution($issueJson['resolution']));
 
-        $manager->persist($issue);
-        $manager->flush();
+            $manager->persist($issue);
+            $manager->flush();
+
+        }
     }
 
     protected function getIssuePriority($priorityName)
@@ -60,6 +66,12 @@ class LoadIssues extends AbstractFixture implements OrderedFixtureInterface
     {
         $repo = $this->manager->getRepository('OroUserBundle:User');
         return $repo->findOneBy([ 'username' => $string ]);
+    }
+
+    protected function getResolution($resolutionName)
+    {
+        $repo = $this->manager->getRepository('OroAcademyIssueBundle:IssueResolution');
+        return $repo->findOneBy([ 'name' => $resolutionName ]);
     }
 
     /**

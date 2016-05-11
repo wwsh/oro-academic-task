@@ -1,0 +1,24 @@
+[
+  {
+    "code": "ABC-123",
+    "summary": "Oro Academical Task",
+    "description": "An example academical task for Oro Inc",
+    "priority": "high",
+    "type": "task",
+    "reporter": "admin",
+    "assignee": "admin",
+    "resolution": null,
+    "status": null
+  },
+  {
+    "code": "DEF-456",
+    "summary": "Custom Template for Search",
+    "description": "Subtask for Oro Inc",
+    "priority": "normal",
+    "type": "subtask",
+    "reporter": "admin",
+    "assignee": "admin",
+    "resolution": "incomplete",
+    "status": null
+  }
+]

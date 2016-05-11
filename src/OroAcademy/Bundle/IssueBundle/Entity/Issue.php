@@ -34,7 +34,7 @@ class Issue extends ExtendIssue
     /**
      * @var string
      *
-     * @ORM\Column(name="summary", type="string", length=255)
+     * @ORM\Column(name="summary", type="string", length=255, nullable=true)
      */
     protected $summary;
 
@@ -48,7 +48,7 @@ class Issue extends ExtendIssue
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     protected $description;
 
@@ -69,16 +69,17 @@ class Issue extends ExtendIssue
     protected $priority;
 
     /**
-     * @var string
+     * @var IssueResolution
      *
-     * @ORM\Column(name="resolution", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="OroAcademy\Bundle\IssueBundle\Entity\IssueResolution")
+     * @ORM\JoinColumn(name="resolution_id", referencedColumnName="id")
      */
-    protected $resolution;
+    protected $resolution = null;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="status", type="string", length=255)
+     * @ORM\Column(name="status", type="string", length=255, nullable=true)
      */
     protected $status;
 
@@ -151,10 +152,19 @@ class Issue extends ExtendIssue
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="updatedAt", type="datetime")
+     * @ORM\Column(name="updatedAt", type="datetime", nullable=true)
      */
     protected $updatedAt;
 
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->collaborators = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tags          = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -551,15 +561,6 @@ class Issue extends ExtendIssue
     }
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->collaborators = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->tags          = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
      * Add collaborator
      *
      * @param \Oro\Bundle\UserBundle\Entity\User $collaborator
@@ -640,7 +641,7 @@ class Issue extends ExtendIssue
      */
     public function addTag(\Oro\Bundle\TagBundle\Entity\Tag $tag)
     {
-        $this->tags[] = $tag;
+        $this->tags->add($tag);
 
         return $this;
     }

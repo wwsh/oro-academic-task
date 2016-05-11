@@ -11,7 +11,7 @@ datagrid:
                     - i.description
                     - t.name as type
                     - p.name as priority
-                    - i.resolution
+                    - r.name as resolution
                     - i.status
                     - CONCAT(rep.firstName, CONCAT(' ', rep.lastName)) as reporter
                     - CONCAT(asgn.firstName, CONCAT(' ', asgn.lastName)) as assignee
@@ -22,6 +22,7 @@ datagrid:
                 join:
                     left:
                         - { join: i.type, alias: t, conditionType: WITH }
+                        - { join: i.resolution, alias: r, conditionType: WITH }
                         - { join: i.priority, alias: p, conditionType: WITH }
                         - { join: i.reporter, alias: rep, conditionType: WITH }
                         - { join: i.assignee, alias: asgn, conditionType: WITH }
@@ -51,21 +52,21 @@ datagrid:
                 frontend_type: date
         properties:
             id: ~
-#            update_link:
-#                type: url
-#                route: ~
-#                params:
-#                    - id
-#            view_link:
-#                type: url
-#                route: ~
-#                params:
-#                    - id
-#            delete_link:
-#                type: url
-#                route: ~
-#                params:
-#                    - id
+            update_link:
+                type: url
+                route: oroacademy_api_delete_issue
+                params:
+                    - id
+            view_link:
+                type: url
+                route: oroacademy_api_delete_issue
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: oroacademy_api_delete_issue
+                params:
+                    - id
         sorters:
             columns:
                 updatedAt:
@@ -96,9 +97,9 @@ datagrid:
 #                link:          update_link
 #                icon:          edit
 #                acl_resource:  inventory.vehicle_update
-#            delete:
-#                type:          delete
-#                label:         Delete
-#                link:          delete_link
-#                icon:          trash
-#                acl_resource:  inventory.vehicle_delete
+            delete:
+                type:          delete
+                label:         Delete
+                link:          delete_link
+                icon:          trash
+                acl_resource:  issue_delete

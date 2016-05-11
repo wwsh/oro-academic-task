@@ -1,0 +1,7 @@
+services:
+  issue_manager.api:
+      class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+      parent: oro_soap.manager.entity_manager.abstract
+      arguments:
+        - OroAcademy/Bundle/IssueBundle/Entity/Issue
+        - "@doctrine.orm.entity_manager"
