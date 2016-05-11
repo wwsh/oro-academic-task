@@ -13,7 +13,6 @@ datagrid:
                     - p.name as priority
                     - i.resolution
                     - i.status
-                    - i.tags
                     - CONCAT(rep.firstName, CONCAT(' ', rep.lastName)) as reporter
                     - CONCAT(asgn.firstName, CONCAT(' ', asgn.lastName)) as assignee
                     - i.createdAt
@@ -52,21 +51,21 @@ datagrid:
                 frontend_type: date
         properties:
             id: ~
-            update_link:
-                type: url
-                #route: inventory.vehicle_update
-                params:
-                    - id
-            view_link:
-                type: url
-                #route: inventory.vehicle_view
-                params:
-                    - id
-            delete_link:
-                type: url
-                #route: inventory_api_delete_vehicle
-                params:
-                    - id
+#            update_link:
+#                type: url
+#                route: ~
+#                params:
+#                    - id
+#            view_link:
+#                type: url
+#                route: ~
+#                params:
+#                    - id
+#            delete_link:
+#                type: url
+#                route: ~
+#                params:
+#                    - id
         sorters:
             columns:
                 updatedAt:
