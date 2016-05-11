@@ -8,12 +8,13 @@
 namespace OroAcademy\Bundle\IssueBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use OroAcademy\Bundle\IssueBundle\Entity\Issue;
 use OroAcademy\Bundle\IssueBundle\Entity\IssuePriority;
 use OroAcademy\Bundle\IssueBundle\Entity\IssueType;
 
-class LoadIssues extends AbstractFixture
+class LoadIssues extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * @var ObjectManager
@@ -59,5 +60,15 @@ class LoadIssues extends AbstractFixture
     {
         $repo = $this->manager->getRepository('OroUserBundle:User');
         return $repo->findOneBy([ 'username' => $string ]);
+    }
+
+    /**
+     * Lower than 100 values reserved for main fixtures.
+     *
+     * @return int
+     */
+    public function getOrder()
+    {
+        return 100;
     }
 }

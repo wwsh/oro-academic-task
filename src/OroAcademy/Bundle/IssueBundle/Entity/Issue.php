@@ -120,7 +120,7 @@ class Issue extends ExtendIssue
      * @var User[]
      *
      * @ORM\ManyToMany(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinTable(name="oroacademy_collaborator_issue_to_user",
+     * @ORM\JoinTable(name="oroacademy_issue_to_user",
      *      joinColumns={@ORM\JoinColumn(name="issue_id", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")}
      * )

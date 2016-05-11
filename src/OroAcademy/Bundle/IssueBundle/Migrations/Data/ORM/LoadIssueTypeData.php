@@ -8,10 +8,11 @@
 namespace OroAcademy\Bundle\IssueBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use OroAcademy\Bundle\IssueBundle\Entity\IssueType;
 
-class LoadIssueTypeData extends AbstractFixture
+class LoadIssueTypeData extends AbstractFixture implements OrderedFixtureInterface
 {
 
     /**
@@ -44,5 +45,13 @@ class LoadIssueTypeData extends AbstractFixture
             $manager->persist($issueType);
             $manager->flush();
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrder()
+    {
+        return 2;
     }
 }

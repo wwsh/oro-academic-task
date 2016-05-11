@@ -101,6 +101,19 @@ CREATE EXTENSION "uuid-ossp";
 
 The Oro Platform application is based on the Symfony standard application so web server configuration recommendations are the [same][5].
 
+## Running tests
+
+The application code is written using unit and functional tests. To make use of the test app framework, you need to perform additional preparation steps:
+
+1. Use the parameters_test.yml.dist template as parameters_test.yml. Update the db credentials to fit your requirements.
+2. Install the oro test app with the following command:
+
+        php app/console oro:install --env test --timeout 1000
+
+3. Add the test user using the following command:
+
+          app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test                 --fixtures vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Fixtures
+
 ## Package Manager Configuration
 
 Github OAuth token should be configured in package manager settings
