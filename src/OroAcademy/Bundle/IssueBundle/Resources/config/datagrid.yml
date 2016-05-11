@@ -1,0 +1,105 @@
+datagrid:
+    issue-grid:
+        source:
+            acl_resource: issue_view
+            type: orm
+            query:
+                select:
+                    - i.id
+                    - i.summary
+                    - i.code
+                    - i.description
+                    - t.name as type
+                    - p.name as priority
+                    - i.resolution
+                    - i.status
+                    - i.tags
+                    - CONCAT(rep.firstName, CONCAT(' ', rep.lastName)) as reporter
+                    - CONCAT(asgn.firstName, CONCAT(' ', asgn.lastName)) as assignee
+                    - i.createdAt
+                    - i.updatedAt
+                from:
+                    - { table: OroAcademyIssueBundle:Issue, alias: i }
+                join:
+                    left:
+                        - { join: i.type, alias: t, conditionType: WITH }
+                        - { join: i.priority, alias: p, conditionType: WITH }
+                        - { join: i.reporter, alias: rep, conditionType: WITH }
+                        - { join: i.assignee, alias: asgn, conditionType: WITH }
+
+        columns:
+            code:
+                label: Code
+            summary:
+                label: Summary
+            type:
+                label: Type
+            priority:
+                label: Priority
+            status:
+                label: Status
+            resolution:
+                label: Resolution
+            reporter:
+                label: Reporter
+            assignee:
+                label: Assignee
+            createdAt:
+                label: Created
+                frontend_type: date
+            updatedAt:
+                label: Updated
+                frontend_type: date
+        properties:
+            id: ~
+            update_link:
+                type: url
+                #route: inventory.vehicle_update
+                params:
+                    - id
+            view_link:
+                type: url
+                #route: inventory.vehicle_view
+                params:
+                    - id
+            delete_link:
+                type: url
+                #route: inventory_api_delete_vehicle
+                params:
+                    - id
+        sorters:
+            columns:
+                updatedAt:
+                    data_name: i.updatedAt
+                createdAt:
+                    data_name: i.createdAt
+            default:
+                model: DESC
+        filters:
+            columns:
+                code:
+                    type: string
+                    data_name: i.code
+                createdAt:
+                    type: date
+                    data_name: i.createdAt
+        actions:
+#            view:
+#                type:          navigate
+#                label:         View
+#                link:          view_link
+#                icon:          eye-open
+#                acl_resource:  inventory.vehicle_view
+#                rowAction:     true
+#            update:
+#                type:          navigate
+#                label:         Update
+#                link:          update_link
+#                icon:          edit
+#                acl_resource:  inventory.vehicle_update
+#            delete:
+#                type:          delete
+#                label:         Delete
+#                link:          delete_link
+#                icon:          trash
+#                acl_resource:  inventory.vehicle_delete

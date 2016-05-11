@@ -1,0 +1,4 @@
+issue_bundle:
+    resource: "@OroAcademyIssueBundle/Controller"
+    type: annotation
+    prefix: /issue

@@ -1,0 +1,15 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set pageTitle = 'Issues'|trans %}
+{% set route = '' %}
+
+{% block navButtons %}
+    {% if resource_granted('issue_view') %}
+        <div class="btn-group">
+            {{ UI.addButton({
+                'path': '',
+                'entity_label': 'Issue'|trans
+            }) }}
+        </div>
+    {% endif %}
+{% endblock %}
