@@ -1,0 +1,5 @@
+services:
+    form.issue:
+        class: OroAcademy\Bundle\IssueBundle\Form\Type\IssueType
+        tags:
+            - { name: form.type, alias: issue }

@@ -8,6 +8,7 @@
 namespace OroAcademy\Bundle\IssueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\TagBundle\Entity\Tag;
 use Oro\Bundle\UserBundle\Entity\User;
 use OroAcademy\Bundle\IssueBundle\Model\ExtendIssue;
@@ -19,6 +20,10 @@ use OroAcademy\Bundle\IssueBundle\Model\ExtendIssue;
  *      name="oroacademy_issue"
  * )
  * @ORM\Entity(repositoryClass="OroAcademy\Bundle\IssueBundle\Entity\IssueRepository")
+ *
+ * @ORM\HasLifecycleCallbacks()
+ *
+ * @Config
  */
 class Issue extends ExtendIssue
 {
@@ -41,7 +46,7 @@ class Issue extends ExtendIssue
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=255)
+     * @ORM\Column(name="code", type="string", length=255, nullable=true)
      */
     protected $code;
 
@@ -156,14 +161,24 @@ class Issue extends ExtendIssue
      */
     protected $updatedAt;
 
+    /**
+     * System flag. True = we're in the cycle of generating the .code value
+     *
+     * @var bool
+     */
+    protected $generatingCode = false;
 
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct($code = null, $summary = null)
     {
         $this->collaborators = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tags          = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->relatedIssues = new \Doctrine\Common\Collections\ArrayCollection();
+
+        $this->code    = $code;
+        $this->summary = $summary;
     }
 
     /**
@@ -654,5 +669,58 @@ class Issue extends ExtendIssue
     public function removeTag(\Oro\Bundle\TagBundle\Entity\Tag $tag)
     {
         $this->tags->removeElement($tag);
+    }
+
+    /**
+     * Handles auto Issue code generation, based on type and summary.
+     * Code should be unique throughout the whole database, therefore
+     * the actual code on the UI is a combination of .code and .id
+     *
+     * @ORM\PrePersist()
+     */
+    public function prePersist()
+    {
+        $this->createdAt = new \DateTime();
+
+        if (empty($this->code)) {
+            $type        = $this->type->getName();
+            $summaryPart = $this->summary[0];
+            if (!ctype_alpha($summaryPart)) {
+                $summaryPart = chr(rand(65, 65 + 26));
+            }
+            $this->code = strtoupper($type[0] . $summaryPart);
+            // due to some limitations, we cannot use the postFlush event
+            // to retrieve the database ID and concat.
+            // the alternative solution uses system time and a random digit.
+            // this way we're most likely be having an unique ID all the time
+            $this->code .= '-' . time() . rand(0, 9);
+        }
+
+    }
+
+    /**
+     * @ORM\PreUpdate()
+     */
+    public function preUpdate()
+    {
+        $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('[%s] %s', $this->code, $this->summary);
+    }
+
+    /**
+     * For the templates.
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->__toString();
     }
 }

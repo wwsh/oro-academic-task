@@ -1,0 +1,69 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+
+{% if form.vars.value.id %}
+    {% set formAction = path('oroacademy_update_issue', { 'id': form.vars.value.id }) %}
+{% else %}
+    {% set formAction = path('oroacademy_create_issue') %}
+{% endif %}
+
+{% block navButtons %}
+    {% if form.vars.value.id and resource_granted('DELETE', form.vars.value) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('oroacademy_api_delete_issue', {'id': form.vars.value.id}),
+            'dataRedirect': path('oroacademy_issue_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-tag',
+            'dataId': form.vars.value.id,
+            'entity_label': 'Issue'|trans
+        }) }}
+        {{ UI.buttonSeparator() }}
+    {% endif %}
+    {{ UI.cancelButton(path('oroacademy_issue_index')) }}
+    {% set html = UI.saveAndCloseButton() %}
+    {% if resource_granted('issue_update') %}
+        {% set html = html ~ UI.saveAndStayButton() %}
+    {% endif %}
+    {{ UI.dropdownSaveButton({ 'html': html }) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% if form.vars.value.id %}
+        {% set breadcrumbs = {
+        'entity':      form.vars.value,
+        'indexPath':   path('oroacademy_issue_index'),
+        'indexLabel': 'Issues'|trans,
+        'entityTitle': form.vars.value.getTitle
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'Issue'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'issue-edit' %}
+
+    {% set dataBlocks = [{
+        'title': 'General'|trans,
+        'class': 'active',
+        'subblocks': [{
+            'title': '',
+            'data': [
+                form_row(form.type),
+                form_row(form.priority),
+                form_row(form.summary),
+                form_row(form.description),
+                form_row(form.tags),
+                form_row(form.reporter),
+                form_row(form.assignee),
+            ]
+        }]
+    }] %}
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}

@@ -6,7 +6,7 @@
     {% if resource_granted('issue_view') %}
         <div class="btn-group">
             {{ UI.addButton({
-                'path': '',
+                'path': path('oroacademy_create_issue'),
                 'entity_label': 'Issue'|trans
             }) }}
         </div>

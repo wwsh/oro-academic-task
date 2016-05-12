@@ -1,8 +1,8 @@
 <?php
 /*******************************************************************************
- * This is closed source software, created by WWSH. 
+ * This is closed source software, created by WWSH.
  * Please do not copy nor redistribute.
- * Copyright (c) Oro 2016. 
+ * Copyright (c) Oro 2016.
  ******************************************************************************/
 
 namespace OroAcademy\Bundle\IssueBundle\Tests\Unit\Entity;
@@ -43,4 +43,23 @@ class IssueTypeTest extends \PHPUnit_Framework_TestCase
             [ 'description', 'Example Description' ],
         ];
     }
+
+    /**
+     * @dataProvider printDataProvider
+     */
+    public function testPrintAbility(IssueType $issueType, $expectedPrint)
+    {
+        $this->assertEquals($expectedPrint, (string)$issueType);
+    }
+
+    public function printDataProvider()
+    {
+        return [
+            [ new IssueType(IssueType::TYPE_TASK), IssueType::TYPE_TASK ],
+            [ new IssueType(IssueType::TYPE_STORY), IssueType::TYPE_STORY ],
+            [ new IssueType(IssueType::TYPE_SUBTASK), IssueType::TYPE_SUBTASK ],
+            [ new IssueType(IssueType::TYPE_BUG), IssueType::TYPE_BUG ],
+        ];
+    }
+
 }

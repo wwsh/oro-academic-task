@@ -1,7 +1,21 @@
 services:
-  issue_manager.api:
+  oroacademy_issue_manager.api:
       class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
       parent: oro_soap.manager.entity_manager.abstract
       arguments:
         - OroAcademy/Bundle/IssueBundle/Entity/Issue
         - "@doctrine.orm.entity_manager"
+
+  oroacademy_issue_form.api:
+      class: Symfony\Component\Form\Form
+      factory_method: createNamed
+      factory_service: form.factory
+      arguments: ["issue", "issue", null, {csrf_protection: false, allow_extra_fields: true, validation_groups: false}]
+
+  oroacademy_issue_handler.api:
+      class: OroAcademy\Bundle\IssueBundle\Form\Handler\IssueHandler
+      scope: request
+      arguments:
+        - '@oroacademy_issue_form.api'
+        - '@request'
+        - '@doctrine.orm.entity_manager'

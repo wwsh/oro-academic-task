@@ -111,4 +111,12 @@ class IssueResolution
     {
         return $this->description;
     }
+
+    /**
+     * @return null|string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

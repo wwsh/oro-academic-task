@@ -44,4 +44,25 @@ class IssueResolutionTest extends \PHPUnit_Framework_TestCase
             [ 'name', IssueResolution::RESOLUTION_WORKSFORME ],
         ];
     }
+
+    /**
+     * @dataProvider printDataProvider
+     */
+    public function testPrintAbility(IssueResolution $issueResolution, $expectedPrint)
+    {
+        $this->assertEquals($expectedPrint, (string)$issueResolution);
+    }
+
+    public function printDataProvider()
+    {
+        return [
+            [ new IssueResolution(IssueResolution::RESOLUTION_DUPLICATE), IssueResolution::RESOLUTION_DUPLICATE ],
+            [ new IssueResolution(IssueResolution::RESOLUTION_FIXED), IssueResolution::RESOLUTION_FIXED ],
+            [ new IssueResolution(IssueResolution::RESOLUTION_INCOMPLETE), IssueResolution::RESOLUTION_INCOMPLETE ],
+            [ new IssueResolution(IssueResolution::RESOLUTION_WONTFIX), IssueResolution::RESOLUTION_WONTFIX ],
+            [ new IssueResolution(IssueResolution::RESOLUTION_INVALID), IssueResolution::RESOLUTION_INVALID ],
+            [ new IssueResolution(IssueResolution::RESOLUTION_WORKSFORME), IssueResolution::RESOLUTION_WORKSFORME ],
+        ];
+    }
+
 }

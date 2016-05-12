@@ -54,12 +54,12 @@ datagrid:
             id: ~
             update_link:
                 type: url
-                route: oroacademy_api_delete_issue
+                route: oroacademy_update_issue
                 params:
                     - id
             view_link:
                 type: url
-                route: oroacademy_api_delete_issue
+                route: oroacademy_view_issue
                 params:
                     - id
             delete_link:
@@ -91,15 +91,15 @@ datagrid:
 #                icon:          eye-open
 #                acl_resource:  inventory.vehicle_view
 #                rowAction:     true
-#            update:
-#                type:          navigate
-#                label:         Update
-#                link:          update_link
-#                icon:          edit
-#                acl_resource:  inventory.vehicle_update
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  update_issue
             delete:
                 type:          delete
                 label:         Delete
                 link:          delete_link
                 icon:          trash
-                acl_resource:  issue_delete
+                acl_resource:  api_delete_issue

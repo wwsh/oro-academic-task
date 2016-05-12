@@ -114,4 +114,14 @@ class IssuePriority
     {
         return $this->value;
     }
+
+    /**
+     * @return null|string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+
 }

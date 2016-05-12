@@ -112,7 +112,7 @@ The application code is written using unit and functional tests. To make use of 
 
 3. Add the test user using the following command:
 
-          app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test                 --fixtures vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Fixtures
+          app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Fixtures
 
 ## Package Manager Configuration
 

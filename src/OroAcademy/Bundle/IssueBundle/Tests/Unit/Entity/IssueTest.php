@@ -143,4 +143,21 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         $this->assertContains($oneTag, $this->issue->getTags());
         $this->assertContains($anotherTag, $this->issue->getTags());
     }
+
+    /**
+     * @dataProvider printDataProvider
+     */
+    public function testPrintAbility(Issue $issue, $expectedPrint)
+    {
+        $this->assertEquals($expectedPrint, (string)$issue);
+    }
+
+    public function printDataProvider()
+    {
+        return [
+            [ new Issue('ABC-123', 'Composer problem'), '[ABC-123] Composer problem' ],
+            [ new Issue('XYZ-456', 'Troubleshooting PhpUnit'), '[XYZ-456] Troubleshooting PhpUnit' ],
+        ];
+    }
+
 }

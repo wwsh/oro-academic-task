@@ -41,4 +41,110 @@ class RestIssueControllerTest extends WebTestCase
         $issue = $repo->findOneBy([ 'code' => 'XYZ-123' ]);
         $this->assertNull($issue);
     }
+
+    public function testCreate()
+    {
+        $issue = [
+            "issue" => [
+                "code"        => 'EGH-' . rand(1, 200),
+                "summary"     => "Test summary",
+                "description" => "Test description",
+                "type"        => "bug",
+                "priority"    => "high",
+                "reporter"    => "admin",
+            ]
+        ];
+
+        $this->client->request(
+            'POST',
+            $this->getUrl('oroacademy_api_post_issue'),
+            $issue
+        );
+
+        $result = $this->getJsonResponseContent($this->client->getResponse(), 201);
+        $this->assertArrayHasKey('id', $result);
+
+        return $issue;
+    }
+
+    /**
+     * @param array $issue
+     * @depends testCreate
+     * @return array
+     */
+    public function testGet(array $issue)
+    {
+        $this->client->request(
+            'GET',
+            $this->getUrl('oroacademy_api_get_issues')
+        );
+
+        $result = $this->getJsonResponseContent($this->client->getResponse(), 200);
+
+        $id     = $issue['id'];
+        $result = array_filter(
+            $result,
+            function ($a) use ($id) {
+                return $a['id'] == $id;
+            }
+        );
+
+        $this->assertNotEmpty($result);
+        $this->assertEquals($issue['issue']['code'], reset($result)['code']);
+
+        $this->client->request(
+            'GET',
+            $this->getUrl('oroacademy_api_get_issue', [ 'id' => $issue['id'] ])
+        );
+
+        $result = $this->getJsonResponseContent($this->client->getResponse(), 200);
+
+        $this->assertEquals($issue['issue']['code'], $result['code']);
+        $this->assertTrue(array_key_exists('lifetimeValue', $result));
+    }
+
+    /**
+     * @param array $issue
+     * @depends testCreate
+     * @depends testGet
+     */
+    public function testUpdate(array $issue)
+    {
+        $issue['account']['code'] .= "_Updated";
+        $this->client->request(
+            'PUT',
+            $this->getUrl('oroacademy_api_put_issue', [ 'id' => $issue['id'] ]),
+            $issue
+        );
+        $result = $this->client->getResponse();
+
+        $this->assertEmptyResponseStatusCodeEquals($result, 204);
+
+        $this->client->request(
+            'GET',
+            $this->getUrl('oroacademy_api_get_issue', [ 'id' => $issue['id'] ])
+        );
+
+        $result = $this->getJsonResponseContent($this->client->getResponse(), 200);
+
+        $this->assertEquals(
+            $issue['issue']['code'],
+            $result['code']
+        );
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testList()
+    {
+        $this->client->request(
+            'GET',
+            $this->getUrl('oroacademy_api_get_issuesa')
+        );
+
+        $result = $this->getJsonResponseContent($this->client->getResponse(), 200);
+        $this->assertEquals(1, count($result));
+    }
+
 }
