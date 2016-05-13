@@ -8,10 +8,12 @@
 namespace OroAcademy\Bundle\IssueBundle\Controller\Api\Rest;
 
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -60,6 +62,42 @@ class IssueController extends RestController
     public function getAction($id)
     {
         return $this->handleGetRequest($id);
+    }
+
+    /**
+     * REST GET list
+     *
+     * @QueryParam(
+     *      name="page",
+     *      requirements="\d+",
+     *      nullable=true,
+     *      description="Page number, starting from 1. Defaults to 1."
+     * )
+     * @QueryParam(
+     *      name="limit",
+     *      requirements="\d+",
+     *      nullable=true,
+     *      description="Number of items per page. defaults to 10."
+     * )
+     * @ApiDoc(
+     *      description="Get all issue items",
+     *      resource=true
+     * )
+     * @Acl(
+     *      id="api_get_issues",
+     *      type="entity",
+     *      class="OroAcademy\Bundle\IssueBundle\Entity\Issue",
+     *      permission="VIEW"
+     * )
+     * @param Request $request
+     * @return Response
+     */
+    public function cgetAction(Request $request)
+    {
+        $page = (int)$request->request->get('page', 1);
+        $limit = (int)$request->request->get('limit', self::ITEMS_PER_PAGE);
+
+        return $this->handleGetListRequest($page, $limit);
     }
 
     /**

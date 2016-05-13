@@ -280,7 +280,7 @@ class Issue extends ExtendIssue
     /**
      * Get type
      *
-     * @return string
+     * @return IssueType
      */
     public function getType()
     {
@@ -290,7 +290,7 @@ class Issue extends ExtendIssue
     /**
      * Set priority
      *
-     * @param string $priority
+     * @param IssuePriority $priority
      *
      * @return Issue
      */
@@ -304,7 +304,7 @@ class Issue extends ExtendIssue
     /**
      * Get priority
      *
-     * @return string
+     * @return IssuePriority
      */
     public function getPriority()
     {
@@ -314,7 +314,7 @@ class Issue extends ExtendIssue
     /**
      * Set resolution
      *
-     * @param string $resolution
+     * @param IssueRepository $resolution
      *
      * @return Issue
      */
@@ -328,7 +328,7 @@ class Issue extends ExtendIssue
     /**
      * Get resolution
      *
-     * @return string
+     * @return IssueResolution
      */
     public function getResolution()
     {
@@ -683,19 +683,8 @@ class Issue extends ExtendIssue
         $this->createdAt = new \DateTime();
 
         if (empty($this->code)) {
-            $type        = $this->type->getName();
-            $summaryPart = $this->summary[0];
-            if (!ctype_alpha($summaryPart)) {
-                $summaryPart = chr(rand(65, 65 + 26));
-            }
-            $this->code = strtoupper($type[0] . $summaryPart);
-            // due to some limitations, we cannot use the postFlush event
-            // to retrieve the database ID and concat.
-            // the alternative solution uses system time and a random digit.
-            // this way we're most likely be having an unique ID all the time
-            $this->code .= '-' . time() . rand(0, 9);
+            $this->generateCode();
         }
-
     }
 
     /**
@@ -722,5 +711,29 @@ class Issue extends ExtendIssue
     public function getTitle()
     {
         return $this->__toString();
+    }
+
+    /**
+     * due to some limitations, we cannot use the postFlush event
+     * to retrieve the database ID and concat.
+     * the alternative solution uses system time and a random digit.
+     * this way we're most likely be having an unique ID all the time
+     */
+    protected function generateCode()
+    {
+        if (is_null($this->type)) {
+            $type = chr(rand(65, 65 + 26));
+        } else {
+            $type = $this->type->getName();
+        }
+
+        $summaryPart = $this->summary[0];
+
+        if (!ctype_alpha($summaryPart)) {
+            $summaryPart = chr(rand(65, 65 + 26));
+        }
+
+        $this->code = strtoupper($type[0] . $summaryPart);
+        $this->code .= '-' . time() . rand(0, 9);
     }
 }

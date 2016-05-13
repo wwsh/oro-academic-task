@@ -20,33 +20,13 @@ class RestIssueControllerTest extends WebTestCase
     protected function setUp()
     {
         $this->initClient([ ], $this->generateWsseAuthHeader());
-        $this->loadFixtures([ 'OroAcademy\Bundle\IssueBundle\Tests\Functional\DataFixtures\LoadIssueData' ]);
-    }
-
-    public function testDelete()
-    {
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-
-        $repo  = $em->getRepository('OroAcademyIssueBundle:Issue');
-        $issue = $repo->findOneBy([ 'code' => 'XYZ-123' ]);
-        $id    = $issue->getId();
-
-        $this->client->request(
-            'DELETE',
-            $this->getUrl('oroacademy_api_delete_issue', [ 'id' => $id ])
-        );
-        $result = $this->client->getResponse();
-        $this->assertEmptyResponseStatusCodeEquals($result, 204);
-
-        $issue = $repo->findOneBy([ 'code' => 'XYZ-123' ]);
-        $this->assertNull($issue);
     }
 
     public function testCreate()
     {
         $issue = [
             "issue" => [
-                "code"        => 'EGH-' . rand(1, 200),
+                "code"        => 'EGH-123',
                 "summary"     => "Test summary",
                 "description" => "Test description",
                 "type"        => "bug",
@@ -64,73 +44,7 @@ class RestIssueControllerTest extends WebTestCase
         $result = $this->getJsonResponseContent($this->client->getResponse(), 201);
         $this->assertArrayHasKey('id', $result);
 
-        return $issue;
-    }
-
-    /**
-     * @param array $issue
-     * @depends testCreate
-     * @return array
-     */
-    public function testGet(array $issue)
-    {
-        $this->client->request(
-            'GET',
-            $this->getUrl('oroacademy_api_get_issues')
-        );
-
-        $result = $this->getJsonResponseContent($this->client->getResponse(), 200);
-
-        $id     = $issue['id'];
-        $result = array_filter(
-            $result,
-            function ($a) use ($id) {
-                return $a['id'] == $id;
-            }
-        );
-
-        $this->assertNotEmpty($result);
-        $this->assertEquals($issue['issue']['code'], reset($result)['code']);
-
-        $this->client->request(
-            'GET',
-            $this->getUrl('oroacademy_api_get_issue', [ 'id' => $issue['id'] ])
-        );
-
-        $result = $this->getJsonResponseContent($this->client->getResponse(), 200);
-
-        $this->assertEquals($issue['issue']['code'], $result['code']);
-        $this->assertTrue(array_key_exists('lifetimeValue', $result));
-    }
-
-    /**
-     * @param array $issue
-     * @depends testCreate
-     * @depends testGet
-     */
-    public function testUpdate(array $issue)
-    {
-        $issue['account']['code'] .= "_Updated";
-        $this->client->request(
-            'PUT',
-            $this->getUrl('oroacademy_api_put_issue', [ 'id' => $issue['id'] ]),
-            $issue
-        );
-        $result = $this->client->getResponse();
-
-        $this->assertEmptyResponseStatusCodeEquals($result, 204);
-
-        $this->client->request(
-            'GET',
-            $this->getUrl('oroacademy_api_get_issue', [ 'id' => $issue['id'] ])
-        );
-
-        $result = $this->getJsonResponseContent($this->client->getResponse(), 200);
-
-        $this->assertEquals(
-            $issue['issue']['code'],
-            $result['code']
-        );
+        return [ 'id' => $result['id'], 'issue' => $issue['issue'] ];
     }
 
     /**
@@ -140,11 +54,103 @@ class RestIssueControllerTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            $this->getUrl('oroacademy_api_get_issuesa')
+            $this->getUrl('oroacademy_api_get_issues')
         );
 
         $result = $this->getJsonResponseContent($this->client->getResponse(), 200);
         $this->assertEquals(1, count($result));
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     * @depends testCreate
+     */
+    public function testGet(array $data)
+    {
+        $id    = $data['id'];
+        $issue = $data['issue'];
+
+        $this->client->request(
+            'GET',
+            $this->getUrl('oroacademy_api_get_issues')
+        );
+
+        $result = $this->getJsonResponseContent($this->client->getResponse(), 200);
+
+        $result = array_filter(
+            $result,
+            function ($a) use ($id) {
+                return $a['id'] == $id;
+            }
+        );
+
+        $this->assertNotEmpty($result);
+        $this->assertEquals($issue['code'], reset($result)['code']);
+
+        $this->client->request(
+            'GET',
+            $this->getUrl('oroacademy_api_get_issue', [ 'id' => $id ])
+        );
+
+        $result = $this->getJsonResponseContent($this->client->getResponse(), 200);
+
+        $this->assertEquals($issue['code'], $result['code']);
+    }
+
+    /**
+     * @param array $data
+     * @depends testCreate
+     * @depends testGet
+     */
+    public function testUpdate(array $data)
+    {
+        $id    = $data['id'];
+        $issue = $data['issue'];
+
+        $issue['code'] .= "_Updated";
+        $this->client->request(
+            'PUT',
+            $this->getUrl('oroacademy_api_put_issue', [ 'id' => $id ]),
+            [ 'issue' => $issue ]
+        );
+        $result = $this->client->getResponse();
+
+        $this->assertEmptyResponseStatusCodeEquals($result, 204);
+
+        $this->client->request(
+            'GET',
+            $this->getUrl('oroacademy_api_get_issue', [ 'id' => $id ])
+        );
+
+        $result = $this->getJsonResponseContent($this->client->getResponse(), 200);
+
+        $this->assertEquals(
+            $issue['code'],
+            $result['code']
+        );
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testDelete(array $data)
+    {
+        $id    = $data['id'];
+        $issue = $data['issue'];
+
+        $this->client->request(
+            'DELETE',
+            $this->getUrl('oroacademy_api_delete_issue', [ 'id' => $id ])
+        );
+        $result = $this->client->getResponse();
+        $this->assertEmptyResponseStatusCodeEquals($result, 204);
+
+        $repo = $this->getContainer()->get('doctrine.orm.entity_manager')
+                     ->getRepository('OroAcademyIssueBundle:Issue');
+
+        $issue = $repo->findOneBy([ 'code' => $issue['code'] ]);
+        $this->assertNull($issue);
     }
 
 }

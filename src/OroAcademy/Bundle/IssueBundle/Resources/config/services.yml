@@ -6,6 +6,10 @@ services:
         - OroAcademy/Bundle/IssueBundle/Entity/Issue
         - "@doctrine.orm.entity_manager"
 
+  oroacademy_issue_form_helper.api:
+      class: OroAcademy\Bundle\IssueBundle\Form\Handler\FormEntityRelationHelper
+      arguments: ["@doctrine.orm.entity_manager"]
+
   oroacademy_issue_form.api:
       class: Symfony\Component\Form\Form
       factory_method: createNamed
@@ -16,6 +20,8 @@ services:
       class: OroAcademy\Bundle\IssueBundle\Form\Handler\IssueHandler
       scope: request
       arguments:
-        - '@oroacademy_issue_form.api'
+        - '@oroacademy_issue_form_helper.api'
         - '@request'
         - '@doctrine.orm.entity_manager'
+      calls:
+        - [ setForm, ['@oroacademy_issue_form.api' ]]

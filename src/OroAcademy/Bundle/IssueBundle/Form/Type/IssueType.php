@@ -45,6 +45,13 @@ class IssueType extends AbstractType
                 ]
             )
             ->add(
+                'code',
+                null,
+                [
+                    'required' => false
+                ]
+            )
+            ->add(
                 'priority',
                 null,
                 [

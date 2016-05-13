@@ -61,5 +61,4 @@ class IssueTypeTest extends \PHPUnit_Framework_TestCase
             [ new IssueType(IssueType::TYPE_BUG), IssueType::TYPE_BUG ],
         ];
     }
-
 }
