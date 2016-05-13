@@ -25,6 +25,7 @@ class OroAcademyIssueBundle implements Migration
     {
         $this->createOroacademyIssueTable($schema);
         $this->createOroacademyIssuePriorityTable($schema);
+        $this->createOroacademyIssueResolutionTable($schema);
         $this->createOroacademyIssueToTagTable($schema);
         $this->createOroacademyIssueToUserTable($schema);
         $this->createOroacademyIssueTypeTable($schema);
@@ -38,25 +39,29 @@ class OroAcademyIssueBundle implements Migration
     protected function createOroacademyIssueTable(Schema $schema)
     {
         $table = $schema->createTable('oroacademy_issue');
-        $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('priority_id', 'integer', ['notnull' => false]);
-        $table->addColumn('parent_id', 'integer', ['notnull' => false]);
-        $table->addColumn('assignee_user_id', 'integer', ['notnull' => false]);
-        $table->addColumn('type_id', 'integer', ['notnull' => false]);
-        $table->addColumn('reporter_user_id', 'integer', ['notnull' => false]);
-        $table->addColumn('summary', 'string', ['length' => 255]);
-        $table->addColumn('code', 'string', ['length' => 255]);
-        $table->addColumn('description', 'text', []);
-        $table->addColumn('resolution', 'string', ['length' => 255]);
-        $table->addColumn('status', 'string', ['length' => 255]);
-        $table->addColumn('createdAt', 'datetime', []);
-        $table->addColumn('updatedAt', 'datetime', []);
-        $table->setPrimaryKey(['id']);
-        $table->addIndex(['priority_id'], 'IDX_E7C12BA3497B19F9', []);
-        $table->addIndex(['reporter_user_id'], 'IDX_E7C12BA3DF3D6D95', []);
-        $table->addIndex(['assignee_user_id'], 'IDX_E7C12BA3BA8D7F59', []);
-        $table->addIndex(['parent_id'], 'IDX_E7C12BA3727ACA70', []);
-        $table->addIndex(['type_id'], 'IDX_E7C12BA3C54C8C93', []);
+        $table->addColumn('id', 'integer', [ 'autoincrement' => true ]);
+        $table->addColumn('workflow_item_id', 'integer', [ 'notnull' => false ]);
+        $table->addColumn('resolution_id', 'integer', [ 'notnull' => false ]);
+        $table->addColumn('priority_id', 'integer', [ 'notnull' => false ]);
+        $table->addColumn('workflow_step_id', 'integer', [ 'notnull' => false ]);
+        $table->addColumn('parent_id', 'integer', [ 'notnull' => false ]);
+        $table->addColumn('assignee_user_id', 'integer', [ 'notnull' => false ]);
+        $table->addColumn('type_id', 'integer', [ 'notnull' => false ]);
+        $table->addColumn('reporter_user_id', 'integer', [ 'notnull' => false ]);
+        $table->addColumn('summary', 'string', [ 'notnull' => false, 'length' => 255 ]);
+        $table->addColumn('code', 'string', [ 'notnull' => false, 'length' => 255 ]);
+        $table->addColumn('description', 'text', [ 'notnull' => false ]);
+        $table->addColumn('createdAt', 'datetime', [ ]);
+        $table->addColumn('updatedAt', 'datetime', [ 'notnull' => false ]);
+        $table->setPrimaryKey([ 'id' ]);
+        $table->addIndex([ 'priority_id' ], 'IDX_E7C12BA3497B19F9', [ ]);
+        $table->addIndex([ 'reporter_user_id' ], 'IDX_E7C12BA3DF3D6D95', [ ]);
+        $table->addIndex([ 'assignee_user_id' ], 'IDX_E7C12BA3BA8D7F59', [ ]);
+        $table->addIndex([ 'parent_id' ], 'IDX_E7C12BA3727ACA70', [ ]);
+        $table->addIndex([ 'type_id' ], 'IDX_E7C12BA3C54C8C93', [ ]);
+        $table->addIndex([ 'resolution_id' ], 'IDX_E7C12BA312A1C43A', [ ]);
+        $table->addIndex([ 'workflow_item_id' ], 'IDX_E7C12BA31023C4EE', [ ]);
+        $table->addIndex([ 'workflow_step_id' ], 'IDX_E7C12BA371FE882C', [ ]);
     }
 
     /**
@@ -67,10 +72,26 @@ class OroAcademyIssueBundle implements Migration
     protected function createOroacademyIssuePriorityTable(Schema $schema)
     {
         $table = $schema->createTable('oroacademy_issue_priority');
-        $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('name', 'string', ['length' => 255]);
-        $table->addColumn('value', 'integer', []);
-        $table->setPrimaryKey(['id']);
+        $table->addColumn('id', 'integer', [ 'autoincrement' => true ]);
+        $table->addColumn('name', 'string', [ 'length' => 255 ]);
+        $table->addColumn('value', 'integer', [ ]);
+        $table->addColumn('label', 'string', [ 'length' => 255 ]);
+        $table->setPrimaryKey([ 'id' ]);
+    }
+
+    /**
+     * Create oroacademy_issue_resolution table
+     *
+     * @param Schema $schema
+     */
+    protected function createOroacademyIssueResolutionTable(Schema $schema)
+    {
+        $table = $schema->createTable('oroacademy_issue_resolution');
+        $table->addColumn('id', 'integer', [ 'autoincrement' => true ]);
+        $table->addColumn('name', 'string', [ 'length' => 255 ]);
+        $table->addColumn('description', 'text', [ 'notnull' => false ]);
+        $table->addColumn('label', 'string', [ 'length' => 255 ]);
+        $table->setPrimaryKey([ 'id' ]);
     }
 
     /**
@@ -81,11 +102,11 @@ class OroAcademyIssueBundle implements Migration
     protected function createOroacademyIssueToTagTable(Schema $schema)
     {
         $table = $schema->createTable('oroacademy_issue_to_tag');
-        $table->addColumn('issue_id', 'integer', []);
-        $table->addColumn('tag_id', 'integer', []);
-        $table->setPrimaryKey(['issue_id', 'tag_id']);
-        $table->addIndex(['issue_id'], 'IDX_28731CE25E7AA58C', []);
-        $table->addIndex(['tag_id'], 'IDX_28731CE2BAD26311', []);
+        $table->addColumn('issue_id', 'integer', [ ]);
+        $table->addColumn('tag_id', 'integer', [ ]);
+        $table->setPrimaryKey([ 'issue_id', 'tag_id' ]);
+        $table->addIndex([ 'issue_id' ], 'IDX_28731CE25E7AA58C', [ ]);
+        $table->addIndex([ 'tag_id' ], 'IDX_28731CE2BAD26311', [ ]);
     }
 
     /**
@@ -96,11 +117,11 @@ class OroAcademyIssueBundle implements Migration
     protected function createOroacademyIssueToUserTable(Schema $schema)
     {
         $table = $schema->createTable('oroacademy_issue_to_user');
-        $table->addColumn('issue_id', 'integer', []);
-        $table->addColumn('user_id', 'integer', []);
-        $table->setPrimaryKey(['issue_id', 'user_id']);
-        $table->addIndex(['issue_id'], 'IDX_B70D7D2C5E7AA58C', []);
-        $table->addIndex(['user_id'], 'IDX_B70D7D2CA76ED395', []);
+        $table->addColumn('issue_id', 'integer', [ ]);
+        $table->addColumn('user_id', 'integer', [ ]);
+        $table->setPrimaryKey([ 'issue_id', 'user_id' ]);
+        $table->addIndex([ 'issue_id' ], 'IDX_B70D7D2C5E7AA58C', [ ]);
+        $table->addIndex([ 'user_id' ], 'IDX_B70D7D2CA76ED395', [ ]);
     }
 
     /**
@@ -112,8 +133,9 @@ class OroAcademyIssueBundle implements Migration
     {
         $table = $schema->createTable('oroacademy_issue_type');
         $table->addColumn('id', 'integer', [ 'autoincrement' => true ]);
-        $table->addColumn('label', 'string', [ 'length' => 16 ]);
+        $table->addColumn('label', 'string', [ 'length' => 255 ]);
         $table->addColumn('description', 'string', [ 'notnull' => false, 'length' => 255 ]);
+        $table->addColumn('name', 'string', [ 'length' => 16 ]);
         $table->setPrimaryKey([ 'id' ]);
     }
 }

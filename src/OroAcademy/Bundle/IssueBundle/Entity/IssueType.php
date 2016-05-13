@@ -1,8 +1,8 @@
 <?php
 /*******************************************************************************
- * This is closed source software, created by WWSH. 
+ * This is closed source software, created by WWSH.
  * Please do not copy nor redistribute.
- * Copyright (c) Oro 2016. 
+ * Copyright (c) Oro 2016.
  ******************************************************************************/
 
 namespace OroAcademy\Bundle\IssueBundle\Entity;
@@ -36,7 +36,7 @@ class IssueType
     /**
      * @var string
      *
-     * @ORM\Column(name="label", type="string", length=16)
+     * @ORM\Column(name="name", type="string", length=16)
      */
     protected $name;
 
@@ -48,14 +48,23 @@ class IssueType
     protected $description;
 
     /**
-     * IssueType constructor.
-     * @param $typeName
+     * @var string
+     *
+     * @ORM\Column(name="label", type="string", length=255)
      */
-    public function __construct($typeName = null)
+    protected $label;
+
+    /**
+     * IssueType constructor.
+     * @param      $typeName
+     * @param null $label
+     */
+    public function __construct($typeName = null, $label = null)
     {
-        $this->name = $typeName;
+        $this->name  = $typeName;
+        $this->label = $label;
     }
-    
+
     /**
      * Get id
      *
@@ -67,7 +76,7 @@ class IssueType
     }
 
     /**
-     * Set label
+     * Set name
      *
      * @param string $name
      *
@@ -81,7 +90,7 @@ class IssueType
     }
 
     /**
-     * Get label
+     * Get name
      *
      * @return string
      */
@@ -119,8 +128,30 @@ class IssueType
      */
     public function __toString()
     {
-        return $this->name;
+        return $this->label;
     }
 
+    /**
+     * Set label
+     *
+     * @param string $label
+     *
+     * @return IssueType
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
 
+        return $this;
+    }
+
+    /**
+     * Get label
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
 }

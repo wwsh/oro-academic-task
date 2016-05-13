@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\TagBundle\Entity\Tag;
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 use OroAcademy\Bundle\IssueBundle\Model\ExtendIssue;
 
 /**
@@ -23,7 +25,14 @@ use OroAcademy\Bundle\IssueBundle\Model\ExtendIssue;
  *
  * @ORM\HasLifecycleCallbacks()
  *
- * @Config
+ * @Config(
+ *     defaultValues={
+ *      "workflow"={
+ *          "active_workflow"="issue_flow",
+ *          "show_step_in_grid"=false
+ *      }
+ *     }
+ * )
  */
 class Issue extends ExtendIssue
 {
@@ -81,12 +90,6 @@ class Issue extends ExtendIssue
      */
     protected $resolution = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="status", type="string", length=255, nullable=true)
-     */
-    protected $status;
 
     /**
      * @var Tag[]
@@ -162,11 +165,16 @@ class Issue extends ExtendIssue
     protected $updatedAt;
 
     /**
-     * System flag. True = we're in the cycle of generating the .code value
-     *
-     * @var bool
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowItem")
+     * @ORM\JoinColumn(name="workflow_item_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    protected $generatingCode = false;
+    protected $workflowItem;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowStep")
+     * @ORM\JoinColumn(name="workflow_step_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $workflowStep;
 
     /**
      * Constructor
@@ -333,30 +341,6 @@ class Issue extends ExtendIssue
     public function getResolution()
     {
         return $this->resolution;
-    }
-
-    /**
-     * Set status
-     *
-     * @param string $status
-     *
-     * @return Issue
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     /**
@@ -701,6 +685,38 @@ class Issue extends ExtendIssue
     public function __toString()
     {
         return sprintf('[%s] %s', $this->code, $this->summary);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWorkflowItem()
+    {
+        return $this->workflowItem;
+    }
+
+    /**
+     * @param WorkflowItem $workflowItem
+     */
+    public function setWorkflowItem(WorkflowItem $workflowItem)
+    {
+        $this->workflowItem = $workflowItem;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWorkflowStep()
+    {
+        return $this->workflowStep;
+    }
+
+    /**
+     * @param WorkflowStep $workflowStep
+     */
+    public function setWorkflowStep(WorkflowStep $workflowStep)
+    {
+        $this->workflowStep = $workflowStep;
     }
 
     /**

@@ -9,10 +9,10 @@ datagrid:
                     - i.summary
                     - i.code
                     - i.description
-                    - t.name as type
-                    - p.name as priority
-                    - r.name as resolution
-                    - i.status
+                    - t.label as type
+                    - p.label as priority
+                    - r.label as resolution
+                    - wfs.label as status
                     - CONCAT(rep.firstName, CONCAT(' ', rep.lastName)) as reporter
                     - CONCAT(asgn.firstName, CONCAT(' ', asgn.lastName)) as assignee
                     - i.createdAt
@@ -26,6 +26,7 @@ datagrid:
                         - { join: i.priority, alias: p, conditionType: WITH }
                         - { join: i.reporter, alias: rep, conditionType: WITH }
                         - { join: i.assignee, alias: asgn, conditionType: WITH }
+                        - { join: i.workflowStep, alias: wfs }
 
         columns:
             code:
@@ -84,13 +85,13 @@ datagrid:
                     type: date
                     data_name: i.createdAt
         actions:
-#            view:
-#                type:          navigate
-#                label:         View
-#                link:          view_link
-#                icon:          eye-open
-#                acl_resource:  inventory.vehicle_view
-#                rowAction:     true
+            view:
+                type:          navigate
+                label:         View
+                link:          view_link
+                icon:          eye-open
+                acl_resource:  view_issue
+                rowAction:     true
             update:
                 type:          navigate
                 label:         Update

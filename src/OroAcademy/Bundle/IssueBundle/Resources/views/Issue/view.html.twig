@@ -1,0 +1,65 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% block navButtons %}
+    {% if resource_granted('EDIT', entity) %}
+        {{ UI.editButton({
+            'path' : path('oroacademy_update_issue', { id: entity.id }),
+            'entity_label': 'Issue'|trans
+        }) }}
+    {% endif %}
+
+    {% if resource_granted('DELETE', entity) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('oroacademy_api_delete_issue', {'id': entity.id}),
+            'dataRedirect': path('oroacademy_issue_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-issue',
+            'dataId': entity.id,
+            'entity_label': 'Issue'|trans,
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+    'entity':      entity,
+    'indexPath':   path('oroacademy_issue_index'),
+    'indexLabel': 'Issues'|trans,
+    'entityTitle': entity
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set data %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('Code'|trans, entity.code) }}
+                    {{ UI.renderProperty('Summary'|trans, entity.summary) }}
+                    {{ UI.renderProperty('Type'|trans, entity.type) }}
+                    {{ UI.renderProperty('Priority'|trans, entity.priority) }}
+                    {{ UI.renderProperty('Resolution'|trans, entity.resolution) }}
+                    {{ UI.renderProperty('Reported by'|trans, entity.reporter) }}
+                    {{ UI.renderProperty('Assigned to'|trans, entity.assignee) }}
+                    {{ UI.renderProperty('Created at'|trans, entity.createdAt|date) }}
+                    {{ UI.renderProperty('Updated at'|trans, entity.updatedAt|date) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set dataBlocks = [
+        {
+            'title': 'Data'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [data] }
+            ]
+        }
+    ] %}
+
+    {% set id = 'issueView' %}
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

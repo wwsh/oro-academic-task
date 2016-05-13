@@ -55,10 +55,10 @@ class IssueTypeTest extends \PHPUnit_Framework_TestCase
     public function printDataProvider()
     {
         return [
-            [ new IssueType(IssueType::TYPE_TASK), IssueType::TYPE_TASK ],
-            [ new IssueType(IssueType::TYPE_STORY), IssueType::TYPE_STORY ],
-            [ new IssueType(IssueType::TYPE_SUBTASK), IssueType::TYPE_SUBTASK ],
-            [ new IssueType(IssueType::TYPE_BUG), IssueType::TYPE_BUG ],
+            [ new IssueType(IssueType::TYPE_TASK, 'Task'), 'Task' ],
+            [ new IssueType(IssueType::TYPE_STORY, 'Story'), 'Story' ],
+            [ new IssueType(IssueType::TYPE_SUBTASK, 'Subtask'), 'Subtask' ],
+            [ new IssueType(IssueType::TYPE_BUG, 'Bug'), 'Bug' ],
         ];
     }
 }

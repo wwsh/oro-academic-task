@@ -1,8 +1,8 @@
 <?php
 /*******************************************************************************
- * This is closed source software, created by WWSH. 
+ * This is closed source software, created by WWSH.
  * Please do not copy nor redistribute.
- * Copyright (c) Oro 2016. 
+ * Copyright (c) Oro 2016.
  ******************************************************************************/
 
 namespace OroAcademy\Bundle\IssueBundle\Migrations\Data\ORM;
@@ -18,9 +18,9 @@ class LoadIssuePriorityData extends AbstractFixture implements OrderedFixtureInt
      * @var array
      */
     protected $data = [
-        IssuePriority::PRIORITY_HIGH   => 100,
-        IssuePriority::PRIORITY_NORMAL => 50,
-        IssuePriority::PRIORITY_LOW    => 1,
+        IssuePriority::PRIORITY_HIGH   => [ 'High', 100 ],
+        IssuePriority::PRIORITY_NORMAL => [ 'Normal', 50 ],
+        IssuePriority::PRIORITY_LOW    => [ 'Low', 1 ],
     ];
 
     /**
@@ -36,7 +36,7 @@ class LoadIssuePriorityData extends AbstractFixture implements OrderedFixtureInt
             /** @var IssuePriority $issuePriority */
             $issuePriority = $repo->findOneBy([ 'name' => $name ]);
             if (!$issuePriority) {
-                $issuePriority = new IssuePriority($name, $value);
+                $issuePriority = new IssuePriority($name, $value[0], $value[1]);
             }
 
             // save

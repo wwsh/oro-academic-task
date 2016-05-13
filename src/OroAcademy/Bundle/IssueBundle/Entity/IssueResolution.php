@@ -28,29 +28,38 @@ class IssueResolution
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
      */
-    private $description;
+    protected $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="label", type="string", length=255)
+     */
+    protected $label;
 
     /**
      * IssueResolution constructor.
-     * @param $name
+     * @param      $name
+     * @param null $label
      */
-    public function __construct($name = null)
+    public function __construct($name = null, $label = null)
     {
-        $this->name = $name;
+        $this->name  = $name;
+        $this->label = $label;
     }
 
 
@@ -117,6 +126,30 @@ class IssueResolution
      */
     public function __toString()
     {
-        return $this->name;
+        return $this->label;
+    }
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     *
+     * @return IssueResolution
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * Get label
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
     }
 }

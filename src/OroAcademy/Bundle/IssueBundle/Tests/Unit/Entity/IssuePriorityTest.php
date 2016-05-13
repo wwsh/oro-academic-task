@@ -54,9 +54,9 @@ class IssuePriorityTest extends \PHPUnit_Framework_TestCase
     public function printDataProvider()
     {
         return [
-            [ new IssuePriority(IssuePriority::PRIORITY_NORMAL), IssuePriority::PRIORITY_NORMAL ],
-            [ new IssuePriority(IssuePriority::PRIORITY_HIGH), IssuePriority::PRIORITY_HIGH ],
-            [ new IssuePriority(IssuePriority::PRIORITY_LOW), IssuePriority::PRIORITY_LOW ],
+            [ new IssuePriority(IssuePriority::PRIORITY_NORMAL, 'Normal'), 'Normal' ],
+            [ new IssuePriority(IssuePriority::PRIORITY_HIGH, 'High'), 'High' ],
+            [ new IssuePriority(IssuePriority::PRIORITY_LOW, 'Low'), 'Low' ],
         ];
     }
 }

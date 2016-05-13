@@ -10,6 +10,7 @@ namespace OroAcademy\Bundle\IssueBundle\Tests\Unit\Form\Handler;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use OroAcademy\Bundle\IssueBundle\Entity\Issue;
+use OroAcademy\Bundle\IssueBundle\Form\Handler\FormEntityRelationHelper;
 use OroAcademy\Bundle\IssueBundle\Form\Handler\IssueHandler;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,6 +42,11 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
      */
     protected $entity;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|FormEntityRelationHelper
+     */
+    protected $helper;
+
     protected function setUp()
     {
         $this->form = $this->getMockBuilder('Symfony\Component\Form\Form')
@@ -53,13 +59,22 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
                               ->disableOriginalConstructor()
                               ->getMock();
 
+        $this->helper = $this->getMockBuilder('OroAcademy\Bundle\IssueBundle\Form\Handler\FormEntityRelationHelper')
+                             ->disableOriginalConstructor()
+                             ->getMock();
+
         $this->entity  = new Issue();
-        $this->handler = new IssueHandler($this->form, $this->request, $this->manager);
+        $this->handler = new IssueHandler($this->helper, $this->request, $this->manager);
+        $this->handler->setForm($this->form);
     }
 
 
     public function testProcessUnsupportedRequest()
     {
+        $this->helper->expects($this->once())
+                     ->method('getEntityData')
+                     ->with($this->entity);
+
         $this->form->expects($this->once())
                    ->method('setData')
                    ->with($this->entity);
@@ -79,13 +94,15 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->request->setMethod($method);
 
+        $this->helper->expects($this->once())
+                     ->method('getEntityData');
+
         $this->form->expects($this->once())
                    ->method('setData')
                    ->with($this->entity);
 
         $this->form->expects($this->once())
-                   ->method('submit')
-                   ->with($this->request);
+                   ->method('submit');
 
         $this->assertFalse($this->handler->process($this->entity));
     }
@@ -102,13 +119,21 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->request->setMethod('POST');
 
+        $entityProcessedData = [ ];
+
+        $this->request->request->set('issue', [ ]);
+
+        $this->helper->expects($this->once())
+                     ->method('getEntityData')
+                     ->will($this->returnValue($entityProcessedData));
+
         $this->form->expects($this->once())
                    ->method('setData')
                    ->with($this->entity);
 
         $this->form->expects($this->once())
                    ->method('submit')
-                   ->with($this->request);
+                   ->with($entityProcessedData);
 
         $this->form->expects($this->once())
                    ->method('isValid')
@@ -128,13 +153,19 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->request->setMethod('POST');
 
+        $entityProcessedData = [ ];
+
+        $this->helper->expects($this->once())
+                     ->method('getEntityData')
+                     ->will($this->returnValue($entityProcessedData));
+
         $this->form->expects($this->once())
                    ->method('setData')
                    ->with($this->entity);
 
         $this->form->expects($this->once())
                    ->method('submit')
-                   ->with($this->request);
+                   ->with($entityProcessedData);
 
         $this->form->expects($this->once())
                    ->method('isValid')

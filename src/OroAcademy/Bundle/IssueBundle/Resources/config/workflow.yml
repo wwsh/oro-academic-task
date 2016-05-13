@@ -1,0 +1,81 @@
+workflows:
+  issue_flow:
+    label: Issue
+    entity: OroAcademy\Bundle\IssueBundle\Entity\Issue
+    start_step: open
+
+    steps:
+      open:
+        label: Open
+        order: 10
+        allowed_transitions:
+          - start_progress
+          - resolve
+          - close
+
+      in_progress:
+        label: In Progress
+        order: 20
+        allowed_transitions:
+          - stop_progress
+          - resolve
+          - close
+
+      resolved:
+        label: Resolved
+        order: 30
+        allowed_transitions:
+          - close
+          - reopen
+
+      closed:
+        label: Closed
+        order: 40
+        allowed_transitions:
+          - reopen
+
+      reopened:
+        label: Re-Open
+        order: 15
+        allowed_transitions:
+          - start_progress
+
+    transitions:
+      start_progress:
+        label: Start Progress
+        step_to: in_progress
+        frontend_options:
+            icon: 'icon-play'
+        transition_definition: start_progress_definition
+
+      stop_progress:
+        label: Stop Progress
+        step_to: open
+        frontend_options:
+            icon: 'icon-stop'
+        transition_definition: stop_progress_definition
+
+      resolve:
+        label: Resolve
+        step_to: resolved
+        frontend_options:
+            icon: 'icon-ok'
+        transition_definition: resolve_definition
+
+      close:
+        label: Close
+        step_to: closed
+        transition_definition: close_definition
+
+      reopen:
+        label: Re-Open
+        step_to: reopened
+        transition_definition: reopen_definition
+
+
+    transition_definitions:
+      start_progress_definition: ~
+      stop_progress_definition: ~
+      resolve_definition: ~
+      close_definition: ~
+      reopen_definition: ~

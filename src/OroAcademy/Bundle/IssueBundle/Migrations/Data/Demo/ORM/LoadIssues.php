@@ -41,9 +41,7 @@ class LoadIssues extends AbstractFixture implements OrderedFixtureInterface
             $issue->setType($this->getIssueType($issueJson['type']));
             $issue->setReporter($this->getUser($issueJson['reporter']));
             $issue->setAssignee($this->getUser($issueJson['assignee']));
-            $issue->setStatus($issueJson['status']); // todo
             $issue->setResolution($this->getResolution($issueJson['resolution']));
-
             $manager->persist($issue);
             $manager->flush();
 

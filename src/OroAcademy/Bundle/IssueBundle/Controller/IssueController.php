@@ -94,7 +94,7 @@ class IssueController extends Controller
     }
 
     /**
-     * @Route("/view", name="oroacademy_view_issue")
+     * @Route("/view/{id}", name="oroacademy_view_issue")
      * @Template
      *
      * @Acl(
@@ -103,9 +103,11 @@ class IssueController extends Controller
      *     class="OroAcademy\Bundle\IssueBundle\Entity\Issue",
      *     permission="VIEW"
      * )
+     * @param Issue $issue
+     * @return array
      */
-    public function viewAction()
+    public function viewAction(Issue $issue)
     {
-
+        return [ 'entity' => $issue ];
     }
 }

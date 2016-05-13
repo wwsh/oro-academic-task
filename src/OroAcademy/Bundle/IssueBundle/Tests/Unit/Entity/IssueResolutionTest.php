@@ -56,12 +56,12 @@ class IssueResolutionTest extends \PHPUnit_Framework_TestCase
     public function printDataProvider()
     {
         return [
-            [ new IssueResolution(IssueResolution::RESOLUTION_DUPLICATE), IssueResolution::RESOLUTION_DUPLICATE ],
-            [ new IssueResolution(IssueResolution::RESOLUTION_FIXED), IssueResolution::RESOLUTION_FIXED ],
-            [ new IssueResolution(IssueResolution::RESOLUTION_INCOMPLETE), IssueResolution::RESOLUTION_INCOMPLETE ],
-            [ new IssueResolution(IssueResolution::RESOLUTION_WONTFIX), IssueResolution::RESOLUTION_WONTFIX ],
-            [ new IssueResolution(IssueResolution::RESOLUTION_INVALID), IssueResolution::RESOLUTION_INVALID ],
-            [ new IssueResolution(IssueResolution::RESOLUTION_WORKSFORME), IssueResolution::RESOLUTION_WORKSFORME ],
+            [ new IssueResolution(IssueResolution::RESOLUTION_DUPLICATE, 'Duplicate'), 'Duplicate' ],
+            [ new IssueResolution(IssueResolution::RESOLUTION_FIXED, 'Fixed'), 'Fixed' ],
+            [ new IssueResolution(IssueResolution::RESOLUTION_INCOMPLETE, 'Incomplete'), 'Incomplete' ],
+            [ new IssueResolution(IssueResolution::RESOLUTION_WONTFIX, 'Won\'t Fix'), 'Won\'t Fix' ],
+            [ new IssueResolution(IssueResolution::RESOLUTION_INVALID, 'Invalid'), 'Invalid' ],
+            [ new IssueResolution(IssueResolution::RESOLUTION_WORKSFORME, 'Works For Me'), 'Works For Me' ],
         ];
     }
 

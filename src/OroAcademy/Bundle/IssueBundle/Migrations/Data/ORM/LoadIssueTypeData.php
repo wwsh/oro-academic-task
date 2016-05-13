@@ -1,8 +1,8 @@
 <?php
 /*******************************************************************************
- * This is closed source software, created by WWSH. 
+ * This is closed source software, created by WWSH.
  * Please do not copy nor redistribute.
- * Copyright (c) Oro 2016. 
+ * Copyright (c) Oro 2016.
  ******************************************************************************/
 
 namespace OroAcademy\Bundle\IssueBundle\Migrations\Data\ORM;
@@ -19,10 +19,10 @@ class LoadIssueTypeData extends AbstractFixture implements OrderedFixtureInterfa
      * @var array
      */
     protected $issueTypes = [
-        IssueType::TYPE_BUG,
-        IssueType::TYPE_STORY,
-        IssueType::TYPE_SUBTASK,
-        IssueType::TYPE_TASK,
+        IssueType::TYPE_BUG     => 'Bug',
+        IssueType::TYPE_STORY   => 'Story',
+        IssueType::TYPE_SUBTASK => 'Subtask',
+        IssueType::TYPE_TASK    => 'Task',
     ];
 
     /**
@@ -34,11 +34,11 @@ class LoadIssueTypeData extends AbstractFixture implements OrderedFixtureInterfa
     {
         $repo = $manager->getRepository('OroAcademyIssueBundle:IssueType');
 
-        foreach ($this->issueTypes as $typeName) {
+        foreach ($this->issueTypes as $typeName => $label) {
             /** @var IssueType $issueType */
             $issueType = $repo->findOneBy([ 'name' => $typeName ]);
             if (!$issueType) {
-                $issueType = new IssueType($typeName);
+                $issueType = new IssueType($typeName, $label);
             }
 
             // save

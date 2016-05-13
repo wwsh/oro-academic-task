@@ -50,14 +50,24 @@ class RestIssueControllerTest extends WebTestCase
     /**
      * @depends testCreate
      */
-    public function testList()
+    public function testList(array $data)
     {
+        $id = $data['id'];
+        
         $this->client->request(
             'GET',
             $this->getUrl('oroacademy_api_get_issues')
         );
 
         $result = $this->getJsonResponseContent($this->client->getResponse(), 200);
+
+        $result = array_filter(
+            $result,
+            function ($a) use ($id) {
+                return $a['id'] == $id;
+            }
+        );
+
         $this->assertEquals(1, count($result));
     }
 

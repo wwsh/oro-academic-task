@@ -63,7 +63,6 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             [ 'description', 'Example Description' ],
             [ 'type', $type ],
             [ 'resolution', $resolution ],
-            [ 'status', $status ],
             [ 'reporter', $this->getMock('Oro\Bundle\UserBundle\Entity\User') ],
             [ 'assignee', $this->getMock('Oro\Bundle\UserBundle\Entity\User') ],
             [ 'tags', $tags ],

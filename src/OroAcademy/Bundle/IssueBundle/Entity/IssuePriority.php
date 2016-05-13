@@ -1,8 +1,8 @@
 <?php
 /*******************************************************************************
- * This is closed source software, created by WWSH. 
+ * This is closed source software, created by WWSH.
  * Please do not copy nor redistribute.
- * Copyright (c) Oro 2016. 
+ * Copyright (c) Oro 2016.
  ******************************************************************************/
 
 namespace OroAcademy\Bundle\IssueBundle\Entity;
@@ -47,13 +47,22 @@ class IssuePriority
     private $value;
 
     /**
-     * IssuePriority constructor.
-     * @param $name
-     * @param $value
+     * @var string
+     *
+     * @ORM\Column(name="label", type="string", length=255)
      */
-    public function __construct($name = null, $value = null)
+    protected $label;
+
+    /**
+     * IssuePriority constructor.
+     * @param      $name
+     * @param null $label
+     * @param      $value
+     */
+    public function __construct($name = null, $label = null, $value = null)
     {
         $this->name  = $name;
+        $this->label = $label;
         $this->value = $value;
     }
 
@@ -120,8 +129,32 @@ class IssuePriority
      */
     public function __toString()
     {
-        return $this->name;
+        return $this->label;
     }
 
 
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     *
+     * @return IssuePriority
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * Get label
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
 }

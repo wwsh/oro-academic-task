@@ -18,12 +18,12 @@ class LoadIssueResolutionData extends AbstractFixture implements OrderedFixtureI
      * @var array
      */
     protected $data = [
-        IssueResolution::RESOLUTION_DUPLICATE,
-        IssueResolution::RESOLUTION_WONTFIX,
-        IssueResolution::RESOLUTION_WORKSFORME,
-        IssueResolution::RESOLUTION_INVALID,
-        IssueResolution::RESOLUTION_INCOMPLETE,
-        IssueResolution::RESOLUTION_FIXED,
+        IssueResolution::RESOLUTION_DUPLICATE  => 'Duplicate',
+        IssueResolution::RESOLUTION_WONTFIX    => 'Won\'t Fix',
+        IssueResolution::RESOLUTION_WORKSFORME => 'Works For Me',
+        IssueResolution::RESOLUTION_INVALID    => 'Invalid',
+        IssueResolution::RESOLUTION_INCOMPLETE => 'Incomplete',
+        IssueResolution::RESOLUTION_FIXED      => 'Fixed',
     ];
 
 
@@ -36,11 +36,11 @@ class LoadIssueResolutionData extends AbstractFixture implements OrderedFixtureI
     {
         $repo = $manager->getRepository('OroAcademyIssueBundle:IssueResolution');
 
-        foreach ($this->data as $name) {
+        foreach ($this->data as $name => $label) {
             /** @var IssueResolution $issuePriority */
             $issuePriority = $repo->findOneBy([ 'name' => $name ]);
             if (!$issuePriority) {
-                $issuePriority = new IssueResolution($name);
+                $issuePriority = new IssueResolution($name, $label);
             }
 
             // save
