@@ -10,13 +10,26 @@ namespace OroAcademy\Bundle\IssueBundle\Migrations\Schema\v1_0;
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
+use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
 /**
  * Class OroAcademyIssueBundle
  * @package OroAcademy\Bundle\IssueBundle\Migrations
  */
-class OroAcademyIssueBundle implements Migration
+class OroAcademyIssueBundle implements Migration, NoteExtensionAwareInterface
 {
+    /** @var NoteExtension */
+    protected $noteExtension;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setNoteExtension(NoteExtension $noteExtension)
+    {
+        $this->noteExtension = $noteExtension;
+    }
+
     /**
      * @param Schema   $schema
      * @param QueryBag $queries
@@ -29,6 +42,7 @@ class OroAcademyIssueBundle implements Migration
         $this->createOroacademyIssueToTagTable($schema);
         $this->createOroacademyIssueToUserTable($schema);
         $this->createOroacademyIssueTypeTable($schema);
+        $this->noteExtension->addNoteAssociation($schema, 'oroacademy_issue');
     }
 
     /**

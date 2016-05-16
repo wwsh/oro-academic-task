@@ -25,3 +25,10 @@ services:
         - '@doctrine.orm.entity_manager'
       calls:
         - [ setForm, ['@oroacademy_issue_form.api' ]]
+
+  oroacademy_issue_listener:
+      class: OroAcademy\Bundle\IssueBundle\EventListener\IssueNoteUpdatesListener
+      tags:
+        - { name: doctrine.event_listener, event: postPersist, connection: default }
+        - { name: doctrine.event_listener, event: postUpdate, connection: default }
+        - { name: doctrine.event_listener, event: postRemove, connection: default }
