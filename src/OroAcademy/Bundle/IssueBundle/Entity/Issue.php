@@ -568,6 +568,12 @@ class Issue extends ExtendIssue
      */
     public function addCollaborator(\Oro\Bundle\UserBundle\Entity\User $collaborator)
     {
+        $key = array_search($collaborator, $this->collaborators->toArray(), true);
+
+        if (false !== $key) {
+            return $this; // collab already added
+        }
+
         $this->collaborators[] = $collaborator;
 
         return $this;
@@ -727,6 +733,24 @@ class Issue extends ExtendIssue
     public function getTitle()
     {
         return $this->__toString();
+    }
+
+    /**
+     * @return string
+     */
+    public function getSimpleCollaboratorArray()
+    {
+        if (empty($this->collaborators)) {
+            return [];
+        }
+
+        $collab = [];
+        
+        foreach ($this->collaborators as $collaborator) {
+            $collab[] = $collaborator->getFirstName() . ' ' . $collaborator->getLastName();
+        }
+        
+        return $collab;
     }
 
     /**

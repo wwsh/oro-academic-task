@@ -74,7 +74,12 @@ workflows:
 
 
     transition_definitions:
-      start_progress_definition: ~
+      start_progress_definition:
+        post_actions:
+          - @assign_active_user: $.entity.assignee
+          - @add_collaborator: $.entity.assignee
+          - @add_collaborator: $.entity.reporter
+
       stop_progress_definition: ~
       resolve_definition: ~
       close_definition: ~

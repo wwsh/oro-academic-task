@@ -7,6 +7,7 @@
 
 namespace OroAcademy\Bundle\IssueBundle\Tests\Unit\Entity;
 
+use Oro\Bundle\UserBundle\Entity\User;
 use OroAcademy\Bundle\IssueBundle\Entity\Issue;
 
 class IssueTest extends \PHPUnit_Framework_TestCase
@@ -109,6 +110,17 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         $this->assertContains($secondCollab, $this->issue->getCollaborators());
     }
 
+    public function testCollaboratorsMustBeUnique()
+    {
+        $firstCollab  = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
+        $secondCollab = $firstCollab;
+
+        $this->issue->addCollaborator($firstCollab);
+        $this->issue->addCollaborator($secondCollab);
+
+        $this->assertCount(1, $this->issue->getCollaborators());
+    }
+
     public function testAddingRelatedIssues()
     {
         $firstIssue  = new Issue();
@@ -159,4 +171,29 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
+    public function testGetSimpleCollaboratorArray()
+    {
+        $issue = new Issue();
+
+        $this->assertEquals([], $issue->getSimpleCollaboratorArray());
+
+        $userData = [
+            [ 'Eddie', 'Smith' ],
+            [ 'John', 'Carter' ]
+        ];
+
+        foreach ($userData as $oneUserData) {
+            $user = new User();
+            $user->setFirstName($oneUserData[0]);
+            $user->setLastName($oneUserData[1]);
+            $issue->addCollaborator($user);
+        }
+
+        $result = $issue->getSimpleCollaboratorArray();
+
+        $this->assertCount(2, $result);
+        $this->assertEquals('Eddie Smith', $result[0]);
+        $this->assertEquals('John Carter', $result[1]);
+
+    }
 }

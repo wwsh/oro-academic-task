@@ -32,3 +32,11 @@ services:
         - { name: doctrine.event_listener, event: postPersist, connection: default }
         - { name: doctrine.event_listener, event: postUpdate, connection: default }
         - { name: doctrine.event_listener, event: postRemove, connection: default }
+
+  oroacademy_workflow.action.add_collaborator:
+      class: OroAcademy\Bundle\IssueBundle\Workflow\Action\AddCollaboratorAction
+      arguments:
+        - '@oro_workflow.context_accessor'
+        - '@doctrine'
+      tags:
+        - { name: oro_workflow.action, alias: add_collaborator }

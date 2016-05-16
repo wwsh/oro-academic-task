@@ -43,6 +43,7 @@
                     {{ UI.renderProperty('Resolution'|trans, entity.resolution) }}
                     {{ UI.renderProperty('Reported by'|trans, entity.reporter) }}
                     {{ UI.renderProperty('Assigned to'|trans, entity.assignee) }}
+                    {{ UI.renderHtmlProperty('Collaborators'|trans, entity.getSimpleCollaboratorArray()|join('<br />')) }}
                     {{ UI.renderProperty('Created at'|trans, entity.createdAt|date) }}
                     {{ UI.renderProperty('Updated at'|trans, entity.updatedAt|date) }}
                 </div>
