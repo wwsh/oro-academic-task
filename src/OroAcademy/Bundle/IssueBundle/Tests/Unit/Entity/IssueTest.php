@@ -44,10 +44,6 @@ class IssueTest extends \PHPUnit_Framework_TestCase
                            ->disableOriginalConstructor()
                            ->getMock();
 
-        $status = $this->getMockBuilder('OroAcademy\Bundle\IssueBundle\Entity\IssueStatus')
-                       ->disableOriginalConstructor()
-                       ->getMock();
-
         $tags = [
             $this->getMockBuilder('Oro\Bundle\TagBundle\Entity\Tag')
                  ->disableOriginalConstructor()

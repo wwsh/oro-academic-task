@@ -24,7 +24,7 @@ class IssueController extends Controller
      * @Route("/", name="oroacademy_issue_index")
      * @Template
      * @Acl(
-     *     id="issue_view",
+     *     id="view_issue",
      *     type="entity",
      *     class="OroAcademy\Bundle\IssueBundle\Entity\Issue",
      *     permission="VIEW"

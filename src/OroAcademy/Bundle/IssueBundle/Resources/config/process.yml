@@ -1,0 +1,19 @@
+definitions:
+    note_authors_as_collaborators:
+        label:  'Adding Issue''s Note authors as Collaborators'
+        enabled: true
+        entity: Oro\Bundle\NoteBundle\Entity\Note
+        order: 10
+        exclude_definitions: [note_authors_as_collaborators]
+        actions_configuration:
+          - @add_collaborator:
+              parameters:
+                issue_object: $.data.target
+                note_object: $.data
+
+triggers:
+    note_authors_as_collaborators:
+        -
+            event: create
+        -
+            event: update

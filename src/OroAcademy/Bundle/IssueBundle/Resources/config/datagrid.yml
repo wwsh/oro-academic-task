@@ -1,7 +1,7 @@
 datagrid:
     issue-grid:
         source:
-            acl_resource: issue_view
+            acl_resource: view_issue
             type: orm
             query:
                 select:

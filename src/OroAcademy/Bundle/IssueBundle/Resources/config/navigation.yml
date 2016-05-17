@@ -1,0 +1,10 @@
+oro_menu_config:
+    items:
+        issues:
+            label: Issues
+            route: oroacademy_issue_index
+
+    tree:
+        application_menu:
+            children:
+                issues: ~

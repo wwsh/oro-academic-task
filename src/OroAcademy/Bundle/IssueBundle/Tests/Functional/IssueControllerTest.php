@@ -45,9 +45,9 @@ class IssueControllerTest extends WebTestCase
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
 
-        $em    = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $repo  = $em->getRepository('OroAcademyIssueBundle:Issue');
-        $issue = $repo->findOneBy([ 'summary' => 'Issue summary' ]);
+        $manager = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $repo    = $manager->getRepository('OroAcademyIssueBundle:Issue');
+        $issue   = $repo->findOneBy([ 'summary' => 'Issue summary' ]);
         $this->assertNotNull($issue);
 
         return $issue;
@@ -61,6 +61,9 @@ class IssueControllerTest extends WebTestCase
         $id = $issue->getId();
 
         $crawler = $this->client->request('GET', $this->getUrl('oroacademy_update_issue', [ 'id' => $id ]));
+        $result  = $this->client->getResponse();
+        $this->assertHtmlResponseStatusCodeEquals($result, 200);
+
         /** @var Form $form */
         $form = $crawler->selectButton('Save and Close')->form();
 
@@ -77,8 +80,61 @@ class IssueControllerTest extends WebTestCase
         $issue = $repo->findOneBy([ 'summary' => 'Issue summary' ]);
         $this->assertNotNull($issue);
         $this->assertEquals('New issue description', $issue->getDescription());
-        // deleting is tested in the API test controller
-        $em->remove($issue);
-        $em->flush(); // cleanup
+
+        return $issue;
     }
+
+    /**
+     * @depends testUpdate
+     */
+    public function testCollaborators(Issue $issue)
+    {
+        $this->loadFixtures([ 'OroAcademy\Bundle\IssueBundle\Tests\Functional\DataFixtures\LoadCasualUsers' ]);
+
+        $id = $issue->getId();
+
+        // login as casual user
+        $this->initClient(
+            [ ],
+            $this->generateBasicAuthHeader('john.doe', 'john.doe'),
+            true
+        );
+
+        $crawler = $this->client->request('GET', $this->getUrl('oroacademy_view_issue', [ 'id' => $id ]));
+        $result  = $this->client->getResponse();
+        $this->assertHtmlResponseStatusCodeEquals($result, 200);
+
+        /** @var Form $form */
+        $form = $crawler->selectButton('Start Progress')->form();
+        $this->client->followRedirects(true);
+        $crawler = $this->client->submit($form);
+
+        $result = $this->client->getResponse();
+        $this->assertHtmlResponseStatusCodeEquals($result, 200);
+
+        $manager = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $repo    = $manager->getRepository('OroAcademyIssueBundle:Issue');
+        $issue   = $repo->findOneBy([ 'summary' => 'Issue summary' ]);
+        if (null !== $issue) {
+            // deleting is tested in the API test controller
+            $manager->remove($issue);
+            $manager->flush(); // cleanup
+        }
+
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        // drop casual user
+        $manager = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $repo    = $manager->getRepository('OroUserBundle:User');
+        $user    = $repo->findOneBy([ 'username' => 'john.doe' ]);
+        if (null !== $user) {
+            $manager->remove($user);
+            $manager->flush();
+        }
+    }
+
 }

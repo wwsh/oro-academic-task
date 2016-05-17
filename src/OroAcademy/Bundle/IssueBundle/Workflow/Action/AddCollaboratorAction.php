@@ -8,11 +8,13 @@
 namespace OroAcademy\Bundle\IssueBundle\Workflow\Action;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\NoteBundle\Entity\Note;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
 use Oro\Bundle\WorkflowBundle\Model\Action\AbstractAction;
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
 use OroAcademy\Bundle\IssueBundle\Entity\Issue;
+use Symfony\Component\PropertyAccess\PropertyPath;
 
 /**
  * Class AddCollaboratorAction
@@ -23,12 +25,22 @@ class AddCollaboratorAction extends AbstractAction
     /**
      * @var array
      */
-    protected $collaborator;
+    private $collaboratorPropertyPath;
 
     /**
      * @var ManagerRegistry
      */
-    protected $registry;
+    private $registry;
+
+    /**
+     * @var PropertyPath
+     */
+    private $issuePropertyPath;
+
+    /**
+     * @var PropertyPath
+     */
+    private $notePropertyPath;
 
     /**
      * @param ContextAccessor $contextAccessor
@@ -49,11 +61,21 @@ class AddCollaboratorAction extends AbstractAction
      */
     public function initialize(array $options)
     {
-        if (!isset($options[0])) {
-            throw new InvalidParameterException('Collaborator name incorrectly specified.');
+        if (is_array($options) &&
+            isset($options['issue_object']) &&
+            isset($options['note_object'])
+        ) {
+            $this->issuePropertyPath = $options['issue_object'];
+            $this->notePropertyPath  = $options['note_object'];
+
+            return;
         }
 
-        $this->collaborator = $options[0];
+        if (!isset($options[0])) {
+            throw new InvalidParameterException('Collaborator object incorrectly specified.');
+        }
+
+        $this->collaboratorPropertyPath = $options[0];
     }
 
     /**
@@ -61,14 +83,36 @@ class AddCollaboratorAction extends AbstractAction
      */
     protected function executeAction($context)
     {
+        if (!empty($this->issuePropertyPath) &&
+            !empty($this->notePropertyPath)
+        ) {
+            /** @var Issue $issue */
+            $issue = $this->contextAccessor->getValue($context, $this->issuePropertyPath);
+            /** @var Note $note */
+            $note = $this->contextAccessor->getValue($context, $this->notePropertyPath);
+
+            $user = $note->getOwner();
+            $issue->addCollaborator($user);
+
+            return $this->persist($issue);
+        }
+
         /* @var Issue $issue */
         $issue = $context->getEntity();
 
-        $user = $this->contextAccessor->getValue($context, $this->collaborator);
+        $user = $this->contextAccessor->getValue($context, $this->collaboratorPropertyPath);
 
         $issue->addCollaborator($user);
 
-        $manager = $this->registry->getManagerForClass($issue);
+        return $this->persist($issue);
+    }
+
+    /**
+     * @param $issue
+     */
+    private function persist($issue)
+    {
+        $manager = $this->registry->getManager();
 
         $manager->persist($issue);
         $manager->flush($issue);

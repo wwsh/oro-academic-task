@@ -30,8 +30,12 @@ use OroAcademy\Bundle\IssueBundle\Model\ExtendIssue;
  *      "workflow"={
  *          "active_workflow"="issue_flow",
  *          "show_step_in_grid"=false
+ *      },
+ *      "security"={
+ *          "type"="ACL",
+ *          "permissions"="All"
  *      }
- *     }
+ *    }
  * )
  */
 class Issue extends ExtendIssue
@@ -384,7 +388,7 @@ class Issue extends ExtendIssue
     /**
      * Get reporter
      *
-     * @return string
+     * @return User
      */
     public function getReporter()
     {
@@ -408,7 +412,7 @@ class Issue extends ExtendIssue
     /**
      * Get assignee
      *
-     * @return string
+     * @return User
      */
     public function getAssignee()
     {
@@ -741,15 +745,15 @@ class Issue extends ExtendIssue
     public function getSimpleCollaboratorArray()
     {
         if (empty($this->collaborators)) {
-            return [];
+            return [ ];
         }
 
-        $collab = [];
-        
+        $collab = [ ];
+
         foreach ($this->collaborators as $collaborator) {
             $collab[] = $collaborator->getFirstName() . ' ' . $collaborator->getLastName();
         }
-        
+
         return $collab;
     }
 
