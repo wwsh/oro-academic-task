@@ -11,6 +11,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\UserBundle\Entity\UserApi;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -51,7 +52,7 @@ class LoadCasualUsers extends AbstractFixture implements ContainerAwareInterface
 
         $this->manager = $doctrine->getManager();
 
-        $this->createUser('John', 'Doe');
+        $this->createUser('Dick', 'Tracy');
     }
 
     /**
@@ -62,18 +63,46 @@ class LoadCasualUsers extends AbstractFixture implements ContainerAwareInterface
      */
     private function createUser($firstName, $lastName)
     {
-        $user = new User();
-        $user->setFirstName($firstName);
-        $user->setLastName($lastName);
-        $user->setUsername(strtolower($firstName . '.' . $lastName));
-        $user->setEmail(strtolower($firstName . '_' . $lastName . '@example.com'));
-        $user->setPlainPassword(strtolower($firstName . '.' . $lastName));
-        $this->userManager->updatePassword($user);
+        /** @var UserManager $userManager */
+        $userManager = $this->container->get('oro_user.manager');
 
-        $this->manager->persist($user);
-        $this->manager->flush();
+        $manager = $this->manager;
 
-        return $user;
+        $username = strtolower($firstName . '.' . $lastName);
+
+        $user  = $manager->getRepository('OroUserBundle:User')->findOneBy([ 'username' => $username ]);
+        $group = $manager->getRepository('OroUserBundle:Group')->findOneBy([ 'name' => 'Administrators' ]);
+        if (!$user) {
+            $role = $manager->getRepository('OroUserBundle:Role')->findOneBy([ 'role' => 'ROLE_ADMINISTRATOR' ]);
+            $user = $userManager->createUser();
+            $user
+                ->setUsername($username)
+                ->addRole($role);
+        }
+
+        $user
+            ->setPlainPassword(strtolower($firstName . '.' . $lastName))
+            ->setFirstname($firstName)
+            ->setLastname($lastName)
+            ->setEmail(strtolower($firstName . '_' . $lastName . '@example.com'))
+            ->setSalt('');
+
+        if (0 === count($user->getApiKeys())) {
+            $organization = $manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
+            $api          = new UserApi();
+            $api->setApiKey($username . '_api_key')
+                ->setUser($user)
+                ->setOrganization($organization);
+
+            $user->addOrganization($organization);
+            $user->addApiKey($api);
+        }
+
+        if (!$user->hasGroup($group)) {
+            $user->addGroup($group);
+        }
+
+        $userManager->updateUser($user);
     }
 
 }
