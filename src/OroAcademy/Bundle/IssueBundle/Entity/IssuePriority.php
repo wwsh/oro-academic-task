@@ -8,6 +8,8 @@
 namespace OroAcademy\Bundle\IssueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
  * IssuePriority
@@ -16,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     name="oroacademy_issue_priority"
  * )
  * @ORM\Entity(repositoryClass="OroAcademy\Bundle\IssueBundle\Entity\IssuePriorityRepository")
+ * @Config()
  */
 class IssuePriority
 {
@@ -29,6 +32,14 @@ class IssuePriority
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     private $id;
 
@@ -36,6 +47,14 @@ class IssuePriority
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "identity"=true
+     *          }
+     *      }
+     * )
      */
     private $name;
 

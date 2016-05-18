@@ -8,6 +8,8 @@
 namespace OroAcademy\Bundle\IssueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
  * IssueType
@@ -16,6 +18,8 @@ use Doctrine\ORM\Mapping as ORM;
  *     name="oroacademy_issue_type"
  * )
  * @ORM\Entity(repositoryClass="OroAcademy\Bundle\IssueBundle\Entity\IssueTypeRepository")
+ *
+ * @Config()
  */
 class IssueType
 {
@@ -30,6 +34,14 @@ class IssueType
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $id;
 
@@ -37,6 +49,14 @@ class IssueType
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=16)
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "identity"=true
+     *          }
+     *      }
+     * )
      */
     protected $name;
 

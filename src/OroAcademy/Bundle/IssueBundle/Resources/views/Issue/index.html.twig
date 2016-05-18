@@ -3,6 +3,15 @@
 {% set pageTitle = 'Issues'|trans %}
 
 {% block navButtons %}
+    {% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {
+        entity_class: entity_class,
+        exportProcessor: 'oroacademy_issue',
+        exportTemplateProcessor: 'oroacademy_issue',
+        importProcessor: 'oroacademy_issue.add_or_replace',
+        importTitle: 'Import'|trans,
+        dataGridName: gridName
+    } %}
+
     {% if resource_granted('issue_view') %}
         <div class="btn-group">
             {{ UI.addButton({

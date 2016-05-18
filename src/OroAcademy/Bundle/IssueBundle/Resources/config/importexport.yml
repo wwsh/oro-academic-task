@@ -1,0 +1,61 @@
+parameters:
+  oroacademy_issue.entity.class: OroAcademy\Bundle\IssueBundle\Entity\Issue
+
+services:
+    # Fixtures
+    oroacademy_issue.importexport.template_fixture.issue:
+        class: OroAcademy\Bundle\IssueBundle\ImportExport\TemplateFixture\IssueFixture
+        tags:
+            - { name: oro_importexport.template_fixture }
+
+    oroacademy_issue.importexport.template_fixture.issue_type:
+        class: OroAcademy\Bundle\IssueBundle\ImportExport\TemplateFixture\IssueTypeFixture
+        tags:
+            - { name: oro_importexport.template_fixture }
+
+    oroacademy_issue.importexport.template_fixture.issue_resolution:
+        class: OroAcademy\Bundle\IssueBundle\ImportExport\TemplateFixture\IssueResolutionFixture
+        tags:
+            - { name: oro_importexport.template_fixture }
+
+    oroacademy_issue.importexport.template_fixture.issue_priority:
+        class: OroAcademy\Bundle\IssueBundle\ImportExport\TemplateFixture\IssuePriorityFixture
+        tags:
+            - { name: oro_importexport.template_fixture }
+
+    # Converter
+    oroacademy_issue.importexport.data_converter.issue:
+        parent: oro_importexport.data_converter.configurable
+
+    oroacademy_issue.importexport.template_fixture.data_converter.issue:
+        parent: oro_importexport.data_converter.template_fixture.configurable
+
+    # Strategy
+    oroacademy_issue.importexport.strategy.issue.add_or_replace:
+        parent: oro_importexport.strategy.configurable_add_or_replace
+
+    # Import processor
+    oroacademy_issue.importexport.processor.import.add_or_replace:
+        parent: oro_importexport.processor.import_abstract
+        calls:
+            - [setDataConverter, ['@oroacademy_issue.importexport.data_converter.issue']]
+            - [setStrategy, ['@oroacademy_issue.importexport.strategy.issue.add_or_replace']]
+        tags:
+            - { name: oro_importexport.processor, type: import, entity: '%oroacademy_issue.entity.class%', alias: oroacademy_issue.add_or_replace }
+            - { name: oro_importexport.processor, type: import_validation, entity: '%oroacademy_issue.entity.class%', alias: oroacademy_issue.add_or_replace }
+
+    # Export processor
+    oroacademy_issue.importexport.processor.export:
+        parent: oro_importexport.processor.export_abstract
+        calls:
+            - [setDataConverter, ['@oroacademy_issue.importexport.data_converter.issue']]
+        tags:
+            - { name: oro_importexport.processor, type: export, entity: '%oroacademy_issue.entity.class%', alias: oroacademy_issue }
+
+    oroacademy_issue.importexport.processor.export_template:
+        parent: oro_importexport.processor.export_abstract
+        calls:
+            - [setDataConverter, ['@oroacademy_issue.importexport.template_fixture.data_converter.issue']]
+        tags:
+            - { name: oro_importexport.processor, type: export_template, entity: '%oroacademy_issue.entity.class%', alias: oroacademy_issue }
+

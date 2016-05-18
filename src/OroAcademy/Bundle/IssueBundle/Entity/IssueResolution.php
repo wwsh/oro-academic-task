@@ -3,6 +3,8 @@
 namespace OroAcademy\Bundle\IssueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
  * IssueResolution
@@ -11,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  *     name="oroacademy_issue_resolution"
  * )
  * @ORM\Entity(repositoryClass="OroAcademy\Bundle\IssueBundle\Entity\IssueResolutionRepository")
+ * 
+ * @Config()
  */
 class IssueResolution
 {
@@ -27,6 +31,14 @@ class IssueResolution
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $id;
 
@@ -34,6 +46,14 @@ class IssueResolution
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "identity"=true
+     *          }
+     *      }
+     * )
      */
     protected $name;
 

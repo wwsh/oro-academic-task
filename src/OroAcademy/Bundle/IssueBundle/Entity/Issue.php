@@ -9,6 +9,7 @@ namespace OroAcademy\Bundle\IssueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\TagBundle\Entity\Tag;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -46,6 +47,14 @@ class Issue extends ExtendIssue
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $id;
 
@@ -53,6 +62,14 @@ class Issue extends ExtendIssue
      * @var string
      *
      * @ORM\Column(name="summary", type="string", length=255, nullable=true)
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=20
+     *          }
+     *      }
+     * )
      */
     protected $summary;
 
@@ -60,6 +77,15 @@ class Issue extends ExtendIssue
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=255, nullable=true)
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=10,
+     *              "identity"=true
+     *          }
+     *      }
+     * )
      */
     protected $code;
 
@@ -67,6 +93,14 @@ class Issue extends ExtendIssue
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=30
+     *          }
+     *      }
+     * )
      */
     protected $description;
 
@@ -75,6 +109,14 @@ class Issue extends ExtendIssue
      *
      * @ORM\ManyToOne(targetEntity="OroAcademy\Bundle\IssueBundle\Entity\IssueType")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=40
+     *          }
+     *      }
+     * )
      */
     protected $type;
 
@@ -83,6 +125,14 @@ class Issue extends ExtendIssue
      *
      * @ORM\ManyToOne(targetEntity="OroAcademy\Bundle\IssueBundle\Entity\IssuePriority")
      * @ORM\JoinColumn(name="priority_id", referencedColumnName="id")
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=50
+     *          }
+     *      }
+     * )
      */
     protected $priority;
 
@@ -91,6 +141,14 @@ class Issue extends ExtendIssue
      *
      * @ORM\ManyToOne(targetEntity="OroAcademy\Bundle\IssueBundle\Entity\IssueResolution")
      * @ORM\JoinColumn(name="resolution_id", referencedColumnName="id")
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=60
+     *          }
+     *      }
+     * )
      */
     protected $resolution = null;
 
@@ -103,6 +161,14 @@ class Issue extends ExtendIssue
      *      joinColumns={@ORM\JoinColumn(name="issue_id", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=70
+     *          }
+     *      }
+     * )
      */
     protected $tags;
 
@@ -111,6 +177,14 @@ class Issue extends ExtendIssue
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="reporter_user_id", referencedColumnName="id", onDelete="SET NULL")
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=80
+     *          }
+     *      }
+     * )
      */
     protected $reporter;
 
@@ -119,13 +193,25 @@ class Issue extends ExtendIssue
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="assignee_user_id", referencedColumnName="id", onDelete="SET NULL")
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=90
+     *          }
+     *      }
+     * )
      */
     protected $assignee;
 
     /**
      * @var Issue[]
      *
-     * @ORM\OneToMany(targetEntity="OroAcademy\Bundle\IssueBundle\Entity\Issue", mappedBy="issue")
+     * @ORM\ManyToMany(targetEntity="OroAcademy\Bundle\IssueBundle\Entity\Issue")
+     * @ORM\JoinTable(name="oroacademy_issue_to_issue",
+     *      joinColumns={@ORM\JoinColumn(name="issue_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="related_issue_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
      */
     protected $relatedIssues;
 
@@ -143,14 +229,30 @@ class Issue extends ExtendIssue
     /**
      * @var Issue
      *
-     * @ORM\ManyToOne(targetEntity="OroAcademy\Bundle\IssueBundle\Entity\Issue",inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="OroAcademy\Bundle\IssueBundle\Entity\Issue", inversedBy="children")
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=100
+     *          }
+     *      }
+     * )
      */
     protected $parent;
 
     /**
      * @var Issue[]
      *
-     * @ORM\OneToMany(targetEntity="OroAcademy\Bundle\IssueBundle\Entity\Issue", mappedBy="issue")
+     * @ORM\OneToMany(targetEntity="OroAcademy\Bundle\IssueBundle\Entity\Issue", mappedBy="parent")
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=110
+     *          }
+     *      }
+     * )
      */
     protected $children;
 
@@ -158,6 +260,14 @@ class Issue extends ExtendIssue
      * @var \DateTime
      *
      * @ORM\Column(name="createdAt", type="datetime")
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=120
+     *          }
+     *      }
+     * )
      */
     protected $createdAt;
 
@@ -165,18 +275,42 @@ class Issue extends ExtendIssue
      * @var \DateTime
      *
      * @ORM\Column(name="updatedAt", type="datetime", nullable=true)
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=130
+     *          }
+     *      }
+     * )
      */
     protected $updatedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowItem")
      * @ORM\JoinColumn(name="workflow_item_id", referencedColumnName="id", onDelete="SET NULL")
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $workflowItem;
 
     /**
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowStep")
      * @ORM\JoinColumn(name="workflow_step_id", referencedColumnName="id", onDelete="SET NULL")
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $workflowStep;
 
@@ -188,6 +322,7 @@ class Issue extends ExtendIssue
         $this->collaborators = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tags          = new \Doctrine\Common\Collections\ArrayCollection();
         $this->relatedIssues = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->children      = new \Doctrine\Common\Collections\ArrayCollection();
 
         $this->code    = $code;
         $this->summary = $summary;
@@ -398,7 +533,7 @@ class Issue extends ExtendIssue
     /**
      * Set assignee
      *
-     * @param string $assignee
+     * @param User $assignee
      *
      * @return Issue
      */
@@ -494,7 +629,7 @@ class Issue extends ExtendIssue
     /**
      * Set children
      *
-     * @param string $children
+     * @param Issue $children
      *
      * @return Issue
      */

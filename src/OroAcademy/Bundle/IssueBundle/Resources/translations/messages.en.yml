@@ -1,3 +1,19 @@
 oroacademy:
   issue:
     entity_label: Issue
+
+  issue.code.label: Code
+  issue.summary.label: Summary
+  issue.description.label: Description
+  issue.reporter.label: Reporter
+  issue.assignee.label: Assignee
+  issue.parent.label: Parent
+  issue.created_at.label: CreatedAt
+  issue.updated_at.label: UpdatedAt
+  issue.collaborators.label: Collaborators
+  issue.type.label: Type
+  issue.issuetype.name.label: IssueTypeName
+  issue.priority.label: Priority
+  issue.issuepriority.name.label: IssuePriorityName
+  issue.resolution.label: Resolution
+  issue.issueresolution.name.label: IssueResolutionName
