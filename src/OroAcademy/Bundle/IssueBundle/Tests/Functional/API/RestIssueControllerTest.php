@@ -7,6 +7,7 @@
 
 namespace OroAcademy\Bundle\IssueBundle\Tests\Functional\API;
 
+use Oro\Bundle\SearchBundle\Engine\EngineInterface;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 /**
@@ -53,7 +54,7 @@ class RestIssueControllerTest extends WebTestCase
     public function testList(array $data)
     {
         $id = $data['id'];
-        
+
         $this->client->request(
             'GET',
             $this->getUrl('oroacademy_api_get_issues')
@@ -106,6 +107,33 @@ class RestIssueControllerTest extends WebTestCase
         $result = $this->getJsonResponseContent($this->client->getResponse(), 200);
 
         $this->assertEquals($issue['code'], $result['code']);
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testSearch(array $data)
+    {
+        /** @var $searchEngine EngineInterface */
+        $searchEngine = $this->getContainer()->get('oro_search.search.engine');
+
+        $recordsCount = $searchEngine->reindex();
+        $this->assertGreaterThan(0, $recordsCount);
+
+        $this->client->request(
+            'GET',
+            $this->getUrl('oro_api_get_search'),
+            [
+                'search' => 'EGH'
+            ]
+        );
+
+        $result = $this->getJsonResponseContent($this->client->getResponse(), 200);
+
+        $this->assertEquals(1, $result['records_count']);
+        $this->assertArrayHasKey(0, $result['data']);
+        $this->assertEquals($result['data'][0]['entity_name'], 'OroAcademy\Bundle\IssueBundle\Entity\Issue');
+        $this->assertEquals($result['data'][0]['record_string'], 'EGH-123');
     }
 
     /**

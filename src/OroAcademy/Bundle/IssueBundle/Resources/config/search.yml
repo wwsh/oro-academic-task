@@ -1,0 +1,96 @@
+OroAcademy\Bundle\IssueBundle\Entity\Issue:
+    alias: issue
+    search_template: 'OroAcademyIssueBundle:Search:result.html.twig'
+    label: Issues
+    route:
+        name: oroacademy_view_issue
+        parameters:
+            id: id
+    mode: normal
+    title_fields: [code]
+    fields:
+        -
+            name: code                                       # Name of field in entity
+            target_type: text                                # Type of virtual search field. Supported target types:
+                                                             # text (string and text fields), integer, double, datetime
+        -
+            name: summary
+            target_type: text
+
+        -
+            name: description
+            target_type: text
+
+        -
+            name: priority
+            relation_type: many-to-one                       # Indicate that this field is relation field to another table.
+                                                             # Supported: one-to-one, many-to-many, one-to-many, many-to-one.
+            relation_fields:                                 # Array of fields from relation record we must to index.
+                -
+                    name: name                               # related entity field name to index
+                    target_type: text                        # related entity field name type
+                    target_fields: [priority, all_data]      # target fields to store field index
+                -
+                    name: label
+                    target_type: text
+                    target_fields: [priority, all_data]
+        -
+            name: status
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name: name
+                    target_type: text
+                    target_fields: [status, all_data]
+                -
+                    name: label
+                    target_type: text
+                    target_fields: [status, all_data]
+
+        -
+            name: resolution
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name: name
+                    target_type: text
+                    target_fields: [resolution, all_data]
+                -
+                    name: label
+                    target_type: text
+                    target_fields: [resolution, all_data]
+
+        -
+            name: reporter
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name: username
+                    target_type: text
+                    target_fields: [reporter, all_data]
+                -
+                    name: firstName
+                    target_type: text
+                    target_fields: [reporter, all_data]
+                -
+                    name: lastName
+                    target_type: text
+                    target_fields: [reporter, all_data]
+
+
+        -
+            name: assignee
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name: username
+                    target_type: text
+                    target_fields: [assignee, all_data]
+                -
+                    name: firstName
+                    target_type: text
+                    target_fields: [assignee, all_data]
+                -
+                    name: lastName
+                    target_type: text
+                    target_fields: [assignee, all_data]

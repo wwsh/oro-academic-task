@@ -1,6 +1,7 @@
 oroacademy:
   issue:
     entity_label: Issue
+    entity_plural_label: Issues
 
   issue.code.label: Code
   issue.summary.label: Summary
