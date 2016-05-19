@@ -7,18 +7,22 @@
 
 namespace OroAcademy\Bundle\IssueBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use OroAcademy\Bundle\IssueBundle\Entity\Issue;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class IssueTest extends \PHPUnit_Framework_TestCase
+class IssueTest extends KernelTestCase
 {
     /**
      * @var Issue
      */
     protected $issue;
 
-    protected function setUp()
+    public function setUp()
     {
+        // even though we are not using any kernel functionality here
+        // this is necessary in order for the sequential tests to run
+        self::bootKernel();
+
         $this->issue = new Issue();
     }
 
@@ -27,6 +31,11 @@ class IssueTest extends \PHPUnit_Framework_TestCase
      */
     public function testSettersAndGetters($property, $value)
     {
+        if (is_string($value) && strpos($value, '\\') !== false) {
+            $value = $this->getMockBuilder($value)
+                          ->disableOriginalConstructor()
+                          ->getMock();
+        }
         $method = 'set' . ucfirst($property);
         $result = $this->issue->$method($value);
 
@@ -36,23 +45,13 @@ class IssueTest extends \PHPUnit_Framework_TestCase
 
     public function settersAndGettersDataProvider()
     {
-        $type = $this->getMockBuilder('OroAcademy\Bundle\IssueBundle\Entity\IssueType')
-                     ->disableOriginalConstructor()
-                     ->getMock();
+        $type = 'OroAcademy\Bundle\IssueBundle\Entity\IssueType';
 
-        $resolution = $this->getMockBuilder('OroAcademy\Bundle\IssueBundle\Entity\IssueResolution')
-                           ->disableOriginalConstructor()
-                           ->getMock();
+        $resolution = 'OroAcademy\Bundle\IssueBundle\Entity\IssueResolution';
 
-        $tags = [
-            $this->getMockBuilder('Oro\Bundle\TagBundle\Entity\Tag')
-                 ->disableOriginalConstructor()
-                 ->getMock()
-        ];
+        $tags = [ ];
 
-        $priority = $this->getMockBuilder('OroAcademy\Bundle\IssueBundle\Entity\IssuePriority')
-                         ->disableOriginalConstructor()
-                         ->getMock();
+        $priority = 'OroAcademy\Bundle\IssueBundle\Entity\IssuePriority';
 
         return [
             [ 'summary', 'Example Summary' ],
@@ -60,8 +59,8 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             [ 'description', 'Example Description' ],
             [ 'type', $type ],
             [ 'resolution', $resolution ],
-            [ 'reporter', $this->getMock('Oro\Bundle\UserBundle\Entity\User') ],
-            [ 'assignee', $this->getMock('Oro\Bundle\UserBundle\Entity\User') ],
+            [ 'reporter', 'Oro\Bundle\UserBundle\Entity\User' ],
+            [ 'assignee', 'Oro\Bundle\UserBundle\Entity\User' ],
             [ 'tags', $tags ],
             [ 'priority', $priority ],
             [ 'createdAt', new \DateTime() ],
@@ -171,7 +170,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     {
         $issue = new Issue();
 
-        $this->assertEquals([], $issue->getSimpleCollaboratorArray());
+        $this->assertEquals([ ], $issue->getSimpleCollaboratorArray());
 
         $userData = [
             [ 'Eddie', 'Smith' ],
@@ -179,9 +178,17 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         ];
 
         foreach ($userData as $oneUserData) {
-            $user = new User();
-            $user->setFirstName($oneUserData[0]);
-            $user->setLastName($oneUserData[1]);
+            $user = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
+                         ->disableOriginalConstructor()
+                         ->getMock();
+
+            $user->expects($this->once())
+                 ->method('getFirstName')
+                 ->will($this->returnValue($oneUserData[0]));
+            $user->expects($this->once())
+                 ->method('getLastName')
+                 ->will($this->returnValue($oneUserData[1]));
+
             $issue->addCollaborator($user);
         }
 

@@ -7,7 +7,6 @@
 
 namespace OroAcademy\Bundle\IssueBundle\Tests\Unit\Workflow\Action;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use OroAcademy\Bundle\IssueBundle\Entity\Issue;
 use OroAcademy\Bundle\IssueBundle\Workflow\Action\AddCollaboratorAction;
 
@@ -37,8 +36,11 @@ class AddCollaboratorActionTest extends \PHPUnit_Framework_TestCase
         $action = new AddCollaboratorAction($accessor, $registry);
         $action->setDispatcher($dispatcher);
 
-        $user = new User();
-        $user->setFirstName('Thomas');
+        $user = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
+                     ->disableOriginalConstructor()
+                     ->getMock();
+
+        $user->method('getFirstName')->will($this->returnValue('Thomas'));
 
         $issue = new Issue();
         $issue->setAssignee($user);

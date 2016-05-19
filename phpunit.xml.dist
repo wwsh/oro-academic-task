@@ -17,13 +17,13 @@
         processIsolation            = "false"
         stopOnFailure               = "false"
         syntaxCheck                 = "false"
-        bootstrap                   = "vendor/autoload.php">
+        bootstrap                   = "app/autoload.php">
 
     <testsuites>
         <testsuite name="Project Unit Tests">
-            <directory suffix="Test.php">src/OroAcademy/Bundle/*Bundle/Tests/Unit</directory>
+            <directory suffix="Test.php">src/OroAcademy/Bundle/*Bundle/Tests/Unit/</directory>
         </testsuite>
-        <testsuite name="Project Functional Tests">
+        <testsuite name="Project Functional Tests">-->
             <directory suffix="Test.php">src/OroAcademy/Bundle/*Bundle/Tests/Functional</directory>
         </testsuite>
     </testsuites>
