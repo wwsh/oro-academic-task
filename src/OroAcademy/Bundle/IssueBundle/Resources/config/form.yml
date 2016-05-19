@@ -3,3 +3,7 @@ services:
         class: OroAcademy\Bundle\IssueBundle\Form\Type\IssueType
         tags:
             - { name: form.type, alias: issue }
+    form.subtask:
+        class: OroAcademy\Bundle\IssueBundle\Form\Type\SubtaskType
+        tags:
+            - { name: form.type, alias: subtask }

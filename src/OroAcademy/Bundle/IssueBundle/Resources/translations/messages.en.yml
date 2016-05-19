@@ -4,6 +4,8 @@ oroacademy:
     entity_plural_label: Issues
 
   issue.code.label: Code
+  issue.issuetype.entity_label: Type
+  issue.issuepriority.entity_label: Priority
   issue.summary.label: Summary
   issue.description.label: Description
   issue.reporter.label: Reporter

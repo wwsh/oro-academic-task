@@ -45,20 +45,35 @@
 {% block content_data %}
     {% set id = 'issue-edit' %}
 
+    {% if form.vars.value.type.name == constant('OroAcademy\\Bundle\\IssueBundle\\Entity\\IssueType::TYPE_SUBTASK') %}
+        {% set formDataBlocks = [
+            form_row(form.parent),
+            form_row(form.type),
+            form_row(form.priority),
+            form_row(form.summary),
+            form_row(form.description),
+            form_row(form.tags),
+            form_row(form.reporter),
+            form_row(form.assignee),
+        ] %}
+    {% else %}
+        {% set formDataBlocks = [
+            form_row(form.type),
+            form_row(form.priority),
+            form_row(form.summary),
+            form_row(form.description),
+            form_row(form.tags),
+            form_row(form.reporter),
+            form_row(form.assignee),
+        ] %}
+    {% endif %}
+
     {% set dataBlocks = [{
         'title': 'General'|trans,
         'class': 'active',
         'subblocks': [{
             'title': '',
-            'data': [
-                form_row(form.type),
-                form_row(form.priority),
-                form_row(form.summary),
-                form_row(form.description),
-                form_row(form.tags),
-                form_row(form.reporter),
-                form_row(form.assignee),
-            ]
+            'data': formDataBlocks
         }]
     }] %}
     {% set data = {

@@ -7,7 +7,9 @@
 
 namespace OroAcademy\Bundle\IssueBundle\Controller;
 
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use OroAcademy\Bundle\IssueBundle\Entity\Issue;
+use OroAcademy\Bundle\IssueBundle\Entity\IssueType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -57,6 +59,29 @@ class IssueController extends Controller
     }
 
     /**
+     * @Route("/create/subtask/{parent}", name="oroacademy_create_subtask_issue")
+     * @Template
+     * @Acl(
+     *     id="issue_create",
+     *     type="entity",
+     *     class="OroAcademy\Bundle\IssueBundle\Entity\Issue",
+     *     permission="CREATE"
+     * )
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function createSubtaskAction(Request $request, Issue $parent)
+    {
+        $issue = new Issue();
+        $issue->setParent($parent);
+        $manager     = $this->get('doctrine.orm.entity_manager')
+                            ->getRepository('OroAcademy\Bundle\IssueBundle\Entity\IssueType');
+        $subtaskType = $manager->findOneBy([ 'name' => IssueType::TYPE_SUBTASK ]);
+        $issue->setType($subtaskType);
+        return $this->updateAction($issue, $request);
+    }
+
+    /**
      * @Route("/update/{id}", name="oroacademy_update_issue")
      * @Template
      *
@@ -72,7 +97,11 @@ class IssueController extends Controller
      */
     public function updateAction(Issue $issue, Request $request)
     {
-        $form = $this->get('form.factory')->create('issue', $issue);
+        if ($this->inSubtaskMode($issue, $request)) {
+            $form = $this->get('form.factory')->create('subtask', $issue);
+        } else {
+            $form = $this->get('form.factory')->create('issue', $issue);
+        }
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -112,5 +141,47 @@ class IssueController extends Controller
     public function viewAction(Issue $issue)
     {
         return [ 'entity' => $issue ];
+    }
+
+    /**
+     * @param Issue $issue
+     * @return array
+     *
+     * @Route("/widget/details/{id}", name="oroacademy_issue_details_widget")
+     * @Template
+     * @AclAncestor("oroacademy_view_issue")
+     */
+    public function detailsAction(Issue $issue)
+    {
+        return [ 'entity' => $issue ];
+    }
+
+    /**
+     * @param Issue $issue
+     * @return array
+     *
+     * @Route("/widget/links/{id}", name="oroacademy_issue_links_widget")
+     * @Template
+     * @AclAncestor("oroacademy_view_issue")
+     */
+    public function linksAction(Issue $issue)
+    {
+        return [ 'entity' => $issue ];
+    }
+
+    /**
+     * @param Issue   $issue
+     * @param Request $request
+     * @return bool
+     */
+    protected function inSubtaskMode(Issue $issue, Request $request)
+    {
+        $subtask = $request->request->get('subtask');
+
+        if (null === $issue->getType() && !empty($subtask)) {
+            return true;
+        }
+        
+        return $issue->getType()->getName() === IssueType::TYPE_SUBTASK;
     }
 }

@@ -35,6 +35,9 @@ use OroAcademy\Bundle\IssueBundle\Model\ExtendIssue;
  *      "security"={
  *          "type"="ACL",
  *          "permissions"="All"
+ *      },
+*       "tag"={
+ *          "enabled"=true
  *      }
  *    }
  * )

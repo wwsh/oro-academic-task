@@ -1,0 +1,43 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
+
+<div class="widget-content">
+    <div class="row-fluid form-horizontal">
+        <div class="responsive-block">
+
+            {% if entity.type.name == constant('OroAcademy\\Bundle\\IssueBundle\\Entity\\IssueType::TYPE_SUBTASK') %}
+                <div class="control-group">
+                    <label class="control-label">Story</label>
+                    <div class="controls">
+                        <div class="control-label">
+                            <a href="{{ path('oroacademy_view_issue', {'id': entity.parent.id }) }}">
+                                {{ entity.parent }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if entity.type.name == constant('OroAcademy\\Bundle\\IssueBundle\\Entity\\IssueType::TYPE_STORY') %}
+                <div class="control-group">
+                    <label class="control-label">Subtasks</label>
+                    <div class="controls">
+                        <div class="control-label">
+                            {% for task in entity.children %}
+                                <a href="{{ path('oroacademy_view_issue', {'id': task.id }) }}">
+                                    {{ task }}
+                                </a>
+                                <br/>
+                            {% endfor %}
+                            {{ UI.button({
+                                'path': path('oroacademy_create_subtask_issue', {'parent': entity.id}),
+                                'title': 'Add a new Subtask...'|trans,
+                                'label': 'Add a new Subtask...'|trans,
+                                'iCss': 'icon-plus'
+                            }) }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

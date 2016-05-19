@@ -2,9 +2,14 @@ oro_menu_config:
     items:
         issues:
             label: Issues
-            route: oroacademy_issue_index
+            uri: '#'
 
+        issue_shortcut:
+            label: List of Issues
+            route: oroacademy_issue_index
     tree:
         application_menu:
             children:
-                issues: ~
+                issues:
+                    children:
+                        issue_shortcut: ~
