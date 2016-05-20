@@ -11,8 +11,10 @@ datagrid:
                     - i.description
                     - t.label as type
                     - p.label as priority
+                    - p.value as priorityOrder
                     - r.label as resolution
                     - wfs.label as status
+                    - wfs.stepOrder as statusOrder
                     - CONCAT(rep.firstName, CONCAT(' ', rep.lastName)) as reporter
                     - CONCAT(asgn.firstName, CONCAT(' ', asgn.lastName)) as assignee
                     - i.createdAt
@@ -70,10 +72,26 @@ datagrid:
                     - id
         sorters:
             columns:
+                type:
+                    data_name: type
+                summary:
+                    data_name: summary
+                code:
+                    data_name: code
+                resolution:
+                    data_name: resolution
+                priority:
+                    data_name: priorityOrder
+                status:
+                    data_name: statusOrder
                 updatedAt:
                     data_name: i.updatedAt
                 createdAt:
                     data_name: i.createdAt
+                reporter:
+                    data_name: reporter
+                assignee:
+                    data_name: assignee
             default:
                 model: DESC
         filters:
