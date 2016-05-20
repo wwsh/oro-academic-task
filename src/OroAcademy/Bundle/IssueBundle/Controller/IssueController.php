@@ -195,7 +195,7 @@ class IssueController extends Controller
     /**
      * Almost done. Enforce organization set.
      * 
-     * @Todo Refactor this into an IssueFormHandler
+     * todo: Refactor this into an IssueFormHandler
      *
      * @param Issue $issue
      */
