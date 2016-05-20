@@ -1,8 +1,8 @@
 [
   {
-    "code": "ABC-123",
-    "summary": "Oro Academical Task",
-    "description": "An example academical task for Oro Inc",
+    "code": "OOT-1450",
+    "summary": "Oro Academic project for Thomas Parys",
+    "description": "Academic project for Thomas Parys, containing all tasks.",
     "priority": "high",
     "type": "story",
     "reporter": "admin",
@@ -11,15 +11,73 @@
     "status": null
   },
   {
-    "code": "DEF-456",
-    "summary": "Custom Template for Search",
-    "description": "Subtask for Oro Inc",
-    "priority": "normal",
+    "code": "OOT-1451",
+    "summary": "Planning",
+    "description": "The planning.",
+    "priority": "high",
+    "type": "subtask",
+    "reporter": "admin",
+    "assignee": "admin",
+    "resolution": "",
+    "status": null,
+    "parent": "OOT-1450"
+  },
+  {
+    "code": "OOT-1452",
+    "summary": "Issue entity and CRUD, UI + API",
+    "description": "Include simple entity fields from the requirements at this stage only. Integration with Workflow and Note bundles, for instance, will be done via separate tasks.",
+    "priority": "high",
+    "type": "subtask",
+    "reporter": "admin",
+    "assignee": "admin",
+    "resolution": "",
+    "status": null,
+    "parent": "OOT-1450"
+  },
+  {
+    "code": "OOT-1453",
+    "summary": "Issue Workflow",
+    "description": "Add workflow functionality to Issue entity, provided by the Workflow Bundle.",
+    "priority": "high",
+    "type": "subtask",
+    "reporter": "admin",
+    "assignee": "admin",
+    "resolution": "",
+    "status": null,
+    "parent": "OOT-1450"
+  },
+  {
+    "code": "OOT-1454",
+    "summary": "Issue Notes",
+    "description": "Associate Issues with Notes. Use OroNoteBundle functionality..",
+    "priority": "high",
     "type": "subtask",
     "reporter": "admin",
     "assignee": "admin",
     "resolution": "incomplete",
     "status": null,
-    "parent": "ABC-123"
+    "parent": "OOT-1450"
+  },
+  {
+    "code": "BUG-2840",
+    "summary": "Create Issue missing",
+    "description": "The button is gone.",
+    "priority": "normal",
+    "type": "bug",
+    "reporter": "admin",
+    "assignee": "admin",
+    "resolution": "incomplete",
+    "status": null
+  },
+  {
+    "code": "TSK-550",
+    "summary": "Oro Developer Training",
+    "description": "Watch all tutorials.",
+    "priority": "low",
+    "type": "task",
+    "reporter": "admin",
+    "assignee": "admin",
+    "resolution": "incomplete",
+    "status": null
   }
 ]
