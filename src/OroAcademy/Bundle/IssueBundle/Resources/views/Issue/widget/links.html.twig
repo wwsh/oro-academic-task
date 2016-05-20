@@ -6,16 +6,18 @@
         <div class="responsive-block">
 
             {% if entity.type.name == constant('OroAcademy\\Bundle\\IssueBundle\\Entity\\IssueType::TYPE_SUBTASK') %}
-                <div class="control-group">
-                    <label class="control-label">Story</label>
-                    <div class="controls">
-                        <div class="control-label">
-                            <a href="{{ path('oroacademy_view_issue', {'id': entity.parent.id }) }}">
-                                {{ entity.parent }}
-                            </a>
+                {% if entity.parent %}
+                    <div class="control-group">
+                        <label class="control-label">Story</label>
+                        <div class="controls">
+                            <div class="control-label">
+                                <a href="{{ path('oroacademy_view_issue', {'id': entity.parent.id }) }}">
+                                    {{ entity.parent }}
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                {% endif %}
             {% endif %}
             {% if entity.type.name == constant('OroAcademy\\Bundle\\IssueBundle\\Entity\\IssueType::TYPE_STORY') %}
                 <div class="control-group">

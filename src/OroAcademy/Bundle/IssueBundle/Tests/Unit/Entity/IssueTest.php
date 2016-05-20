@@ -49,9 +49,9 @@ class IssueTest extends KernelTestCase
 
         $resolution = 'OroAcademy\Bundle\IssueBundle\Entity\IssueResolution';
 
-        $tags = [ ];
-
         $priority = 'OroAcademy\Bundle\IssueBundle\Entity\IssuePriority';
+
+        $organization = 'Oro\Bundle\OrganizationBundle\Entity\Organization';
 
         return [
             [ 'summary', 'Example Summary' ],
@@ -61,8 +61,8 @@ class IssueTest extends KernelTestCase
             [ 'resolution', $resolution ],
             [ 'reporter', 'Oro\Bundle\UserBundle\Entity\User' ],
             [ 'assignee', 'Oro\Bundle\UserBundle\Entity\User' ],
-            [ 'tags', $tags ],
             [ 'priority', $priority ],
+            [ 'organization', $organization ],
             [ 'createdAt', new \DateTime() ],
             [ 'updatedAt', new \DateTime() ],
         ];
@@ -132,24 +132,6 @@ class IssueTest extends KernelTestCase
         $this->assertContains($thirdIssue, $this->issue->getRelatedIssues());
     }
 
-    public function testAddingTags()
-    {
-        $oneTag = $this->getMockBuilder('Oro\Bundle\TagBundle\Entity\Tag')
-                       ->disableOriginalConstructor()
-                       ->getMock();
-
-        $anotherTag = $this->getMockBuilder('Oro\Bundle\TagBundle\Entity\Tag')
-                           ->disableOriginalConstructor()
-                           ->getMock();
-
-        $this->issue->addTag($oneTag);
-        $this->issue->addTag($anotherTag);
-
-        $this->assertCount(2, $this->issue->getTags());
-        $this->assertContains($oneTag, $this->issue->getTags());
-        $this->assertContains($anotherTag, $this->issue->getTags());
-    }
-
     /**
      * @dataProvider printDataProvider
      */
@@ -197,6 +179,5 @@ class IssueTest extends KernelTestCase
         $this->assertCount(2, $result);
         $this->assertEquals('Eddie Smith', $result[0]);
         $this->assertEquals('John Carter', $result[1]);
-
     }
 }

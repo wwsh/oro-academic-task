@@ -35,7 +35,6 @@ class IssueControllerTest extends WebTestCase
         $form                       = $crawler->selectButton('Save and Close')->form();
         $form['issue[summary]']     = 'Issue summary';
         $form['issue[description]'] = 'Issue description';
-        $form['issue[reporter]']->setValue(1); // admin user
         $form['issue[priority]']->setValue(1); // whatever first record
         $form['issue[type]']->setValue(1);
 

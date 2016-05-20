@@ -4,7 +4,7 @@
     "summary": "Oro Academical Task",
     "description": "An example academical task for Oro Inc",
     "priority": "high",
-    "type": "task",
+    "type": "story",
     "reporter": "admin",
     "assignee": "admin",
     "resolution": null,
@@ -19,6 +19,7 @@
     "reporter": "admin",
     "assignee": "admin",
     "resolution": "incomplete",
-    "status": null
+    "status": null,
+    "parent": "ABC-123"
   }
 ]

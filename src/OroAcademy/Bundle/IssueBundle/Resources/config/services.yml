@@ -40,3 +40,6 @@ services:
         - '@doctrine'
       tags:
         - { name: oro_workflow.action, alias: add_collaborator }
+
+  oroacademy_form_helper.subtask:
+      class: OroAcademy\Bundle\IssueBundle\Helper\SubtaskFormHelper

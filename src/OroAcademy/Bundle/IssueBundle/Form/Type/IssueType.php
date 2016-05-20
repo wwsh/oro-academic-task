@@ -75,18 +75,6 @@ class IssueType extends AbstractType
                     'required'    => true
                 ]
             )
-            ->add('tags')
-            ->add(
-                'reporter',
-                'oro_user_organization_acl_select',
-                [
-                    'required'    => true,
-                    'label'       => 'Reporter',
-                    'constraints' => [
-                        new NotNull()
-                    ]
-                ]
-            )
             ->add(
                 'assignee',
                 'oro_user_organization_acl_select',

@@ -59,7 +59,7 @@ class IssueController extends Controller
     }
 
     /**
-     * @Route("/create/subtask/{parent}", name="oroacademy_create_subtask_issue")
+     * @Route("/create/subtask/{parent}", name="oroacademy_create_subtask_issue", requirements={"parent"="\d+"})
      * @Template
      * @Acl(
      *     id="issue_create",
@@ -70,19 +70,27 @@ class IssueController extends Controller
      * @param Request $request
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function createSubtaskAction(Request $request, Issue $parent)
+    public function createSubtaskAction(Issue $parent, Request $request)
     {
         $issue = new Issue();
+
         $issue->setParent($parent);
         $manager     = $this->get('doctrine.orm.entity_manager')
                             ->getRepository('OroAcademy\Bundle\IssueBundle\Entity\IssueType');
         $subtaskType = $manager->findOneBy([ 'name' => IssueType::TYPE_SUBTASK ]);
         $issue->setType($subtaskType);
-        return $this->updateAction($issue, $request);
+
+        $result = $this->updateAction($issue, $request);
+        if (!is_array($result)) {
+            return $result;
+        }
+
+        $result['parent'] = $parent->getId();
+        return $result;
     }
 
     /**
-     * @Route("/update/{id}", name="oroacademy_update_issue")
+     * @Route("/update/{id}", name="oroacademy_update_issue", requirements={"id"="\d+"})
      * @Template
      *
      * @Acl(
@@ -97,17 +105,12 @@ class IssueController extends Controller
      */
     public function updateAction(Issue $issue, Request $request)
     {
-        if ($this->inSubtaskMode($issue, $request)) {
-            $form = $this->get('form.factory')->create('subtask', $issue);
-        } else {
-            $form = $this->get('form.factory')->create('issue', $issue);
-        }
+        $form = $this->createIssueForm($issue, $request);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($issue);
-            $entityManager->flush();
+            $this->handleIssueUpdate($issue);
 
             return $this->get('oro_ui.router')->redirectAfterSave(
                 [
@@ -126,7 +129,7 @@ class IssueController extends Controller
     }
 
     /**
-     * @Route("/view/{id}", name="oroacademy_view_issue")
+     * @Route("/view/{id}", name="oroacademy_view_issue", requirements={"id"="\d+"})
      * @Template
      *
      * @Acl(
@@ -147,7 +150,7 @@ class IssueController extends Controller
      * @param Issue $issue
      * @return array
      *
-     * @Route("/widget/details/{id}", name="oroacademy_issue_details_widget")
+     * @Route("/widget/details/{id}", name="oroacademy_issue_details_widget", requirements={"id"="\d+"})
      * @Template
      * @AclAncestor("oroacademy_view_issue")
      */
@@ -160,7 +163,7 @@ class IssueController extends Controller
      * @param Issue $issue
      * @return array
      *
-     * @Route("/widget/links/{id}", name="oroacademy_issue_links_widget")
+     * @Route("/widget/links/{id}", name="oroacademy_issue_links_widget", requirements={"id"="\d+"})
      * @Template
      * @AclAncestor("oroacademy_view_issue")
      */
@@ -170,18 +173,47 @@ class IssueController extends Controller
     }
 
     /**
-     * @param Issue   $issue
-     * @param Request $request
-     * @return bool
+     * @param $issue
+     * @param $request
+     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
      */
-    protected function inSubtaskMode(Issue $issue, Request $request)
+    protected function createIssueForm($issue, $request)
     {
-        $subtask = $request->request->get('subtask');
-
-        if (null === $issue->getType() && !empty($subtask)) {
-            return true;
+        if ($this->get('oroacademy_form_helper.subtask')
+                 ->isSubtask($issue, $request)
+        ) {
+            $form = $this->get('form.factory')
+                         ->create('subtask', $issue);
+        } else {
+            $form = $this->get('form.factory')
+                         ->create('issue', $issue);
         }
-        
-        return $issue->getType()->getName() === IssueType::TYPE_SUBTASK;
+
+        return $form;
+    }
+
+    /**
+     * Almost done. Enforce organization set.
+     * 
+     * @Todo Refactor this into an IssueFormHandler
+     *
+     * @param Issue $issue
+     */
+    protected function handleIssueUpdate(Issue $issue)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        if (null === $issue->getOrganization()) {
+            $organization = $entityManager->getRepository('OroOrganizationBundle:Organization')
+                                          ->getFirst();
+            $issue->setOrganization($organization);
+        }
+        if (null === $issue->getReporter()) {
+            $token = $this->get('security.token_storage')->getToken();
+
+            $issue->setReporter($token->getUser());
+        }
+        $entityManager->persist($issue);
+        $entityManager->flush();
     }
 }

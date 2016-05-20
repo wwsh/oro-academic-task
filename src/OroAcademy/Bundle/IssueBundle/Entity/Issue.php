@@ -10,7 +10,7 @@ namespace OroAcademy\Bundle\IssueBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-use Oro\Bundle\TagBundle\Entity\Tag;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
@@ -31,6 +31,13 @@ use OroAcademy\Bundle\IssueBundle\Model\ExtendIssue;
  *      "workflow"={
  *          "active_workflow"="issue_flow",
  *          "show_step_in_grid"=false
+ *      },
+ *     "ownership"={
+ *          "owner_type"="USER",
+ *          "owner_field_name"="reporter",
+ *          "owner_column_name"="reporter_id",
+ *          "organization_field_name"="organization",
+ *          "organization_column_name"="organization_id"
  *      },
  *      "security"={
  *          "type"="ACL",
@@ -155,26 +162,7 @@ class Issue extends ExtendIssue
      */
     protected $resolution = null;
 
-
-    /**
-     * @var Tag[]
-     *
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\TagBundle\Entity\Tag")
-     * @ORM\JoinTable(name="oroacademy_issue_to_tag",
-     *      joinColumns={@ORM\JoinColumn(name="issue_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
-     *
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "order"=70
-     *          }
-     *      }
-     * )
-     */
-    protected $tags;
-
+    
     /**
      * @var User
      *
@@ -318,12 +306,19 @@ class Issue extends ExtendIssue
     protected $workflowStep;
 
     /**
+     * @var Organization
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $organization;
+
+    /**
      * Constructor
      */
     public function __construct($code = null, $summary = null)
     {
         $this->collaborators = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->tags          = new \Doctrine\Common\Collections\ArrayCollection();
         $this->relatedIssues = new \Doctrine\Common\Collections\ArrayCollection();
         $this->children      = new \Doctrine\Common\Collections\ArrayCollection();
 
@@ -483,30 +478,6 @@ class Issue extends ExtendIssue
     public function getResolution()
     {
         return $this->resolution;
-    }
-
-    /**
-     * Set tags
-     *
-     * @param string $tags
-     *
-     * @return Issue
-     */
-    public function setTags($tags)
-    {
-        $this->tags = $tags;
-
-        return $this;
-    }
-
-    /**
-     * Get tags
-     *
-     * @return string
-     */
-    public function getTags()
-    {
-        return $this->tags;
     }
 
     /**
@@ -778,31 +749,7 @@ class Issue extends ExtendIssue
     {
         $this->relatedIssues->removeElement($relatedIssue);
     }
-
-    /**
-     * Add tag
-     *
-     * @param \Oro\Bundle\TagBundle\Entity\Tag $tag
-     *
-     * @return Issue
-     */
-    public function addTag(\Oro\Bundle\TagBundle\Entity\Tag $tag)
-    {
-        $this->tags->add($tag);
-
-        return $this;
-    }
-
-    /**
-     * Remove tag
-     *
-     * @param \Oro\Bundle\TagBundle\Entity\Tag $tag
-     */
-    public function removeTag(\Oro\Bundle\TagBundle\Entity\Tag $tag)
-    {
-        $this->tags->removeElement($tag);
-    }
-
+    
     /**
      * Handles auto Issue code generation, based on type and summary.
      * Code should be unique throughout the whole database, therefore
@@ -917,5 +864,46 @@ class Issue extends ExtendIssue
 
         $this->code = strtoupper($type[0] . $summaryPart);
         $this->code .= '-' . time() . rand(0, 9);
+    }
+
+    /**
+     * Set organization
+     *
+     * @param \Oro\Bundle\OrganizationBundle\Entity\Organization $organization
+     *
+     * @return Issue
+     */
+    public function setOrganization(\Oro\Bundle\OrganizationBundle\Entity\Organization $organization = null)
+    {
+        $this->organization = $organization;
+
+        return $this;
+    }
+
+    /**
+     * Get organization
+     *
+     * @return \Oro\Bundle\OrganizationBundle\Entity\Organization
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * @return User
+     */
+    public function getOwner()
+    {
+        return $this->getReporter();
+    }
+
+    /**
+     * @param User $owner
+     * @return $this
+     */
+    public function setOwner($owner)
+    {
+        return $this->setReporter($owner);
     }
 }

@@ -30,6 +30,11 @@ class LoadIssues extends AbstractFixture implements OrderedFixtureInterface
         
         $json = json_decode(file_get_contents($jsonDemoFixtureFile), true);
 
+        $organization = $manager->getRepository('OroOrganizationBundle:Organization')
+            ->getFirst();
+        
+        $previous = [];
+        
         foreach ($json as $issueJson) {
             $issue = new Issue();
             $issue->setCode($issueJson['code']);
@@ -42,9 +47,13 @@ class LoadIssues extends AbstractFixture implements OrderedFixtureInterface
             $issue->setReporter($this->getUser($issueJson['reporter']));
             $issue->setAssignee($this->getUser($issueJson['assignee']));
             $issue->setResolution($this->getResolution($issueJson['resolution']));
+            $issue->setOrganization($organization);
+            if (isset($issueJson['parent'])) {
+                $issue->setParent($previous[$issueJson['parent']]);
+            }
             $manager->persist($issue);
             $manager->flush();
-
+            $previous[$issueJson['code']] = $issue;
         }
     }
 

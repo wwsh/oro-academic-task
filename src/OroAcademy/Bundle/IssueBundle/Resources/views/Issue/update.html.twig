@@ -1,10 +1,16 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 
+{% set subtaskMode = form.vars.value.type and form.vars.value.type.name == constant('OroAcademy\\Bundle\\IssueBundle\\Entity\\IssueType::TYPE_SUBTASK') %}
+
 {% if form.vars.value.id %}
     {% set formAction = path('oroacademy_update_issue', { 'id': form.vars.value.id }) %}
 {% else %}
-    {% set formAction = path('oroacademy_create_issue') %}
+    {% if subtaskMode %}
+        {% set formAction = path('oroacademy_create_subtask_issue', {'parent': parent }) %}
+    {% else %}
+        {% set formAction = path('oroacademy_create_issue') %}
+    {% endif %}
 {% endif %}
 
 {% block navButtons %}
@@ -45,15 +51,13 @@
 {% block content_data %}
     {% set id = 'issue-edit' %}
 
-    {% if form.vars.value.type.name == constant('OroAcademy\\Bundle\\IssueBundle\\Entity\\IssueType::TYPE_SUBTASK') %}
+    {% if subtaskMode %}
         {% set formDataBlocks = [
             form_row(form.parent),
             form_row(form.type),
             form_row(form.priority),
             form_row(form.summary),
             form_row(form.description),
-            form_row(form.tags),
-            form_row(form.reporter),
             form_row(form.assignee),
         ] %}
     {% else %}
@@ -62,8 +66,6 @@
             form_row(form.priority),
             form_row(form.summary),
             form_row(form.description),
-            form_row(form.tags),
-            form_row(form.reporter),
             form_row(form.assignee),
         ] %}
     {% endif %}
