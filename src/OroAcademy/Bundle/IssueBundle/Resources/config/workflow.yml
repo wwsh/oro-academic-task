@@ -3,6 +3,7 @@ workflows:
     label: Issue
     entity: OroAcademy\Bundle\IssueBundle\Entity\Issue
     start_step: open
+    entity_attribute: issue
 
     steps:
       open:
@@ -40,6 +41,10 @@ workflows:
         allowed_transitions:
           - start_progress
 
+    attributes:
+      resolution:
+        property_path: issue.resolution
+
     transitions:
       start_progress:
         label: Start Progress
@@ -61,6 +66,11 @@ workflows:
         frontend_options:
             icon: 'icon-ok'
         transition_definition: resolve_definition
+        form_options:
+          attribute_fields:
+            resolution:
+              options:
+                required: true
 
       close:
         label: Close
