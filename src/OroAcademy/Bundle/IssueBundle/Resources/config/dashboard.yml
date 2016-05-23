@@ -1,0 +1,7 @@
+oro_dashboard_config:
+    widgets:
+        issues_by_status:
+          label:       Issues By Status
+          route:       oroacademy_issues_by_status_widget
+          acl:         view_issue
+          description: Viewing Issues by status

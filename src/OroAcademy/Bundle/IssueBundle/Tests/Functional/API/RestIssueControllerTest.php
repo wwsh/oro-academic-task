@@ -32,7 +32,6 @@ class RestIssueControllerTest extends WebTestCase
                 "description" => "Test description",
                 "type"        => "bug",
                 "priority"    => "high",
-                "reporter"    => "admin",
             ]
         ];
 

@@ -31,8 +31,25 @@ class SubtaskFormHelperTest extends \PHPUnit_Framework_TestCase
                   ->method('getName')
                   ->will($this->returnValue(IssueType::TYPE_SUBTASK));
 
-        $issue->method('getType')
+        $issue->expects($this->at(0))
+              ->method('getType')
               ->will($this->returnValue($issueType));
+
+        $issue->expects($this->at(1))
+              ->method('getType')
+              ->will($this->returnValue($issueType));
+
+        $issue->expects($this->at(2))
+              ->method('getType')
+              ->will($this->returnValue($issueType));
+
+        $issue->expects($this->at(3))
+              ->method('getType')
+              ->will($this->returnValue($issueType));
+
+        $issue->expects($this->at(4))
+              ->method('getType')
+              ->will($this->returnValue(null));
 
         $request->request->expects($this->at(0))
                          ->method('get')
@@ -54,7 +71,13 @@ class SubtaskFormHelperTest extends \PHPUnit_Framework_TestCase
                          ->with('subtask')
                          ->will($this->returnValue(1));
 
+        $request->request->expects($this->at(4))
+                         ->method('get')
+                         ->with('subtask')
+                         ->will($this->returnValue(1));
+
         $this->assertEquals(false, $helper->isSubtask($issue, $request));
+        $this->assertEquals(true, $helper->isSubtask($issue, $request));
         $this->assertEquals(true, $helper->isSubtask($issue, $request));
         $this->assertEquals(true, $helper->isSubtask($issue, $request));
         $this->assertEquals(true, $helper->isSubtask($issue, $request));

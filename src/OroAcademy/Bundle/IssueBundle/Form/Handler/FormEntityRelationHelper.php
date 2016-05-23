@@ -79,7 +79,8 @@ class FormEntityRelationHelper
         $classMetadata = $this->manager->getClassMetadata($targetEntityClass);
 
         foreach ($classMetadata->fieldMappings as $field => $mapping) {
-            if (strpos($field, 'name') !== false &&
+            if ((in_array($field, [ 'name', 'code' ]) !== false ||
+                 strpos($field, 'name') !== false) &&
                 'string' === $mapping['type']
             ) {
                 // let's use this as the name column

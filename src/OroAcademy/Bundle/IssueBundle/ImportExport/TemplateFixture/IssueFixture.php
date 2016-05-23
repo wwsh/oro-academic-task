@@ -47,14 +47,16 @@ class IssueFixture extends AbstractTemplateRepository implements TemplateFixture
      */
     public function fillEntityData($key, $entity)
     {
-        $priorityRepo   = $this->templateManager
+        $priorityRepo     = $this->templateManager
             ->getEntityRepository('OroAcademy\Bundle\IssueBundle\Entity\IssuePriority');
-        $typeRepo       = $this->templateManager
+        $typeRepo         = $this->templateManager
             ->getEntityRepository('OroAcademy\Bundle\IssueBundle\Entity\IssueType');
-        $resolutionRepo = $this->templateManager
+        $resolutionRepo   = $this->templateManager
             ->getEntityRepository('OroAcademy\Bundle\IssueBundle\Entity\IssueResolution');
-        $userRepo       = $this->templateManager
+        $userRepo         = $this->templateManager
             ->getEntityRepository('Oro\Bundle\UserBundle\Entity\User');
+        $organizationRepo = $this->templateManager
+            ->getEntityRepository('Oro\Bundle\OrganizationBundle\Entity\Organization');
 
         switch ($key) {
             case 'ABC-123':
@@ -63,10 +65,11 @@ class IssueFixture extends AbstractTemplateRepository implements TemplateFixture
                 $entity->setDescription('The Description');
                 $entity->setCreatedAt(new \DateTime());
                 $entity->setAssignee($userRepo->getEntity('John Doo'));
+                $entity->setReporter($userRepo->getEntity('John Doo'));
                 $entity->setPriority($priorityRepo->getEntity('normal'));
                 $entity->setType($typeRepo->getEntity('bug'));
                 $entity->setResolution($resolutionRepo->getEntity('incomplete'));
-
+                $entity->setOrganization($organizationRepo->getEntity('default'));
                 return;
         }
 

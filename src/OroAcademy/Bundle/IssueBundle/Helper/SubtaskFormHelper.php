@@ -26,14 +26,16 @@ class SubtaskFormHelper
     {
         $subtask = $request->request->get('subtask');
 
-        if (null === $issue->getType()) {
-            return false;
-        }
+        $type = $issue->getType();
 
         if (!empty($subtask)) {
             return true;
         }
 
-        return $issue->getType()->getName() === IssueType::TYPE_SUBTASK;
+        if (null === $type) {
+            return false;
+        }
+
+        return $type->getName() === IssueType::TYPE_SUBTASK;
     }
 }

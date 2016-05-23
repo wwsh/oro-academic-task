@@ -10,7 +10,7 @@ namespace OroAcademy\Bundle\IssueBundle\Form\Handler;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\FormBundle\Form\Handler\ApiFormHandler;
-use Symfony\Component\Form\FormInterface;
+use OroAcademy\Bundle\IssueBundle\Helper\IssueFormBuilder;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -25,14 +25,21 @@ class IssueHandler extends ApiFormHandler
      */
     protected $helper;
 
+    /**
+     * @var IssueFormBuilder
+     */
+    protected $builder;
+
     public function __construct(
         FormEntityRelationHelper $helper,
         Request $request,
-        ObjectManager $manager
+        ObjectManager $manager,
+        IssueFormBuilder $builder
     ) {
         parent::__construct($request, $manager);
 
-        $this->helper = $helper;
+        $this->helper  = $helper;
+        $this->builder = $builder;
     }
 
     /**
@@ -42,9 +49,15 @@ class IssueHandler extends ApiFormHandler
     public function process($entity)
     {
         $requestData = $this->request->request->get('issue');
-        $requestData = $this->helper->getEntityData($entity, $requestData);
 
-        $this->form->setData($entity);
+        // the Subtask guess...
+        if (empty($requestData)) {
+            $requestData = $this->request->request->get('subtask');
+        }
+
+        $this->form = $this->builder->createForm($entity);
+
+        $requestData = $this->helper->getEntityData($entity, $requestData);
 
         if (in_array($this->request->getMethod(), [ 'POST', 'PUT' ])) {
             $this->form->submit($requestData);

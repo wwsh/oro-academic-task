@@ -72,14 +72,10 @@ class IssueController extends Controller
      */
     public function createSubtaskAction(Issue $parent, Request $request)
     {
-        $issue = new Issue();
-
-        $issue->setParent($parent);
-        $manager     = $this->get('doctrine.orm.entity_manager')
-                            ->getRepository('OroAcademy\Bundle\IssueBundle\Entity\IssueType');
-        $subtaskType = $manager->findOneBy([ 'name' => IssueType::TYPE_SUBTASK ]);
-        $issue->setType($subtaskType);
-
+        $issue = $this->get('doctrine')
+                ->getRepository('OroAcademyIssueBundle:Issue')
+                ->createSubtask($parent);
+        
         $result = $this->updateAction($issue, $request);
         if (!is_array($result)) {
             return $result;
@@ -105,7 +101,8 @@ class IssueController extends Controller
      */
     public function updateAction(Issue $issue, Request $request)
     {
-        $form = $this->createIssueForm($issue, $request);
+        $form = $this->get('oroacademy_issue_form_builder')
+                     ->createForm($issue);
 
         $form->handleRequest($request);
 
@@ -173,28 +170,8 @@ class IssueController extends Controller
     }
 
     /**
-     * @param $issue
-     * @param $request
-     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
-     */
-    protected function createIssueForm($issue, $request)
-    {
-        if ($this->get('oroacademy_form_helper.subtask')
-                 ->isSubtask($issue, $request)
-        ) {
-            $form = $this->get('form.factory')
-                         ->create('subtask', $issue);
-        } else {
-            $form = $this->get('form.factory')
-                         ->create('issue', $issue);
-        }
-
-        return $form;
-    }
-
-    /**
      * Almost done. Enforce organization set.
-     * 
+     *
      * todo: Refactor this into an IssueFormHandler
      *
      * @param Issue $issue

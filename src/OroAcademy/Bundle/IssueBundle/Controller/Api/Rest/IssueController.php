@@ -94,7 +94,7 @@ class IssueController extends RestController
      */
     public function cgetAction(Request $request)
     {
-        $page = (int)$request->request->get('page', 1);
+        $page  = (int)$request->request->get('page', 1);
         $limit = (int)$request->request->get('limit', self::ITEMS_PER_PAGE);
 
         return $this->handleGetListRequest($page, $limit);
@@ -144,9 +144,16 @@ class IssueController extends RestController
         return $this->handleCreateRequest();
     }
 
+    /**
+     * Validation depends on the task type, therefore form switch
+     * is required.
+     *
+     * @return \OroAcademy\Bundle\IssueBundle\Form\Type\IssueType
+     */
     public function getForm()
     {
-        return $this->get('form.issue');
+        return $this->get('oroacademy_issue_form_builder')
+                    ->createForm();
     }
 
     public function getFormHandler()

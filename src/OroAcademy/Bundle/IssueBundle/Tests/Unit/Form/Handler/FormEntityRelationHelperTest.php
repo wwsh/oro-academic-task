@@ -50,6 +50,7 @@ class FormEntityRelationHelperTest extends KernelTestCase
             "type"        => "bug",
             "priority"    => "high",
             "reporter"    => "admin",
+            "parent"      => ""
         ];
 
         $newData = $this->item->getEntityData($issue, $data);
@@ -63,5 +64,6 @@ class FormEntityRelationHelperTest extends KernelTestCase
 
         $this->assertEquals($issueType->getId(), $newData['type']);
         $this->assertEquals($issuePriority->getId(), $newData['priority']);
+        $this->assertEquals(null, $newData['parent']);
     }
 }

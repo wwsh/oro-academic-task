@@ -20,3 +20,5 @@ oroacademy:
   issue.issuepriority.name.label: IssuePriorityName
   issue.resolution.label: Resolution
   issue.issueresolution.name.label: IssueResolutionName
+  issue.organization.label: Organization
+  issue.children.label: Related

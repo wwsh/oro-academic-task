@@ -10,12 +10,6 @@ services:
       class: OroAcademy\Bundle\IssueBundle\Form\Handler\FormEntityRelationHelper
       arguments: ["@doctrine.orm.entity_manager"]
 
-  oroacademy_issue_form.api:
-      class: Symfony\Component\Form\Form
-      factory_method: createNamed
-      factory_service: form.factory
-      arguments: ["issue", "issue", null, {csrf_protection: false, allow_extra_fields: true, validation_groups: false}]
-
   oroacademy_issue_handler.api:
       class: OroAcademy\Bundle\IssueBundle\Form\Handler\IssueHandler
       scope: request
@@ -23,8 +17,7 @@ services:
         - '@oroacademy_issue_form_helper.api'
         - '@request'
         - '@doctrine.orm.entity_manager'
-      calls:
-        - [ setForm, ['@oroacademy_issue_form.api' ]]
+        - '@oroacademy_issue_form_builder'
 
   oroacademy_issue_listener:
       class: OroAcademy\Bundle\IssueBundle\EventListener\IssueNoteUpdatesListener
@@ -43,3 +36,10 @@ services:
 
   oroacademy_form_helper.subtask:
       class: OroAcademy\Bundle\IssueBundle\Helper\SubtaskFormHelper
+
+  oroacademy_issue_form_builder:
+      class: OroAcademy\Bundle\IssueBundle\Helper\IssueFormBuilder
+      arguments:
+        - '@oroacademy_form_helper.subtask'
+        - '@form.factory'
+        - '@request_stack'
