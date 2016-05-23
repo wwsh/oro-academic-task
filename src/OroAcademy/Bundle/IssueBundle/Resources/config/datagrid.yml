@@ -1,4 +1,72 @@
 datagrid:
+    # The Dashboard Grid with my active issues
+    dashboard-my-issues-grid:
+        options:
+            entityHint: call
+            toolbarOptions:
+                addColumnManager: false
+                hide: true
+                pageSize:
+                    items: [10]
+                    default_per_page: 10
+        source:
+            acl_resource: view_issue
+            type: orm
+            query:
+                select:
+                    - i.id
+                    - i.summary
+                    - i.code
+                    - t.label as type
+                    - p.label as priority
+                    - wfs.label as status
+                    - i.createdAt
+                from:
+                    - { table: OroAcademyIssueBundle:Issue, alias: i }
+                join:
+                    left:
+                        - { join: i.type, alias: t, conditionType: WITH }
+                        - { join: i.priority, alias: p, conditionType: WITH }
+                        - { join: i.workflowStep, alias: wfs }
+                where:
+                    or:
+                        - i.reporter = :user_id
+                        - i.assignee = :user_id
+                        - :user_id MEMBER OF i.collaborators
+            bind_parameters:
+                user_id: userId
+
+        columns:
+            code:
+                label: Code
+            summary:
+                label: Summary
+            type:
+                label: Type
+            priority:
+                label: Priority
+            status:
+                label: Status
+            createdAt:
+                label: Created
+                frontend_type: date
+        properties:
+            id: ~
+            view_link:
+                type: url
+                route: oroacademy_view_issue
+                params:
+                    - id
+        actions:
+            view:
+                type:          navigate
+                label:         View
+                link:          view_link
+                icon:          eye-open
+                acl_resource:  view_issue
+                rowAction:     true
+
+    # Main Issue grid
     issue-grid:
         source:
             acl_resource: view_issue

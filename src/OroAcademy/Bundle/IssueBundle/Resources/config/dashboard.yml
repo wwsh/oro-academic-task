@@ -5,3 +5,8 @@ oro_dashboard_config:
           route:       oroacademy_issues_by_status_widget
           acl:         view_issue
           description: Viewing Issues by status
+        my_active_issues:
+          label:       Your Recent Issues
+          route:       oroacademy_my_active_issues
+          acl:         view_issue
+          description: Viewing recent issues, which you were actively taking part of

@@ -1,0 +1,18 @@
+{% extends 'OroDashboardBundle:Dashboard:widget.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% set gridName = 'dashboard-my-issues-grid' %}
+
+{% block content %}
+    {{ dataGrid.renderGrid(gridName, { 'userId' : 1 }) }}
+{% endblock %}
+
+{% block actions %}
+    {% set actions = [{
+    'url': path('oroacademy_issue_index'),
+    'type': 'link',
+    'label': 'View all'|trans
+    }] %}
+
+    {{ parent() }}
+{% endblock %}

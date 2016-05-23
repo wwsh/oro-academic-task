@@ -54,4 +54,20 @@ class DashboardController extends Controller
 
         return $widgetAttr;
     }
+
+    /**
+     * @Route("/widget/myIssues/{widget}",
+     *     name="oroacademy_my_active_issues",
+     *     requirements={"widget"="[\w-]+"}
+     *     )
+     * @Template("OroAcademyIssueBundle:Dashboard:activeIssues.html.twig")
+     * @AclAncestor("oroacademy_view_issue")
+     */
+    public function myActiveIssues($widget)
+    {
+        $widgetAttr = $this->get('oro_dashboard.widget_configs')
+                           ->getWidgetAttributesForTwig($widget);
+
+        return $widgetAttr;
+    }
 }
