@@ -1,15 +1,14 @@
 <?php
 /*******************************************************************************
- * This is closed source software, created by WWSH. 
+ * This is closed source software, created by WWSH.
  * Please do not copy nor redistribute.
- * Copyright (c) Oro 2016. 
+ * Copyright (c) Oro 2016.
  ******************************************************************************/
 
 namespace OroAcademy\Bundle\IssueBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use OroAcademy\Bundle\IssueBundle\Entity\Issue;
-use OroAcademy\Bundle\IssueBundle\Entity\IssueType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,6 +36,23 @@ class IssueController extends Controller
         return [
             'gridName'     => 'issue-grid',
             'entity_class' => $this->container->getParameter('oroacademy_issue.entity.class')
+        ];
+    }
+
+    /**
+     * @Route("/mine/", name="oroacademy_my_issue_grid")
+     * @Template
+     * @AclAncestor("view_issue")
+     */
+    public function mineIssuesAction()
+    {
+        $userId  = $this->getUser()->getId();
+        
+        return [
+            'gridName'     => 'my-issue-grid',
+            'entity_class' => $this->container
+                ->getParameter('oroacademy_issue.entity.class'),
+            'userId'       => $userId
         ];
     }
 
@@ -73,9 +89,9 @@ class IssueController extends Controller
     public function createSubtaskAction(Issue $parent, Request $request)
     {
         $issue = $this->get('doctrine')
-                ->getRepository('OroAcademyIssueBundle:Issue')
-                ->createSubtask($parent);
-        
+                      ->getRepository('OroAcademyIssueBundle:Issue')
+                      ->createSubtask($parent);
+
         $result = $this->updateAction($issue, $request);
         if (!is_array($result)) {
             return $result;

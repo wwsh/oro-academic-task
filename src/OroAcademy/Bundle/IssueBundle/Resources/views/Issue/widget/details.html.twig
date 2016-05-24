@@ -5,8 +5,8 @@
     <div class="row-fluid form-horizontal">
         <div class="responsive-block">
             {{ UI.renderHtmlProperty('Description'|trans, entity.description|escape|nl2br) }}
-            {{ UI.renderProperty('Reported by'|trans, entity.reporter ? entity.reporter.firstName ~ ' ' ~ entity.reporter.lastName : '') }}
-            {{ UI.renderProperty('Assigned to'|trans, entity.assignee ? entity.assignee.firstName ~ ' ' ~ entity.assignee.lastName : '') }}
+            {{ UI.renderProperty('Reported by'|trans, entity.reporter ? entity.reporter.fullName : '') }}
+            {{ UI.renderProperty('Assigned to'|trans, entity.assignee ? entity.assignee.fullName : '') }}
             {{ UI.renderHtmlProperty('Collaborators'|trans, entity.getSimpleCollaboratorArray()|join('<br />')) }}
             {{ UI.renderProperty('Created at'|trans, entity.createdAt|date) }}
             {{ UI.renderProperty('Updated at'|trans, entity.updatedAt|date) }}

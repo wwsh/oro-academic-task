@@ -1,8 +1,8 @@
 <?php
 /*******************************************************************************
- * This is closed source software, created by WWSH. 
+ * This is closed source software, created by WWSH.
  * Please do not copy nor redistribute.
- * Copyright (c) Oro 2016. 
+ * Copyright (c) Oro 2016.
  ******************************************************************************/
 
 namespace OroAcademy\Bundle\IssueBundle\Entity;
@@ -43,7 +43,7 @@ use OroAcademy\Bundle\IssueBundle\Model\ExtendIssue;
  *          "type"="ACL",
  *          "permissions"="All"
  *      },
-*       "tag"={
+ *       "tag"={
  *          "enabled"=true
  *      }
  *    }
@@ -162,7 +162,7 @@ class Issue extends ExtendIssue
      */
     protected $resolution = null;
 
-    
+
     /**
      * @var User
      *
@@ -491,6 +491,10 @@ class Issue extends ExtendIssue
     {
         $this->reporter = $reporter;
 
+        if (null !== $reporter) {
+            $this->addCollaborator($reporter);
+        }
+
         return $this;
     }
 
@@ -514,6 +518,10 @@ class Issue extends ExtendIssue
     public function setAssignee($assignee)
     {
         $this->assignee = $assignee;
+
+        if (null !== $assignee) {
+            $this->addCollaborator($assignee);
+        }
 
         return $this;
     }
@@ -749,7 +757,7 @@ class Issue extends ExtendIssue
     {
         $this->relatedIssues->removeElement($relatedIssue);
     }
-    
+
     /**
      * Handles auto Issue code generation, based on type and summary.
      * Code should be unique throughout the whole database, therefore
@@ -836,7 +844,7 @@ class Issue extends ExtendIssue
         $collab = [ ];
 
         foreach ($this->collaborators as $collaborator) {
-            $collab[] = $collaborator->getFirstName() . ' ' . $collaborator->getLastName();
+            $collab[] = $collaborator->getFullName();
         }
 
         return $collab;

@@ -29,9 +29,7 @@ datagrid:
                         - { join: i.priority, alias: p, conditionType: WITH }
                         - { join: i.workflowStep, alias: wfs }
                 where:
-                    or:
-                        - i.reporter = :user_id
-                        - i.assignee = :user_id
+                    and:
                         - :user_id MEMBER OF i.collaborators
             bind_parameters:
                 user_id: userId
@@ -57,6 +55,13 @@ datagrid:
                 route: oroacademy_view_issue
                 params:
                     - id
+        sorters:
+            columns:
+                createdAt:
+                    data_name: i.createdAt
+            default:
+                createdAt:
+                  DESC
         actions:
             view:
                 type:          navigate
@@ -87,6 +92,7 @@ datagrid:
                     - CONCAT(asgn.firstName, CONCAT(' ', asgn.lastName)) as assignee
                     - i.createdAt
                     - i.updatedAt
+                    - u.id as collaborators
                 from:
                     - { table: OroAcademyIssueBundle:Issue, alias: i }
                 join:
@@ -96,7 +102,9 @@ datagrid:
                         - { join: i.priority, alias: p, conditionType: WITH }
                         - { join: i.reporter, alias: rep, conditionType: WITH }
                         - { join: i.assignee, alias: asgn, conditionType: WITH }
+                        - { join: i.collaborators, alias: u, conditionType: WITH }
                         - { join: i.workflowStep, alias: wfs }
+                groupBy: i.id
 
         columns:
             code:
@@ -170,6 +178,16 @@ datagrid:
                 createdAt:
                     type: date
                     data_name: i.createdAt
+                collaborated:
+                    type: entity
+                    label: Collaborator
+                    data_name: collaborators
+                    options:
+                        field_options:
+                            class: OroUserBundle:User
+                            multiple: false
+                            property: fullName
+                            translatable_options: false
         actions:
             view:
                 type:          navigate
@@ -190,3 +208,22 @@ datagrid:
                 link:          delete_link
                 icon:          trash
                 acl_resource:  api_delete_issue
+
+    # Main issue grid without the pagination and default sorting order
+    my-issue-grid:
+       extends: issue-grid
+       source:
+           query:
+               where:
+                   and:
+                       - (u.id = :id)
+           bind_parameters:
+               - id
+       filters: ~
+       sorters:
+           columns:
+               createdAt:
+                  data_name: i.createdAt
+           default:
+               createdAt:
+                  DESC

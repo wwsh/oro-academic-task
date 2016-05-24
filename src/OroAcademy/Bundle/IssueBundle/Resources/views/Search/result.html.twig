@@ -10,5 +10,5 @@
 {% set entityInfo = [
 {'title': 'oro.ui.created_at'|trans, 'value': entity.createdAt ? entity.createdAt|oro_format_datetime : 'N/A'},
 {'title': 'oro.ui.updated_at'|trans, 'value': entity.updatedAt ? entity.updatedAt|oro_format_datetime : 'N/A'},
-{'title': 'Reporter'|trans, 'value': entity.reporter.getFirstName() ~ ' ' ~ entity.reporter.getLastName() }
+{'title': 'Reporter'|trans, 'value': entity.reporter.getFullName() }
 ] %}

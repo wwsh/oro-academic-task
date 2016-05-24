@@ -62,7 +62,7 @@ class SubtaskType extends AbstractType
             )
             ->add(
                 'description',
-                null,
+                'oro_resizeable_rich_text',
                 [
                     'constraints' => new NotBlank(),
                     'required'    => true

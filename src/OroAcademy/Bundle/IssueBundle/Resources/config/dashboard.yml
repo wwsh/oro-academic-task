@@ -6,7 +6,7 @@ oro_dashboard_config:
           acl:         view_issue
           description: Viewing Issues by status
         my_active_issues:
-          label:       Your Recent Issues
+          label:       My Recent Issues
           route:       oroacademy_my_active_issues
           acl:         view_issue
           description: Viewing recent issues, which you were actively taking part of

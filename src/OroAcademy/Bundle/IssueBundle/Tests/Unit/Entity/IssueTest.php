@@ -92,6 +92,32 @@ class IssueTest extends KernelTestCase
         $this->assertContains($thirdIssue, $this->issue->getChildren());
     }
 
+    public function testCollaborators()
+    {
+        $reporter  = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
+
+        $this->issue->setReporter(null);
+
+        $this->assertEquals(null, $this->issue->getReporter());
+
+        $this->issue->setReporter($reporter);
+
+        $this->assertCount(1, $this->issue->getCollaborators());
+        $this->assertContains($reporter, $this->issue->getCollaborators());
+
+        $assignee  = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
+
+        $this->issue->setAssignee(null);
+
+        $this->assertEquals(null, $this->issue->getAssignee());
+
+        $this->issue->setAssignee($assignee);
+
+        $this->assertCount(2, $this->issue->getCollaborators());
+        $this->assertContains($assignee, $this->issue->getCollaborators());
+
+    }
+
     public function testAddingCollaborators()
     {
         $firstCollab  = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
@@ -165,11 +191,8 @@ class IssueTest extends KernelTestCase
                          ->getMock();
 
             $user->expects($this->once())
-                 ->method('getFirstName')
-                 ->will($this->returnValue($oneUserData[0]));
-            $user->expects($this->once())
-                 ->method('getLastName')
-                 ->will($this->returnValue($oneUserData[1]));
+                 ->method('getFullName')
+                 ->will($this->returnValue($oneUserData[0] . ' ' . $oneUserData[1]));
 
             $issue->addCollaborator($user);
         }

@@ -29,7 +29,8 @@ class LoadDashboardData extends AbstractDashboardFixture implements DependentFix
         $mainDashboard = $this->findAdminDashboardModel($manager, 'main');
         if ($mainDashboard) {
             $mainDashboard
-                ->addWidget($this->createWidgetModel('issues_by_status'));
+                ->addWidget($this->createWidgetModel('issues_by_status'))
+                ->addWidget($this->createWidgetModel('my_active_issues'));
             $manager->flush();
         }
     }
