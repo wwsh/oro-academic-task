@@ -1,8 +1,80 @@
 datagrid:
+    # The User view page issue grid
+    user-page-issue-grid:
+        options:
+            entityHint: issue
+            toolbarOptions:
+                pageSize:
+                    items: [10]
+                    default_per_page: 10
+        source:
+            acl_resource: view_issue
+            type: orm
+            query:
+                select:
+                    - i.id
+                    - i.summary
+                    - i.code
+                    - t.label as type
+                    - p.label as priority
+                    - wfs.label as status
+                    - i.createdAt
+                from:
+                    - { table: OroAcademyIssueBundle:Issue, alias: i }
+                join:
+                    left:
+                        - { join: i.type, alias: t, conditionType: WITH }
+                        - { join: i.priority, alias: p, conditionType: WITH }
+                        - { join: i.workflowStep, alias: wfs }
+                where:
+                    or:
+                        - :user_id = i.reporter
+                        - :user_id = i.assignee
+            bind_parameters:
+                user_id: id
+        columns:
+            code:
+                label: Code
+            summary:
+                label: Summary
+            type:
+                label: Type
+            priority:
+                label: Priority
+            status:
+                label: Status
+            createdAt:
+                label: Created
+                frontend_type: date
+
+        properties:
+            id: ~
+            view_link:
+                type: url
+                route: oroacademy_view_issue
+                params:
+                    - id
+
+        sorters:
+            columns:
+                createdAt:
+                    data_name: i.createdAt
+            default:
+                createdAt:
+                  DESC
+        actions:
+            view:
+                type:          navigate
+                label:         View
+                link:          view_link
+                icon:          eye-open
+                acl_resource:  view_issue
+                rowAction:     true
+
     # The Dashboard Grid with my active issues
     dashboard-my-issues-grid:
         options:
-            entityHint: call
+            entityHint: issue
             toolbarOptions:
                 addColumnManager: false
                 hide: true
