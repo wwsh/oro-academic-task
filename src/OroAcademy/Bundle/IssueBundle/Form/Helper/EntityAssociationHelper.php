@@ -5,21 +5,22 @@
  * Copyright (c) Oro 2016. 
  ******************************************************************************/
 
-namespace OroAcademy\Bundle\IssueBundle\Form\Handler;
+namespace OroAcademy\Bundle\IssueBundle\Form\Helper;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 /**
- * Class FormEntityRelationHelper
+ * Class EntityAssociationHelper
  * This helper converts raw input values in associated Doctrine fields
  * into their dictionary objects. The requirement is that dict
  * definitions have to be already set in the database.
  * Directly used by the REST controller in order to get rid of ID values
  * in POSTed requests, whenever there are associations.
+ * This class supports MANY_TO_ONE associations only.
  * @package OroAcademy\Bundle\IssueBundle\Form\Handler
  */
-class FormEntityRelationHelper
+class EntityAssociationHelper
 {
     /**
      * @var ObjectManager

@@ -35,7 +35,8 @@ class IssueController extends Controller
     {
         return [
             'gridName'     => 'issue-grid',
-            'entity_class' => $this->container->getParameter('oroacademy_issue.entity.class')
+            'entity_class' => $this->container
+                ->getParameter('oroacademy_issue.entity.class')
         ];
     }
 
@@ -46,8 +47,8 @@ class IssueController extends Controller
      */
     public function mineIssuesAction()
     {
-        $userId  = $this->getUser()->getId();
-        
+        $userId = $this->getUser()->getId();
+
         return [
             'gridName'     => 'my-issue-grid',
             'entity_class' => $this->container
@@ -58,9 +59,9 @@ class IssueController extends Controller
 
     /**
      * @Route("/create", name="oroacademy_create_issue")
-     * @Template
+     * @Template("OroAcademyIssueBundle:Issue:update.html.twig")
      * @Acl(
-     *     id="issue_create",
+     *     id="create_issue",
      *     type="entity",
      *     class="OroAcademy\Bundle\IssueBundle\Entity\Issue",
      *     permission="CREATE"
@@ -70,15 +71,23 @@ class IssueController extends Controller
      */
     public function createAction(Request $request)
     {
-        $issue = new Issue();
-        return $this->updateAction($issue, $request);
+        $formAction = $this->get('oro_entity.routing_helper')
+                           ->generateUrlByRequest('oroacademy_create_issue', $request);
+
+        $issue = $this->getDoctrine()
+                      ->getRepository('OroAcademyIssueBundle:Issue')
+                      ->createIssue();
+
+        return $this->updateAction($issue, $request, $formAction);
     }
 
     /**
-     * @Route("/create/subtask/{parent}", name="oroacademy_create_subtask_issue", requirements={"parent"="\d+"})
-     * @Template
+     * @Route("/create/subtask/{parent}",
+     *     name="oroacademy_create_subtask_issue",
+     *     requirements={"parent"="\d+"})
+     * @Template("OroAcademyIssueBundle:Issue:update.html.twig")
      * @Acl(
-     *     id="issue_create",
+     *     id="create_issue",
      *     type="entity",
      *     class="OroAcademy\Bundle\IssueBundle\Entity\Issue",
      *     permission="CREATE"
@@ -88,7 +97,7 @@ class IssueController extends Controller
      */
     public function createSubtaskAction(Issue $parent, Request $request)
     {
-        $issue = $this->get('doctrine')
+        $issue = $this->getDoctrine()
                       ->getRepository('OroAcademyIssueBundle:Issue')
                       ->createSubtask($parent);
 
@@ -102,7 +111,9 @@ class IssueController extends Controller
     }
 
     /**
-     * @Route("/update/{id}", name="oroacademy_update_issue", requirements={"id"="\d+"})
+     * @Route("/update/{id}",
+     *     name="oroacademy_update_issue",
+     *     requirements={"id"="\d+"})
      * @Template
      *
      * @Acl(
@@ -113,31 +124,48 @@ class IssueController extends Controller
      * )
      * @param Issue   $issue
      * @param Request $request
+     * @param null    $formAction
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function updateAction(Issue $issue, Request $request)
+    public function updateAction(Issue $issue, Request $request, $formAction = null)
     {
-        $form = $this->get('oroacademy_issue_form_builder')
+        $savedFlag = false;
+
+        if (null === $formAction) {
+            $formAction = $this->get('router')->generate(
+                'oroacademy_update_issue',
+                [ 'id' => $issue->getId() ]
+            );
+        }
+
+        $form = $this->get('oroacademy_issue_handler')
                      ->createForm($issue);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->handleIssueUpdate($issue);
+            $this->get('oroacademy_issue_handler')
+                 ->save($issue);
 
-            return $this->get('oro_ui.router')->redirectAfterSave(
-                [
-                    'route'      => 'oroacademy_issue_update',
-                    'parameters' => [ 'id' => $issue->getId() ],
-                ],
-                [ 'route' => 'oroacademy_issue_index' ],
-                $issue
-            );
+            $savedFlag = true;
+
+            if (!$request->get('_widgetContainer')) {
+                return $this->get('oro_ui.router')->redirectAfterSave(
+                    [
+                        'route'      => 'oroacademy_issue_update',
+                        'parameters' => [ 'id' => $issue->getId() ],
+                    ],
+                    [ 'route' => 'oroacademy_issue_index' ],
+                    $issue
+                );
+            }
         }
 
         return [
-            'entity' => $issue,
-            'form'   => $form->createView(),
+            'saved'      => $savedFlag,
+            'entity'     => $issue,
+            'form'       => $form->createView(),
+            'formAction' => $formAction
         ];
     }
 
@@ -163,7 +191,9 @@ class IssueController extends Controller
      * @param Issue $issue
      * @return array
      *
-     * @Route("/widget/details/{id}", name="oroacademy_issue_details_widget", requirements={"id"="\d+"})
+     * @Route("/widget/details/{id}",
+     *     name="oroacademy_issue_details_widget",
+     *     requirements={"id"="\d+"})
      * @Template
      * @AclAncestor("oroacademy_view_issue")
      */
@@ -176,37 +206,14 @@ class IssueController extends Controller
      * @param Issue $issue
      * @return array
      *
-     * @Route("/widget/links/{id}", name="oroacademy_issue_links_widget", requirements={"id"="\d+"})
+     * @Route("/widget/links/{id}",
+     *     name="oroacademy_issue_links_widget",
+     *     requirements={"id"="\d+"})
      * @Template
      * @AclAncestor("oroacademy_view_issue")
      */
     public function linksAction(Issue $issue)
     {
         return [ 'entity' => $issue ];
-    }
-
-    /**
-     * Almost done. Enforce organization set.
-     *
-     * todo: Refactor this into an IssueFormHandler
-     *
-     * @param Issue $issue
-     */
-    protected function handleIssueUpdate(Issue $issue)
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-
-        if (null === $issue->getOrganization()) {
-            $organization = $entityManager->getRepository('OroOrganizationBundle:Organization')
-                                          ->getFirst();
-            $issue->setOrganization($organization);
-        }
-        if (null === $issue->getReporter()) {
-            $token = $this->get('security.token_storage')->getToken();
-
-            $issue->setReporter($token->getUser());
-        }
-        $entityManager->persist($issue);
-        $entityManager->flush();
     }
 }

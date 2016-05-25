@@ -48,6 +48,8 @@ class IssueControllerTest extends WebTestCase
         $repo    = $manager->getRepository('OroAcademyIssueBundle:Issue');
         $issue   = $repo->findOneBy([ 'summary' => 'Issue summary' ]);
         $this->assertNotNull($issue);
+        $this->assertNotNull($issue->getReporter());
+        $this->assertNotNull($issue->getOrganization());
 
         return $issue;
     }

@@ -1,8 +1,8 @@
 <?php
 /*******************************************************************************
- * This is closed source software, created by WWSH. 
+ * This is closed source software, created by WWSH.
  * Please do not copy nor redistribute.
- * Copyright (c) Oro 2016. 
+ * Copyright (c) Oro 2016.
  ******************************************************************************/
 
 namespace OroAcademy\Bundle\IssueBundle\Entity;
@@ -16,12 +16,20 @@ namespace OroAcademy\Bundle\IssueBundle\Entity;
 class IssueRepository extends \Doctrine\ORM\EntityRepository
 {
     /**
+     * @return Issue
+     */
+    public function createIssue()
+    {
+        return new Issue();
+    }
+
+    /**
      * @param Issue $parent
      * @return Issue
      */
     public function createSubtask(Issue $parent)
     {
-        $issue = new Issue();
+        $issue = $this->createIssue();
 
         $issue->setParent($parent);
 

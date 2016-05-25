@@ -6,18 +6,23 @@ services:
         - OroAcademy/Bundle/IssueBundle/Entity/Issue
         - "@doctrine.orm.entity_manager"
 
-  oroacademy_issue_form_helper.api:
-      class: OroAcademy\Bundle\IssueBundle\Form\Handler\FormEntityRelationHelper
+  oroacademy_entity_association_helper.api:
+      class: OroAcademy\Bundle\IssueBundle\Form\Helper\EntityAssociationHelper
       arguments: ["@doctrine.orm.entity_manager"]
 
-  oroacademy_issue_handler.api:
+  oroacademy_form_helper.subtask:
+      class: OroAcademy\Bundle\IssueBundle\Form\Helper\SubtaskFormHelper
+
+  oroacademy_issue_handler:
       class: OroAcademy\Bundle\IssueBundle\Form\Handler\IssueHandler
       scope: request
       arguments:
-        - '@oroacademy_issue_form_helper.api'
+        - '@oroacademy_entity_association_helper.api'
+        - '@oroacademy_form_helper.subtask'
         - '@request'
         - '@doctrine.orm.entity_manager'
-        - '@oroacademy_issue_form_builder'
+        - '@form.factory'
+        - '@security.token_storage'
 
   oroacademy_issue_listener:
       class: OroAcademy\Bundle\IssueBundle\EventListener\IssueNoteUpdatesListener
@@ -34,12 +39,11 @@ services:
       tags:
         - { name: oro_workflow.action, alias: add_collaborator }
 
-  oroacademy_form_helper.subtask:
-      class: OroAcademy\Bundle\IssueBundle\Helper\SubtaskFormHelper
-
-  oroacademy_issue_form_builder:
-      class: OroAcademy\Bundle\IssueBundle\Helper\IssueFormBuilder
+  oroacademy_issue.widget_provider.actions.assign_task:
+      parent: oro_ui.widget_provider.action_button.abstract
       arguments:
-        - '@oroacademy_form_helper.subtask'
-        - '@form.factory'
-        - '@request_stack'
+        - oroacademy_create_issue_button
+        - oroacademy_create_issue_link
+      tags:
+        - { name: oro_ui.view_action_provider, group: activity }
+        - { name: oro_ui.update_action_provider, group: activity }

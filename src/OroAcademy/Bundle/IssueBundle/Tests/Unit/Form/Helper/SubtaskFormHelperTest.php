@@ -5,10 +5,10 @@
  * Copyright (c) Oro 2016. 
  ******************************************************************************/
 
-namespace OroAcademy\Bundle\IssueBundle\Tests\Unit\Helper;
+namespace OroAcademy\Bundle\IssueBundle\Tests\Unit\Form\Helper;
 
 use OroAcademy\Bundle\IssueBundle\Entity\IssueType;
-use OroAcademy\Bundle\IssueBundle\Helper\SubtaskFormHelper;
+use OroAcademy\Bundle\IssueBundle\Form\Helper\SubtaskFormHelper;
 use Symfony\Component\HttpFoundation\Request;
 
 class SubtaskFormHelperTest extends \PHPUnit_Framework_TestCase

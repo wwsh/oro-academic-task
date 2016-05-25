@@ -5,7 +5,7 @@
  * Copyright (c) Oro 2016. 
  ******************************************************************************/
 
-namespace OroAcademy\Bundle\IssueBundle\Helper;
+namespace OroAcademy\Bundle\IssueBundle\Form\Helper;
 
 use OroAcademy\Bundle\IssueBundle\Entity\Issue;
 use OroAcademy\Bundle\IssueBundle\Entity\IssueType;

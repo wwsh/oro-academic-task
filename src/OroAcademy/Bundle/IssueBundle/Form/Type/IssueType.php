@@ -80,7 +80,7 @@ class IssueType extends AbstractType
                 'oro_user_organization_acl_select',
                 [
                     'label'    => 'Assignee',
-                    'required' => true
+                    'required' => false
                 ]
             );
     }

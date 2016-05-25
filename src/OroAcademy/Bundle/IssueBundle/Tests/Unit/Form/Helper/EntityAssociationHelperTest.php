@@ -5,19 +5,20 @@
  * Copyright (c) Oro 2016. 
  ******************************************************************************/
 
-namespace OroAcademy\Bundle\IssueBundle\Tests\Unit\Form\Handler;
+namespace OroAcademy\Bundle\IssueBundle\Tests\Unit\Form\Helper;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use OroAcademy\Bundle\IssueBundle\Entity\Issue;
 use OroAcademy\Bundle\IssueBundle\Entity\IssuePriority;
 use OroAcademy\Bundle\IssueBundle\Entity\IssueType;
 use OroAcademy\Bundle\IssueBundle\Form\Handler\FormEntityRelationHelper;
+use OroAcademy\Bundle\IssueBundle\Form\Helper\EntityAssociationHelper;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class FormEntityRelationHelperTest extends KernelTestCase
+class EntityAssociationHelperTest extends KernelTestCase
 {
     /**
-     * @var FormEntityRelationHelper
+     * @var EntityAssociationHelper
      */
     private $item;
 
@@ -36,7 +37,7 @@ class FormEntityRelationHelperTest extends KernelTestCase
 
         $this->manager = $em;
 
-        $this->item = new FormEntityRelationHelper($em);
+        $this->item = new EntityAssociationHelper($em);
     }
 
     public function testConvertingRelationDataIntoEntityData()

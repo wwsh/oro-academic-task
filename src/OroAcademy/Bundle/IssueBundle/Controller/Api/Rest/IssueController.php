@@ -152,13 +152,13 @@ class IssueController extends RestController
      */
     public function getForm()
     {
-        return $this->get('oroacademy_issue_form_builder')
+        return $this->getFormHandler()
                     ->createForm();
     }
 
     public function getFormHandler()
     {
-        return $this->get('oroacademy_issue_handler.api');
+        return $this->get('oroacademy_issue_handler');
     }
 
     public function getManager()

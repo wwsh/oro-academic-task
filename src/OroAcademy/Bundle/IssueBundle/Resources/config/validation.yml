@@ -1,0 +1,8 @@
+OroAcademy\Bundle\IssueBundle\Entity\Issue:
+    properties:
+        summary:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        description:
+            - NotBlank: ~
