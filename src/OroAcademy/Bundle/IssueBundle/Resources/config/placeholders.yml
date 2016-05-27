@@ -20,8 +20,8 @@ items:
 
     oroacademy_send_email_button:
         template: OroAcademyBundle:Email:activityButton.html.twig
-        #acl: oro_email_email_create
+        acl: oro_email_email_create
 
     oroacademy_send_email_link:
         template: OroAcademyBundle:Email:activityLink.html.twig
-        #acl: oro_email_email_create
+        acl: oro_email_email_create
