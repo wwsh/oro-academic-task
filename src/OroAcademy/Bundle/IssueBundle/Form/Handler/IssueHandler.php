@@ -1,18 +1,19 @@
 <?php
 /*******************************************************************************
- * This is closed source software, created by WWSH.
+ * This is closed source software, created by WWSH. 
  * Please do not copy nor redistribute.
- * Copyright (c) Oro 2016.
+ * Copyright (c) Oro 2016. 
  ******************************************************************************/
 
 namespace OroAcademy\Bundle\IssueBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
 use Oro\Bundle\FormBundle\Form\Handler\ApiFormHandler;
+use Oro\Bundle\FormBundle\Utils\FormUtils;
 use Oro\Bundle\UserBundle\Entity\User;
 use OroAcademy\Bundle\IssueBundle\Entity\Issue;
-use OroAcademy\Bundle\IssueBundle\Form\Helper\EntityAssociationHelper;
 use OroAcademy\Bundle\IssueBundle\Form\Helper\SubtaskFormHelper;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,11 +35,6 @@ class IssueHandler extends ApiFormHandler
     ];
 
     /**
-     * @var EntityAssociationHelper
-     */
-    protected $associationHelper;
-
-    /**
      * @var SubtaskFormHelper
      */
     protected $subtaskFormHelper;
@@ -54,27 +50,33 @@ class IssueHandler extends ApiFormHandler
     protected $user;
 
     /**
+     * @var EntityRoutingHelper
+     */
+    protected $routingHelper;
+
+    /**
      * IssueHandler constructor.
-     * @param EntityAssociationHelper $associationHelper
-     * @param SubtaskFormHelper       $subtaskFormHelper
-     * @param Request                 $request
-     * @param ObjectManager           $manager
-     * @param FormFactory             $formFactory
+     * @param SubtaskFormHelper   $subtaskFormHelper
+     * @param Request             $request
+     * @param ObjectManager       $manager
+     * @param FormFactory         $formFactory
+     * @param TokenStorage        $tokenStorage
+     * @param EntityRoutingHelper $entityRoutingHelper
      */
     public function __construct(
-        EntityAssociationHelper $associationHelper,
         SubtaskFormHelper $subtaskFormHelper,
         Request $request,
         ObjectManager $manager,
         FormFactory $formFactory,
-        TokenStorage $tokenStorage
+        TokenStorage $tokenStorage,
+        $entityRoutingHelper
     ) {
         parent::__construct($request, $manager);
 
-        $this->associationHelper = $associationHelper;
         $this->subtaskFormHelper = $subtaskFormHelper;
         $this->formFactory       = $formFactory;
         $this->user              = $tokenStorage->getToken()->getUser();
+        $this->routingHelper     = $entityRoutingHelper;
     }
 
     /**
@@ -115,23 +117,14 @@ class IssueHandler extends ApiFormHandler
      */
     public function process($entity)
     {
-        $requestData = $this->request->request->get('issue');
-
-        // the Subtask guess...
-        if (empty($requestData)) {
-            $requestData = $this->request->request->get('subtask');
-        }
-
+        $this->enforceOrganizationAndReporter($entity);
         $this->form = $this->createForm($entity);
-
-        $requestData = $this->associationHelper
-            ->getEntityData($entity, $requestData);
+        $this->processEntityForWidget($entity);
 
         if (in_array($this->request->getMethod(), [ 'POST', 'PUT' ])) {
-            $this->form->submit($requestData);
+            $this->form->handleRequest($this->request);
 
             if ($this->form->isValid()) {
-                $this->enforceOrganizationAndReporter($entity);
                 $this->onSuccess($entity);
 
                 return true;
@@ -142,13 +135,11 @@ class IssueHandler extends ApiFormHandler
     }
 
     /**
-     * @param Issue $issue
+     * @return \Symfony\Component\Form\FormInterface
      */
-    public function save(Issue $issue)
+    public function getForm()
     {
-        $this->enforceOrganizationAndReporter($issue);
-        $this->manager->persist($issue);
-        $this->manager->flush();
+        return $this->form;
     }
 
     /**
@@ -164,6 +155,33 @@ class IssueHandler extends ApiFormHandler
         }
         if (null === $issue->getReporter()) {
             $issue->setReporter($this->user);
+        }
+    }
+
+    /**
+     * Autosetting the Assignee in the popup form.
+     * Code copied from CRM. Needs refactoring. Todo
+     * 
+     * @param Issue $entity
+     */
+    protected function processEntityForWidget($entity)
+    {
+        $action            = $this->routingHelper->getAction($this->request);
+        $targetEntityClass = $this->routingHelper
+            ->getEntityClassName($this->request);
+        $targetEntityId    = $this->routingHelper->getEntityId($this->request);
+
+        if ($targetEntityClass
+            && !$entity->getId()
+            && $this->request->getMethod() === 'GET'
+            && $action === 'assign'
+            && is_a($targetEntityClass, 'Oro\Bundle\UserBundle\Entity\User', true)
+        ) {
+            $entity->setAssignee(
+                $this->routingHelper
+                    ->getEntity($targetEntityClass, $targetEntityId)
+            );
+            FormUtils::replaceField($this->form, 'assignee', [ 'read_only' => true ]);
         }
     }
 }

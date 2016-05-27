@@ -69,11 +69,15 @@ class SubtaskType extends AbstractType
             )
             ->add(
                 'assignee',
-                'oro_user_organization_acl_select',
+                'oro_user_acl_select',
                 [
                     'label'    => 'Assignee',
                     'required' => true
                 ]
+            )
+            ->add(
+                'reporter',
+                null
             );
     }
 

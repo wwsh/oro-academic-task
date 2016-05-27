@@ -1,8 +1,8 @@
 <?php
 /*******************************************************************************
- * This is closed source software, created by WWSH.
+ * This is closed source software, created by WWSH. 
  * Please do not copy nor redistribute.
- * Copyright (c) Oro 2016.
+ * Copyright (c) Oro 2016. 
  ******************************************************************************/
 
 namespace OroAcademy\Bundle\IssueBundle\Controller;
@@ -138,15 +138,9 @@ class IssueController extends Controller
             );
         }
 
-        $form = $this->get('oroacademy_issue_handler')
-                     ->createForm($issue);
+        $handler = $this->get('oroacademy_issue_handler');
 
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('oroacademy_issue_handler')
-                 ->save($issue);
-
+        if ($handler->process($issue)) {
             $savedFlag = true;
 
             if (!$request->get('_widgetContainer')) {
@@ -164,7 +158,7 @@ class IssueController extends Controller
         return [
             'saved'      => $savedFlag,
             'entity'     => $issue,
-            'form'       => $form->createView(),
+            'form'       => $handler->getForm()->createView(),
             'formAction' => $formAction
         ];
     }

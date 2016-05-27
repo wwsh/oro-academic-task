@@ -13,16 +13,27 @@ services:
   oroacademy_form_helper.subtask:
       class: OroAcademy\Bundle\IssueBundle\Form\Helper\SubtaskFormHelper
 
-  oroacademy_issue_handler:
-      class: OroAcademy\Bundle\IssueBundle\Form\Handler\IssueHandler
+  oroacademy_issue_handler.api:
+      class: OroAcademy\Bundle\IssueBundle\Form\Handler\Api\IssueHandler
       scope: request
       arguments:
-        - '@oroacademy_entity_association_helper.api'
         - '@oroacademy_form_helper.subtask'
         - '@request'
         - '@doctrine.orm.entity_manager'
         - '@form.factory'
         - '@security.token_storage'
+        - '@oroacademy_entity_association_helper.api'
+
+  oroacademy_issue_handler:
+      class: OroAcademy\Bundle\IssueBundle\Form\Handler\IssueHandler
+      scope: request
+      arguments:
+        - '@oroacademy_form_helper.subtask'
+        - '@request'
+        - '@doctrine.orm.entity_manager'
+        - '@form.factory'
+        - '@security.token_storage'
+        - '@oro_entity.routing_helper'
 
   oroacademy_issue_listener:
       class: OroAcademy\Bundle\IssueBundle\EventListener\IssueNoteUpdatesListener

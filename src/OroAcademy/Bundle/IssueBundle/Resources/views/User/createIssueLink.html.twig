@@ -1,5 +1,5 @@
 {{ UI.clientLink({
-    'dataUrl': path('oroacademy_create_issue'),
+    'dataUrl': path('oroacademy_create_issue', oro_action_params(entity, 'assign')),
     'aCss': 'no-hash',
     'iCss': 'icon-file-alt',
     'dataId': entity.id,
