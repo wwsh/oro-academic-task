@@ -1,13 +1,15 @@
 <?php
 /*******************************************************************************
- * This is closed source software, created by WWSH. 
+ * This is closed source software, created by WWSH.
  * Please do not copy nor redistribute.
- * Copyright (c) Oro 2016. 
+ * Copyright (c) Oro 2016.
  ******************************************************************************/
 
 namespace OroAcademy\Bundle\IssueBundle\Migrations\Schema\v1_0;
 
 use Doctrine\DBAL\Schema\Schema;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
@@ -17,10 +19,23 @@ use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
  * Class OroAcademyIssueBundle
  * @package OroAcademy\Bundle\IssueBundle\Migrations
  */
-class OroAcademyIssueBundle implements Migration, NoteExtensionAwareInterface
+class OroAcademyIssueBundle implements Migration, NoteExtensionAwareInterface,
+    ActivityExtensionAwareInterface
 {
     /** @var NoteExtension */
     protected $noteExtension;
+
+    /** @var ActivityExtension */
+    protected $activityExtension;
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setActivityExtension(ActivityExtension $activityExtension)
+    {
+        $this->activityExtension = $activityExtension;
+    }
 
     /**
      * {@inheritdoc}
@@ -46,6 +61,7 @@ class OroAcademyIssueBundle implements Migration, NoteExtensionAwareInterface
         $this->addOroacademyIssueToIssueForeignKeys($schema);
         $this->addOroacademyIssueToUserForeignKeys($schema);
         $this->noteExtension->addNoteAssociation($schema, 'oroacademy_issue');
+        self::addActivityAssociations($schema, $this->activityExtension);
     }
 
     /**
@@ -168,57 +184,57 @@ class OroAcademyIssueBundle implements Migration, NoteExtensionAwareInterface
         $table = $schema->getTable('oroacademy_issue');
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_workflow_item'),
-            ['workflow_item_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+            [ 'workflow_item_id' ],
+            [ 'id' ],
+            [ 'onDelete' => 'SET NULL', 'onUpdate' => null ]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('oroacademy_issue_resolution'),
-            ['resolution_id'],
-            ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            [ 'resolution_id' ],
+            [ 'id' ],
+            [ 'onDelete' => null, 'onUpdate' => null ]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),
-            ['organization_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+            [ 'organization_id' ],
+            [ 'id' ],
+            [ 'onDelete' => 'SET NULL', 'onUpdate' => null ]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('oroacademy_issue_priority'),
-            ['priority_id'],
-            ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            [ 'priority_id' ],
+            [ 'id' ],
+            [ 'onDelete' => null, 'onUpdate' => null ]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_workflow_step'),
-            ['workflow_step_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+            [ 'workflow_step_id' ],
+            [ 'id' ],
+            [ 'onDelete' => 'SET NULL', 'onUpdate' => null ]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_user'),
-            ['assignee_user_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+            [ 'assignee_user_id' ],
+            [ 'id' ],
+            [ 'onDelete' => 'SET NULL', 'onUpdate' => null ]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_user'),
-            ['reporter_user_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+            [ 'reporter_user_id' ],
+            [ 'id' ],
+            [ 'onDelete' => 'SET NULL', 'onUpdate' => null ]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('oroacademy_issue'),
-            ['parent_id'],
-            ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            [ 'parent_id' ],
+            [ 'id' ],
+            [ 'onDelete' => null, 'onUpdate' => null ]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('oroacademy_issue_type'),
-            ['type_id'],
-            ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            [ 'type_id' ],
+            [ 'id' ],
+            [ 'onDelete' => null, 'onUpdate' => null ]
         );
     }
 
@@ -232,15 +248,15 @@ class OroAcademyIssueBundle implements Migration, NoteExtensionAwareInterface
         $table = $schema->getTable('oroacademy_issue_to_issue');
         $table->addForeignKeyConstraint(
             $schema->getTable('oroacademy_issue'),
-            ['issue_id'],
-            ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+            [ 'issue_id' ],
+            [ 'id' ],
+            [ 'onDelete' => 'CASCADE', 'onUpdate' => null ]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('oroacademy_issue'),
-            ['related_issue_id'],
-            ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+            [ 'related_issue_id' ],
+            [ 'id' ],
+            [ 'onDelete' => 'CASCADE', 'onUpdate' => null ]
         );
     }
 
@@ -254,15 +270,33 @@ class OroAcademyIssueBundle implements Migration, NoteExtensionAwareInterface
         $table = $schema->getTable('oroacademy_issue_to_user');
         $table->addForeignKeyConstraint(
             $schema->getTable('oroacademy_issue'),
-            ['issue_id'],
-            ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+            [ 'issue_id' ],
+            [ 'id' ],
+            [ 'onDelete' => 'CASCADE', 'onUpdate' => null ]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_user'),
-            ['user_id'],
-            ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+            [ 'user_id' ],
+            [ 'id' ],
+            [ 'onDelete' => 'CASCADE', 'onUpdate' => null ]
+        );
+    }
+
+    /**
+     * Enables Email activity for User entity
+     *
+     * @param Schema            $schema
+     * @param ActivityExtension $activityExtension
+     */
+    public static function addActivityAssociations(
+        Schema $schema,
+        ActivityExtension $activityExtension
+    ) {
+        $activityExtension->addActivityAssociation(
+            $schema,
+            'oro_email',
+            'oroacademy_issue',
+            true
         );
     }
 }

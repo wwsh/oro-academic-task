@@ -1,8 +1,8 @@
 <?php
 /*******************************************************************************
- * This is closed source software, created by WWSH. 
+ * This is closed source software, created by WWSH.
  * Please do not copy nor redistribute.
- * Copyright (c) Oro 2016. 
+ * Copyright (c) Oro 2016.
  ******************************************************************************/
 
 namespace OroAcademy\Bundle\IssueBundle\Controller;
@@ -209,5 +209,28 @@ class IssueController extends Controller
     public function linksAction(Issue $issue)
     {
         return [ 'entity' => $issue ];
+    }
+
+    /**
+     * This action is used to render the list of emails associated with
+     * Issues on the view page of this entity
+     *
+     * @Route(
+     *      "/activity/view/{entityClass}/{entityId}",
+     *      name="oroacademy_issue_activity_view"
+     * )
+     *
+     * @AclAncestor("view_issue")
+     * @Template
+     * @param $entityClass
+     * @param $entityId
+     * @return array
+     */
+    public function activityAction($entityClass, $entityId)
+    {
+        return [
+            'entity' => $this->get('oro_entity.routing_helper')
+                             ->getEntity($entityClass, $entityId)
+        ];
     }
 }

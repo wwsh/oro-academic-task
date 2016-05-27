@@ -45,9 +45,21 @@ use OroAcademy\Bundle\IssueBundle\Model\ExtendIssue;
  *      },
  *       "tag"={
  *          "enabled"=true
+ *      },
+ *       "grouping"={
+ *          "groups"={"activity"},
+ *          "activity"={
+ *              "route"="oroacademy_issue_activity_view",
+ *              "acl"="view_issue",
+ *              "action_button_widget"="oroacademy_send_email_button",
+ *              "action_link_widget"="oroacademy_send_email_link"
+ *          }
  *      }
  *    }
  * )
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.ExcessivePublicCount)
  */
 class Issue extends ExtendIssue
 {
