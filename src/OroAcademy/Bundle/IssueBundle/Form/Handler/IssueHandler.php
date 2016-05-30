@@ -22,6 +22,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 /**
  * Class IssueHandler.
  * Borrowing as much code as possible.
+ *
  * @package OroAcademy\Bundle\IssueBundle\Form\Handler
  */
 class IssueHandler extends ApiFormHandler
@@ -56,6 +57,7 @@ class IssueHandler extends ApiFormHandler
 
     /**
      * IssueHandler constructor.
+     *
      * @param SubtaskFormHelper   $subtaskFormHelper
      * @param Request             $request
      * @param ObjectManager       $manager
@@ -161,7 +163,7 @@ class IssueHandler extends ApiFormHandler
     /**
      * Autosetting the Assignee in the popup form.
      * Code copied from CRM. Needs refactoring. Todo
-     * 
+     *
      * @param Issue $entity
      */
     protected function processEntityForWidget($entity)

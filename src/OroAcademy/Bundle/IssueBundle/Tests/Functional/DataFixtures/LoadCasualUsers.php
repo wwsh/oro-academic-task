@@ -63,7 +63,9 @@ class LoadCasualUsers extends AbstractFixture implements ContainerAwareInterface
      */
     private function createUser($firstName, $lastName)
     {
-        /** @var UserManager $userManager */
+        /**
+         * @var UserManager $userManager
+         */
         $userManager = $this->container->get('oro_user.manager');
 
         $manager = $this->manager;
@@ -104,5 +106,4 @@ class LoadCasualUsers extends AbstractFixture implements ContainerAwareInterface
 
         $userManager->updateUser($user);
     }
-
 }

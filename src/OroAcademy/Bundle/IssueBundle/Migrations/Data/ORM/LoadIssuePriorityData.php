@@ -33,7 +33,9 @@ class LoadIssuePriorityData extends AbstractFixture implements OrderedFixtureInt
         $repo = $manager->getRepository('OroAcademyIssueBundle:IssuePriority');
 
         foreach ($this->data as $name => $value) {
-            /** @var IssuePriority $issuePriority */
+            /**
+             * @var IssuePriority $issuePriority
+             */
             $issuePriority = $repo->findOneBy([ 'name' => $name ]);
             if (!$issuePriority) {
                 $issuePriority = new IssuePriority($name, $value[0], $value[1]);

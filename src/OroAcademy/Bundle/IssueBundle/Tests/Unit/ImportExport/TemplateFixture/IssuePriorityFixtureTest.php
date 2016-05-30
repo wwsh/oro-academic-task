@@ -79,7 +79,9 @@ class IssuePriorityFixtureTest extends \PHPUnit_Framework_TestCase
         $data = $this->fixture->getData();
         $this->assertCount(1, $data);
 
-        /** @var IssuePriority $priority */
+        /**
+         * @var IssuePriority $priority
+         */
         $priority = current($data);
         $this->assertInstanceOf('OroAcademy\Bundle\IssueBundle\Entity\IssuePriority', $priority);
         $this->assertEquals('normal', $priority->getName());

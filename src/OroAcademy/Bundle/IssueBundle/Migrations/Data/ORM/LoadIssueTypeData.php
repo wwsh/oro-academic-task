@@ -35,7 +35,9 @@ class LoadIssueTypeData extends AbstractFixture implements OrderedFixtureInterfa
         $repo = $manager->getRepository('OroAcademyIssueBundle:IssueType');
 
         foreach ($this->issueTypes as $typeName => $label) {
-            /** @var IssueType $issueType */
+            /**
+             * @var IssueType $issueType
+             */
             $issueType = $repo->findOneBy([ 'name' => $typeName ]);
             if (!$issueType) {
                 $issueType = new IssueType($typeName, $label);

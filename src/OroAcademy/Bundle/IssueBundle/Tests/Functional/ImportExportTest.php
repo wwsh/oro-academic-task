@@ -49,7 +49,9 @@ class ImportExportTest extends WebTestCase
      */
     protected function getBatchJobManager()
     {
-        /** @var BatchJobRepository $batchJobRepository */
+        /**
+         * @var BatchJobRepository $batchJobRepository
+         */
         $batchJobRepository = $this->getContainer()->get('akeneo_batch.job_repository');
         return $batchJobRepository->getJobManager();
     }
@@ -95,10 +97,14 @@ class ImportExportTest extends WebTestCase
         $this->file = $this->getImportTemplate();
         $this->assertTrue(file_exists($this->file));
 
-        /** @var Form $form */
+        /**
+         * @var Form $form
+         */
         $form = $crawler->selectButton('Submit')->form();
 
-        /** TODO Change after BAP-1813 */
+        /**
+         * TODO Change after BAP-1813
+         */
         $form->getFormNode()->setAttribute(
             'action',
             $form->getFormNode()->getAttribute('action') . '&_widgetContainer=dialog'

@@ -31,14 +31,14 @@ class IssueNoteUpdatesListenerTest extends \PHPUnit_Framework_TestCase
         $objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
 
         $objectManager->expects($this->once())
-                      ->method('persist')->with($issue);
+            ->method('persist')->with($issue);
 
         $objectManager->expects($this->once())
-                      ->method('flush');
+            ->method('flush');
 
         $args = $this->getMockBuilder('Doctrine\Common\Persistence\Event\LifecycleEventArgs')
-                     ->disableOriginalConstructor()
-                     ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $args->expects($this->any())->method('getObjectManager')->will($this->returnValue($objectManager));
         $args->expects($this->any())->method('getObject')->will($this->returnValue($note));
@@ -60,14 +60,14 @@ class IssueNoteUpdatesListenerTest extends \PHPUnit_Framework_TestCase
         $objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
 
         $objectManager->expects($this->once())
-                      ->method('persist')->with($issue);
+            ->method('persist')->with($issue);
 
         $objectManager->expects($this->once())
-                      ->method('flush');
+            ->method('flush');
 
         $args = $this->getMockBuilder('Doctrine\Common\Persistence\Event\LifecycleEventArgs')
-                     ->disableOriginalConstructor()
-                     ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $args->expects($this->any())->method('getObjectManager')->will($this->returnValue($objectManager));
         $args->expects($this->any())->method('getObject')->will($this->returnValue($note));
@@ -89,14 +89,14 @@ class IssueNoteUpdatesListenerTest extends \PHPUnit_Framework_TestCase
         $objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
 
         $objectManager->expects($this->once())
-                      ->method('persist')->with($issue);
+            ->method('persist')->with($issue);
 
         $objectManager->expects($this->once())
-                      ->method('flush');
+            ->method('flush');
 
         $args = $this->getMockBuilder('Doctrine\Common\Persistence\Event\LifecycleEventArgs')
-                     ->disableOriginalConstructor()
-                     ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $args->expects($this->any())->method('getObjectManager')->will($this->returnValue($objectManager));
         $args->expects($this->any())->method('getObject')->will($this->returnValue($note));

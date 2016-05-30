@@ -74,44 +74,44 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->form = $this->getMockBuilder('Symfony\Component\Form\Form')
-                           ->disableOriginalConstructor()
-                           ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->user = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
-                           ->disableOriginalConstructor()
-                           ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->request = new Request();
 
         $this->manager = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
-                              ->disableOriginalConstructor()
-                              ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->associationHelper = $this->getMockBuilder('OroAcademy\Bundle\IssueBundle\Form\Helper\EntityAssociationHelper')
-                                        ->disableOriginalConstructor()
-                                        ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->subtaskHelper = $this->getMockBuilder('OroAcademy\Bundle\IssueBundle\Form\Helper\SubtaskFormHelper')
-                                    ->disableOriginalConstructor()
-                                    ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->formFactory = $this->getMockBuilder('Symfony\Component\Form\FormFactory')
-                                  ->disableOriginalConstructor()
-                                  ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken')
-                      ->disableOriginalConstructor()
-                      ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $token->method('getUser')
-              ->willReturn($this->user);
+            ->willReturn($this->user);
 
         $this->tokenStorage = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage')
-                                   ->disableOriginalConstructor()
-                                   ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->tokenStorage->method('getToken')
-                           ->willReturn($token);
+            ->willReturn($token);
 
         $this->entity  = new Issue();
         $this->handler = new IssueHandler(
@@ -130,45 +130,45 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
     {
 
         $organizationRepository = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository')
-                                       ->disableOriginalConstructor()
-                                       ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $organization           = $this->getMock('Oro\Bundle\OrganizationBundle\Entity\Organization');
 
         $this->entity = $this->getMock('OroAcademy\Bundle\IssueBundle\Entity\Issue');
 
         $this->entity->expects($this->once())
-                     ->method('getOrganization')
-                     ->will($this->returnValue(null));
+            ->method('getOrganization')
+            ->will($this->returnValue(null));
 
         $this->entity->expects($this->once())
-                     ->method('getReporter')
-                     ->will($this->returnValue(null));
+            ->method('getReporter')
+            ->will($this->returnValue(null));
 
         $organizationRepository->method('getFirst')
-                               ->willReturn($organization);
+            ->willReturn($organization);
 
         $this->manager->expects($this->once())
-                      ->method('getRepository')
-                      ->with('OroOrganizationBundle:Organization')
-                      ->willReturn($organizationRepository);
+            ->method('getRepository')
+            ->with('OroOrganizationBundle:Organization')
+            ->willReturn($organizationRepository);
 
         $this->entity->expects($this->once())
-                     ->method('setOrganization')
-                     ->with($organization);
+            ->method('setOrganization')
+            ->with($organization);
 
         $this->entity->expects($this->once())
-                     ->method('setReporter')
-                     ->with($this->user);
+            ->method('setReporter')
+            ->with($this->user);
 
         $this->associationHelper->expects($this->once())
-                                ->method('getEntityData')
-                                ->with($this->entity);
+            ->method('getEntityData')
+            ->with($this->entity);
 
         $this->form->expects($this->never())
-                   ->method('submit');
+            ->method('submit');
 
         $this->formFactory->method('create')
-                          ->will($this->returnValue($this->form));
+            ->will($this->returnValue($this->form));
 
         $this->assertFalse($this->handler->process($this->entity));
     }
@@ -181,50 +181,50 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
     public function testProcessSupportedRequest($method)
     {
         $organizationRepository = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository')
-                                       ->disableOriginalConstructor()
-                                       ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $organization           = $this->getMock('Oro\Bundle\OrganizationBundle\Entity\Organization');
 
         $this->entity = $this->getMock('OroAcademy\Bundle\IssueBundle\Entity\Issue');
 
         $this->entity->expects($this->once())
-                     ->method('getOrganization')
-                     ->will($this->returnValue(null));
+            ->method('getOrganization')
+            ->will($this->returnValue(null));
 
         $this->entity->expects($this->at(0))
-                     ->method('getReporter')
-                     ->will($this->returnValue($this->user));
+            ->method('getReporter')
+            ->will($this->returnValue($this->user));
 
         $this->entity->expects($this->at(1))
-                     ->method('getReporter')
-                     ->will($this->returnValue(null));
+            ->method('getReporter')
+            ->will($this->returnValue(null));
 
         $organizationRepository->method('getFirst')
-                               ->willReturn($organization);
+            ->willReturn($organization);
 
         $this->manager->expects($this->once())
-                      ->method('getRepository')
-                      ->with('OroOrganizationBundle:Organization')
-                      ->willReturn($organizationRepository);
+            ->method('getRepository')
+            ->with('OroOrganizationBundle:Organization')
+            ->willReturn($organizationRepository);
 
         $this->entity->expects($this->once())
-                     ->method('setOrganization')
-                     ->with($organization);
+            ->method('setOrganization')
+            ->with($organization);
 
         $this->entity->expects($this->once())
-                     ->method('setReporter')
-                     ->with($this->user);
+            ->method('setReporter')
+            ->with($this->user);
 
         $this->request->setMethod($method);
 
         $this->associationHelper->expects($this->once())
-                                ->method('getEntityData');
+            ->method('getEntityData');
 
         $this->form->expects($this->once())
-                   ->method('submit');
+            ->method('submit');
 
         $this->formFactory->method('create')
-                          ->will($this->returnValue($this->form));
+            ->will($this->returnValue($this->form));
 
         $this->assertFalse($this->handler->process($this->entity));
     }
@@ -246,61 +246,61 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
         $this->request->request->set('issue', [ ]);
 
         $this->associationHelper->expects($this->once())
-                                ->method('getEntityData')
-                                ->will($this->returnValue($entityProcessedData));
+            ->method('getEntityData')
+            ->will($this->returnValue($entityProcessedData));
 
         $organizationRepository = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository')
-                                       ->disableOriginalConstructor()
-                                       ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $organization           = $this->getMock('Oro\Bundle\OrganizationBundle\Entity\Organization');
 
         $this->entity = $this->getMock('OroAcademy\Bundle\IssueBundle\Entity\Issue');
 
         $this->entity->expects($this->once())
-                     ->method('getOrganization')
-                     ->will($this->returnValue(null));
+            ->method('getOrganization')
+            ->will($this->returnValue(null));
 
         $this->entity->expects($this->at(0))
-                     ->method('getReporter')
-                     ->will($this->returnValue($this->user));
+            ->method('getReporter')
+            ->will($this->returnValue($this->user));
 
         $this->entity->expects($this->at(1))
-                     ->method('getReporter')
-                     ->will($this->returnValue(null));
+            ->method('getReporter')
+            ->will($this->returnValue(null));
 
         $organizationRepository->method('getFirst')
-                               ->willReturn($organization);
+            ->willReturn($organization);
 
         $this->manager->expects($this->once())
-                      ->method('getRepository')
-                      ->with('OroOrganizationBundle:Organization')
-                      ->willReturn($organizationRepository);
+            ->method('getRepository')
+            ->with('OroOrganizationBundle:Organization')
+            ->willReturn($organizationRepository);
 
         $this->entity->expects($this->once())
-              ->method('setOrganization')
-              ->with($organization);
+            ->method('setOrganization')
+            ->with($organization);
 
         $this->entity->expects($this->once())
-              ->method('setReporter')
-              ->with($this->user);
+            ->method('setReporter')
+            ->with($this->user);
 
         $this->form->expects($this->once())
-                   ->method('submit')
-                   ->with($entityProcessedData);
+            ->method('submit')
+            ->with($entityProcessedData);
 
         $this->form->expects($this->once())
-                   ->method('isValid')
-                   ->will($this->returnValue(true));
+            ->method('isValid')
+            ->will($this->returnValue(true));
 
         $this->manager->expects($this->once())
-                      ->method('persist')
-                      ->with($this->entity);
+            ->method('persist')
+            ->with($this->entity);
 
         $this->manager->expects($this->once())
-                      ->method('flush');
+            ->method('flush');
 
         $this->formFactory->method('create')
-                          ->will($this->returnValue($this->form));
+            ->will($this->returnValue($this->form));
 
         $this->assertTrue($this->handler->process($this->entity));
     }
@@ -312,56 +312,56 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
         $entityProcessedData = [ ];
 
         $this->associationHelper->expects($this->once())
-                                ->method('getEntityData')
-                                ->will($this->returnValue($entityProcessedData));
+            ->method('getEntityData')
+            ->will($this->returnValue($entityProcessedData));
 
         $this->form->expects($this->once())
-                   ->method('submit')
-                   ->with($entityProcessedData);
+            ->method('submit')
+            ->with($entityProcessedData);
 
         $this->form->expects($this->once())
-                   ->method('isValid')
-                   ->will($this->returnValue(true));
+            ->method('isValid')
+            ->will($this->returnValue(true));
 
         $this->form->expects($this->never())
-                   ->method('get');
+            ->method('get');
 
         $this->formFactory->method('create')
-                          ->will($this->returnValue($this->form));
+            ->will($this->returnValue($this->form));
 
         $this->entity                  = $this->getMock('OroAcademy\Bundle\IssueBundle\Entity\Issue');
         $organizationRepository = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository')
-                                       ->disableOriginalConstructor()
-                                       ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $organization           = $this->getMock('Oro\Bundle\OrganizationBundle\Entity\Organization');
 
         $this->entity->expects($this->once())
-              ->method('getOrganization')
-              ->will($this->returnValue(null));
+            ->method('getOrganization')
+            ->will($this->returnValue(null));
 
         $this->entity->expects($this->at(0))
-                     ->method('getReporter')
-                     ->will($this->returnValue($this->user));
+            ->method('getReporter')
+            ->will($this->returnValue($this->user));
 
         $this->entity->expects($this->at(1))
-                     ->method('getReporter')
-                     ->will($this->returnValue(null));
+            ->method('getReporter')
+            ->will($this->returnValue(null));
 
         $organizationRepository->method('getFirst')
-                               ->willReturn($organization);
+            ->willReturn($organization);
 
         $this->manager->expects($this->once())
-                      ->method('getRepository')
-                      ->with('OroOrganizationBundle:Organization')
-                      ->willReturn($organizationRepository);
+            ->method('getRepository')
+            ->with('OroOrganizationBundle:Organization')
+            ->willReturn($organizationRepository);
 
         $this->entity->expects($this->once())
-              ->method('setOrganization')
-              ->with($organization);
+            ->method('setOrganization')
+            ->with($organization);
 
         $this->entity->expects($this->once())
-              ->method('setReporter')
-              ->with($this->user);
+            ->method('setReporter')
+            ->with($this->user);
 
         $this->assertTrue($this->handler->process($this->entity));
     }
@@ -381,60 +381,60 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
         $this->request->request->set('subtask', $requestInputData);
 
         $this->associationHelper->expects($this->once())
-                                ->method('getEntityData')
-                                ->with($this->entity, $requestInputData)
-                                ->will($this->returnValue($entityProcessedData));
+            ->method('getEntityData')
+            ->with($this->entity, $requestInputData)
+            ->will($this->returnValue($entityProcessedData));
 
         $this->form->expects($this->once())
-                   ->method('submit')
-                   ->with($entityProcessedData);
+            ->method('submit')
+            ->with($entityProcessedData);
 
         $this->form->expects($this->once())
-                   ->method('isValid')
-                   ->will($this->returnValue(true));
+            ->method('isValid')
+            ->will($this->returnValue(true));
 
         $organizationRepository = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository')
-                                       ->disableOriginalConstructor()
-                                       ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $organization           = $this->getMock('Oro\Bundle\OrganizationBundle\Entity\Organization');
 
         $this->entity->expects($this->once())
-              ->method('getOrganization')
-              ->will($this->returnValue(null));
+            ->method('getOrganization')
+            ->will($this->returnValue(null));
 
         $this->entity->expects($this->at(0))
-                     ->method('getReporter')
-                     ->will($this->returnValue($this->user));
+            ->method('getReporter')
+            ->will($this->returnValue($this->user));
 
         $this->entity->expects($this->at(1))
-                     ->method('getReporter')
-                     ->will($this->returnValue(null));
+            ->method('getReporter')
+            ->will($this->returnValue(null));
 
         $organizationRepository->method('getFirst')
-                               ->willReturn($organization);
+            ->willReturn($organization);
 
         $this->manager->expects($this->once())
-                      ->method('getRepository')
-                      ->with('OroOrganizationBundle:Organization')
-                      ->willReturn($organizationRepository);
+            ->method('getRepository')
+            ->with('OroOrganizationBundle:Organization')
+            ->willReturn($organizationRepository);
 
         $this->entity->expects($this->once())
-              ->method('setOrganization')
-              ->with($organization);
+            ->method('setOrganization')
+            ->with($organization);
 
         $this->entity->expects($this->once())
-              ->method('setReporter')
-              ->with($this->user);
+            ->method('setReporter')
+            ->with($this->user);
 
         $this->manager->expects($this->once())
-                      ->method('persist')
-                      ->with($this->entity);
+            ->method('persist')
+            ->with($this->entity);
 
         $this->manager->expects($this->once())
-                      ->method('flush');
+            ->method('flush');
 
         $this->formFactory->method('create')
-                          ->will($this->returnValue($this->form));
+            ->will($this->returnValue($this->form));
 
         $this->assertTrue($this->handler->process($this->entity));
     }
@@ -444,8 +444,8 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
         $request = new Request();
 
         $issueRepository = $this->getMockBuilder('OroAcademy\Bundle\IssueBundle\Entity\IssueRepository')
-                                ->disableOriginalConstructor()
-                                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $issue            = $this->getMock('OroAcademy\Bundle\IssueBundle\Entity\Issue');
         $request->request = $this->getMock('Symfony\Component\HttpFoundation\Request');
@@ -453,27 +453,27 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
         $form = [ ];
 
         $this->subtaskHelper->expects($this->at(0))->method('isSubtask')->with($issue)
-                            ->will($this->returnValue(false));
+            ->will($this->returnValue(false));
         $this->subtaskHelper->expects($this->at(1))->method('isSubtask')->with($issue)
-                            ->will($this->returnValue(true));
+            ->will($this->returnValue(true));
         $this->subtaskHelper->expects($this->at(2))->method('isSubtask')->with($issue)
-                            ->will($this->returnValue(false));
+            ->will($this->returnValue(false));
 
         $this->formFactory->expects($this->at(0))->method('create')->with('issue', $issue)
-                          ->will($this->returnValue($form));
+            ->will($this->returnValue($form));
         $this->formFactory->expects($this->at(1))->method('create')->with('subtask', $issue)
-                          ->will($this->returnValue($form));
+            ->will($this->returnValue($form));
         $this->formFactory->expects($this->at(2))->method('create')->with('issue', $issue)
-                          ->will($this->returnValue($form));
+            ->will($this->returnValue($form));
 
         $issueRepository->expects($this->once())
-                        ->method('createIssue')
-                        ->willReturn($issue);
+            ->method('createIssue')
+            ->willReturn($issue);
 
         $this->manager->expects($this->at(0))
-                      ->method('getRepository')
-                      ->with('OroAcademyIssueBundle:Issue')
-                      ->willReturn($issueRepository);
+            ->method('getRepository')
+            ->with('OroAcademyIssueBundle:Issue')
+            ->willReturn($issueRepository);
 
         $this->assertEquals($form, $this->handler->createForm($issue));
         $this->assertEquals($form, $this->handler->createForm($issue));

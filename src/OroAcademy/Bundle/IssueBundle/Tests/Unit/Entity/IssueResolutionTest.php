@@ -64,5 +64,4 @@ class IssueResolutionTest extends \PHPUnit_Framework_TestCase
             [ new IssueResolution(IssueResolution::RESOLUTION_WORKSFORME, 'Works For Me'), 'Works For Me' ],
         ];
     }
-
 }

@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
  * Directly used by the REST controller in order to get rid of ID values
  * in POSTed requests, whenever there are associations.
  * This class supports MANY_TO_ONE associations only.
+ *
  * @package OroAcademy\Bundle\IssueBundle\Form\Handler
  */
 class EntityAssociationHelper
@@ -29,6 +30,7 @@ class EntityAssociationHelper
 
     /**
      * FormEntityRelationHelper constructor.
+     *
      * @param ObjectManager $manager
      */
     public function __construct(ObjectManager $manager)
@@ -51,8 +53,8 @@ class EntityAssociationHelper
 
         foreach ($classMetadata->associationMappings as $assocField => $info) {
             // handle the case of a dict entity
-            if (isset($data[$assocField]) &&
-                $info['type'] === ClassMetadataInfo::MANY_TO_ONE
+            if (isset($data[$assocField])
+                && $info['type'] === ClassMetadataInfo::MANY_TO_ONE
             ) {
                 $targetEntityClass = $info['targetEntity'];
                 $nameField         = $this->findNameFieldInEntity($targetEntityClass);
@@ -72,7 +74,7 @@ class EntityAssociationHelper
     /**
      * Finding probable name column, user as a dict indexer column.
      *
-     * @param $targetEntityClass
+     * @param  $targetEntityClass
      * @return int|string
      */
     private function findNameFieldInEntity($targetEntityClass)
@@ -80,9 +82,9 @@ class EntityAssociationHelper
         $classMetadata = $this->manager->getClassMetadata($targetEntityClass);
 
         foreach ($classMetadata->fieldMappings as $field => $mapping) {
-            if ((in_array($field, [ 'name', 'code' ]) !== false ||
-                 strpos($field, 'name') !== false) &&
-                'string' === $mapping['type']
+            if ((in_array($field, [ 'name', 'code' ]) !== false
+                || strpos($field, 'name') !== false)
+                && 'string' === $mapping['type']
             ) {
                 // let's use this as the name column
                 return $field;

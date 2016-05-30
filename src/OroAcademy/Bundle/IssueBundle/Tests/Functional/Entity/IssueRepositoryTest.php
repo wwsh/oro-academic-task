@@ -39,7 +39,7 @@ class IssueRepositoryTest extends WebTestCase
         $this->demoIssues = array_slice($this->demoIssues, 0, 3);
 
         $this->manager = $this->getContainer()
-                              ->get('doctrine');
+            ->get('doctrine');
 
         $this->workflowManager = $this->getWorkflowManager();
     }
@@ -104,7 +104,6 @@ class IssueRepositoryTest extends WebTestCase
             $this->client->request(
                 'DELETE',
                 $this->getUrl('oroacademy_api_delete_issue', [ 'id' => $id ])
-
             );
         }
     }

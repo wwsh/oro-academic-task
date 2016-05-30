@@ -89,8 +89,8 @@ class IssueController extends RestController
      *      class="OroAcademy\Bundle\IssueBundle\Entity\Issue",
      *      permission="VIEW"
      * )
-     * @param Request $request
-     * @return Response
+     * @param       Request $request
+     * @return      Response
      */
     public function cgetAction(Request $request)
     {
@@ -153,7 +153,7 @@ class IssueController extends RestController
     public function getForm()
     {
         return $this->getFormHandler()
-                    ->createForm();
+            ->createForm();
     }
 
     public function getFormHandler()

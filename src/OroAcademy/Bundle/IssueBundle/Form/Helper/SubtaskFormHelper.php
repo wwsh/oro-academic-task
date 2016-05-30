@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class SubtaskFormHelper
+ *
  * @package OroAcademy\Bundle\IssueBundle\Helper
  */
 class SubtaskFormHelper

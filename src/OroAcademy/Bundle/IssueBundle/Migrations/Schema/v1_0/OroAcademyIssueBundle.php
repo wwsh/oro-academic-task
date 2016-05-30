@@ -17,15 +17,22 @@ use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
 /**
  * Class OroAcademyIssueBundle
+ *
  * @package OroAcademy\Bundle\IssueBundle\Migrations
  */
-class OroAcademyIssueBundle implements Migration, NoteExtensionAwareInterface,
+class OroAcademyIssueBundle implements
+    Migration,
+    NoteExtensionAwareInterface,
     ActivityExtensionAwareInterface
 {
-    /** @var NoteExtension */
+    /**
+     * @var NoteExtension
+     */
     protected $noteExtension;
 
-    /** @var ActivityExtension */
+    /**
+     * @var ActivityExtension
+     */
     protected $activityExtension;
 
 

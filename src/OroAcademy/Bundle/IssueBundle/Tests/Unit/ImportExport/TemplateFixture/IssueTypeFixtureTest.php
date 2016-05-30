@@ -83,7 +83,9 @@ class IssueTypeFixtureTest extends \PHPUnit_Framework_TestCase
         $data = $this->fixture->getData();
         $this->assertCount(1, $data);
 
-        /** @var IssueType $type */
+        /**
+         * @var IssueType $type
+         */
         $type = current($data);
         $this->assertInstanceOf('OroAcademy\Bundle\IssueBundle\Entity\IssueType', $type);
         $this->assertEquals('bug', $type->getName());

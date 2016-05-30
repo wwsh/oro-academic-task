@@ -66,7 +66,9 @@ class UpdateIssueAccessLevels extends AbstractFixture implements
     {
         $this->objectManager = $manager;
 
-        /** @var AclManager $aclManager */
+        /**
+         * @var AclManager $aclManager
+         */
         $aclManager = $this->container->get('oro_security.acl.manager');
 
         if ($aclManager->isAclEnabled()) {
@@ -92,9 +94,9 @@ class UpdateIssueAccessLevels extends AbstractFixture implements
 
                 $oid         = $manager->getOid('entity:OroAcademy\Bundle\IssueBundle\Entity\Issue');
                 $maskBuilder = $manager->getMaskBuilder($oid)
-                                       ->add('VIEW_SYSTEM')
-                                       ->add('CREATE_SYSTEM')
-                                       ->add('EDIT_SYSTEM');
+                    ->add('VIEW_SYSTEM')
+                    ->add('CREATE_SYSTEM')
+                    ->add('EDIT_SYSTEM');
                 $manager->setPermission($sid, $oid, $maskBuilder->get());
             }
         }

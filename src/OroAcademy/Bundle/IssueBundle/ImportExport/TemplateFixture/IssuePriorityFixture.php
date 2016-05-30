@@ -13,6 +13,7 @@ use OroAcademy\Bundle\IssueBundle\Entity\IssuePriority;
 
 /**
  * Class IssuePriorityFixture
+ *
  * @package OroAcademy\Bundle\IssueBundle\ImportExport\TemplateFixture
  */
 class IssuePriorityFixture extends AbstractTemplateRepository implements TemplateFixtureInterface

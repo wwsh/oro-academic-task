@@ -18,6 +18,7 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 
 /**
  * Class AddCollaboratorAction
+ *
  * @package OroAcademy\Bundle\IssueBundle\Workflow\Action
  */
 class AddCollaboratorAction extends AbstractAction
@@ -61,9 +62,9 @@ class AddCollaboratorAction extends AbstractAction
      */
     public function initialize(array $options)
     {
-        if (is_array($options) &&
-            isset($options['issue_object']) &&
-            isset($options['note_object'])
+        if (is_array($options)
+            && isset($options['issue_object'])
+            && isset($options['note_object'])
         ) {
             $this->issuePropertyPath = $options['issue_object'];
             $this->notePropertyPath  = $options['note_object'];
@@ -83,12 +84,16 @@ class AddCollaboratorAction extends AbstractAction
      */
     protected function executeAction($context)
     {
-        if (!empty($this->issuePropertyPath) &&
-            !empty($this->notePropertyPath)
+        if (!empty($this->issuePropertyPath)
+            && !empty($this->notePropertyPath)
         ) {
-            /** @var Issue $issue */
+            /**
+             * @var Issue $issue
+             */
             $issue = $this->contextAccessor->getValue($context, $this->issuePropertyPath);
-            /** @var Note $note */
+            /**
+             * @var Note $note
+             */
             $note = $this->contextAccessor->getValue($context, $this->notePropertyPath);
 
             $user = $note->getOwner();

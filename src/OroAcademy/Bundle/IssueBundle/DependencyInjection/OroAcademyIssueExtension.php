@@ -14,6 +14,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * Class OroAcademyExtension
+ *
  * @package OroAcademy\Bundle\IssueBundle\DependencyInjection
  */
 class OroAcademyIssueExtension extends Extension

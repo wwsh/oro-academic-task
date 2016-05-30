@@ -17,6 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * Class IssueController
+ *
  * @package OroAcademy\Bundle\IssueBundle\Controller
  */
 class IssueController extends Controller
@@ -72,11 +73,11 @@ class IssueController extends Controller
     public function createAction(Request $request)
     {
         $formAction = $this->get('oro_entity.routing_helper')
-                           ->generateUrlByRequest('oroacademy_create_issue', $request);
+            ->generateUrlByRequest('oroacademy_create_issue', $request);
 
         $issue = $this->getDoctrine()
-                      ->getRepository('OroAcademyIssueBundle:Issue')
-                      ->createIssue();
+            ->getRepository('OroAcademyIssueBundle:Issue')
+            ->createIssue();
 
         return $this->updateAction($issue, $request, $formAction);
     }
@@ -98,8 +99,8 @@ class IssueController extends Controller
     public function createSubtaskAction(Issue $parent, Request $request)
     {
         $issue = $this->getDoctrine()
-                      ->getRepository('OroAcademyIssueBundle:Issue')
-                      ->createSubtask($parent);
+            ->getRepository('OroAcademyIssueBundle:Issue')
+            ->createSubtask($parent);
 
         $result = $this->updateAction($issue, $request);
         if (!is_array($result)) {
@@ -221,16 +222,17 @@ class IssueController extends Controller
      * )
      *
      * @AclAncestor("view_issue")
+     *
      * @Template
-     * @param $entityClass
-     * @param $entityId
-     * @return array
+     * @param   $entityClass
+     * @param   $entityId
+     * @return  array
      */
     public function activityAction($entityClass, $entityId)
     {
         return [
             'entity' => $this->get('oro_entity.routing_helper')
-                             ->getEntity($entityClass, $entityId)
+                ->getEntity($entityClass, $entityId)
         ];
     }
 }

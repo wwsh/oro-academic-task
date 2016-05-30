@@ -18,7 +18,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *     name="oroacademy_issue_resolution"
  * )
  * @ORM\Entity(repositoryClass="OroAcademy\Bundle\IssueBundle\Entity\IssueResolutionRepository")
- * 
+ *
  * @Config()
  */
 class IssueResolution
@@ -78,7 +78,8 @@ class IssueResolution
 
     /**
      * IssueResolution constructor.
-     * @param      $name
+     *
+     * @param $name
      * @param null $label
      */
     public function __construct($name = null, $label = null)

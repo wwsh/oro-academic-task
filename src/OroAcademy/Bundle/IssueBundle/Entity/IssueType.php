@@ -76,8 +76,9 @@ class IssueType
 
     /**
      * IssueType constructor.
-     * @param      $typeName
-     * @param null $label
+     *
+     * @param $typeName
+     * @param null     $label
      */
     public function __construct($typeName = null, $label = null)
     {

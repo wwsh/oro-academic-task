@@ -12,6 +12,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Class Configuration
+ *
  * @package OroAcademy\Bundle\IssueBundle\DependencyInjection
  */
 class Configuration implements ConfigurationInterface

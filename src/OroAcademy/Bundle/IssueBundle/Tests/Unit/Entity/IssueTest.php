@@ -33,8 +33,8 @@ class IssueTest extends KernelTestCase
     {
         if (is_string($value) && strpos($value, '\\') !== false) {
             $value = $this->getMockBuilder($value)
-                          ->disableOriginalConstructor()
-                          ->getMock();
+                ->disableOriginalConstructor()
+                ->getMock();
         }
         $method = 'set' . ucfirst($property);
         $result = $this->issue->$method($value);
@@ -187,12 +187,12 @@ class IssueTest extends KernelTestCase
 
         foreach ($userData as $oneUserData) {
             $user = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
-                         ->disableOriginalConstructor()
-                         ->getMock();
+                ->disableOriginalConstructor()
+                ->getMock();
 
             $user->expects($this->once())
-                 ->method('getFullName')
-                 ->will($this->returnValue($oneUserData[0] . ' ' . $oneUserData[1]));
+                ->method('getFullName')
+                ->will($this->returnValue($oneUserData[0] . ' ' . $oneUserData[1]));
 
             $issue->addCollaborator($user);
         }

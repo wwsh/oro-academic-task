@@ -31,7 +31,9 @@ class IssueControllerTest extends WebTestCase
     public function testCreate()
     {
         $crawler = $this->client->request('GET', $this->getUrl('oroacademy_create_issue'));
-        /** @var Form $form */
+        /**
+         * @var Form $form
+         */
         $form                       = $crawler->selectButton('Save and Close')->form();
         $form['issue[summary]']     = 'Issue summary';
         $form['issue[description]'] = 'Issue description';
@@ -65,7 +67,9 @@ class IssueControllerTest extends WebTestCase
         $result  = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
 
-        /** @var Form $form */
+        /**
+         * @var Form $form
+         */
         $form = $crawler->selectButton('Save and Close')->form();
 
         $form['issue[description]'] = 'New issue description';
@@ -105,16 +109,6 @@ class IssueControllerTest extends WebTestCase
         $result  = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
 
-        /** @var Form $form */
-        // @todo Uncomment after Workflow's Start Progress is statically
-        // @todo clickable in a functional test
-//        $form = $crawler->selectButton('Start Progress')->form();
-//        $this->client->followRedirects(true);
-//        $crawler = $this->client->submit($form);
-//
-//        $result = $this->client->getResponse();
-//        $this->assertHtmlResponseStatusCodeEquals($result, 200);
-
         $manager = $this->getContainer()->get('doctrine.orm.entity_manager');
         $repo    = $manager->getRepository('OroAcademyIssueBundle:Issue');
         $issue   = $repo->findOneBy([ 'summary' => 'Issue summary' ]);
@@ -139,5 +133,4 @@ class IssueControllerTest extends WebTestCase
             $manager->flush();
         }
     }
-
 }

@@ -17,6 +17,7 @@ use OroAcademy\Bundle\IssueBundle\Entity\IssueType as EntityIssueType;
 
 /**
  * Class IssueType
+ *
  * @package OroAcademy\Bundle\IssueBundle\Form\Type
  */
 class IssueType extends AbstractType

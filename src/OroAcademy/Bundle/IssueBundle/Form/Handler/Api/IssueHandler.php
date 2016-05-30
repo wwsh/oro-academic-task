@@ -25,6 +25,7 @@ class IssueHandler extends ParentIssueHandler
 
     /**
      * IssueHandler constructor.
+     *
      * @param EntityAssociationHelper $associationHelper
      * @param SubtaskFormHelper       $subtaskFormHelper
      * @param Request                 $request
@@ -86,14 +87,14 @@ class IssueHandler extends ParentIssueHandler
     }
 
     /**
-     * @param Issue $entity
+     * @param Issue       $entity
      * @param       $requestData
      */
     protected function enforceOwnerField($entity, $requestData)
     {
-        if (empty($entity) ||
-            !($entity instanceof Issue) ||
-            null === $entity->getReporter()
+        if (empty($entity)
+            || !($entity instanceof Issue)
+            || null === $entity->getReporter()
         ) {
             return $requestData;
         }

@@ -74,9 +74,10 @@ class IssuePriority
 
     /**
      * IssuePriority constructor.
-     * @param      $name
-     * @param null $label
-     * @param      $value
+     *
+     * @param $name
+     * @param null  $label
+     * @param $value
      */
     public function __construct($name = null, $label = null, $value = null)
     {

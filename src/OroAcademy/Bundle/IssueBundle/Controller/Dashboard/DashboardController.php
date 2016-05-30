@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * Class DashboardController
+ *
  * @package OroAcademy\Bundle\IssueBundle\Controller\Dashboard
  */
 class DashboardController extends Controller
@@ -32,16 +33,16 @@ class DashboardController extends Controller
     public function issuesByStatusAction($widget)
     {
         $items = $this->getDoctrine()
-                      ->getRepository('OroAcademyIssueBundle:Issue')
-                      ->getIssuesByStatus();
+            ->getRepository('OroAcademyIssueBundle:Issue')
+            ->getIssuesByStatus();
 
         $widgetAttr = $this->get('oro_dashboard.widget_configs')
-                           ->getWidgetAttributesForTwig($widget);
+            ->getWidgetAttributesForTwig($widget);
 
         $widgetAttr['chartView'] = $this->get('oro_chart.view_builder')
-                                        ->setArrayData($items)
-                                        ->setOptions(
-                                            [
+            ->setArrayData($items)
+            ->setOptions(
+                [
                                                 'name'        => 'bar_chart',
                                                 'data_schema' => [
                                                     'label' => [ 'field_name' => 'label' ],
@@ -49,8 +50,8 @@ class DashboardController extends Controller
                                                 ],
                                                 'settings'    => [ 'xNoTicks' => count($items) ]
                                             ]
-                                        )
-                                        ->getView();
+            )
+            ->getView();
 
         return $widgetAttr;
     }
@@ -66,7 +67,7 @@ class DashboardController extends Controller
     public function myActiveIssues($widget)
     {
         $widgetAttr = $this->get('oro_dashboard.widget_configs')
-                           ->getWidgetAttributesForTwig($widget);
+            ->getWidgetAttributesForTwig($widget);
 
         return $widgetAttr;
     }

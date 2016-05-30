@@ -34,7 +34,7 @@ class IssueRepository extends \Doctrine\ORM\EntityRepository
         $issue->setParent($parent);
 
         $repo = $this->getEntityManager()
-                     ->getRepository('OroAcademyIssueBundle:IssueType');
+            ->getRepository('OroAcademyIssueBundle:IssueType');
 
         $subtaskType = $repo->findOneBy([ 'name' => IssueType::TYPE_SUBTASK ]);
         $issue->setType($subtaskType);
@@ -48,12 +48,12 @@ class IssueRepository extends \Doctrine\ORM\EntityRepository
     public function getIssuesByStatus()
     {
         $queryBuilder = $this->getEntityManager()
-                             ->createQueryBuilder();
+            ->createQueryBuilder();
 
         $queryBuilder->select('wfs.label as label', 'COUNT(issue.id) as number')
-                     ->from('OroAcademyIssueBundle:Issue', 'issue')
-                     ->leftJoin('OroWorkflowBundle:WorkflowStep', 'wfs', 'WITH', 'wfs = issue.workflowStep')
-                     ->groupBy('wfs.label');
+            ->from('OroAcademyIssueBundle:Issue', 'issue')
+            ->leftJoin('OroWorkflowBundle:WorkflowStep', 'wfs', 'WITH', 'wfs = issue.workflowStep')
+            ->groupBy('wfs.label');
 
         return $queryBuilder->getQuery()->getArrayResult();
     }

@@ -14,6 +14,7 @@ use OroAcademy\Bundle\IssueBundle\Entity\Issue;
 /**
  * The purpose of this listener is to listen to incoming note updates
  * and update updatedAt field in the related issue entity.
+ *
  * @package OroAcademy\Bundle\IssueBundle\EventListener
  */
 class IssueNoteUpdatesListener
@@ -26,9 +27,13 @@ class IssueNoteUpdatesListener
         $manager = $args->getObjectManager();
 
         if ($args->getObject() instanceof Note) {
-            /** @var Note $note */
+            /**
+             * @var Note $note
+             */
             $note = $args->getObject();
-            /** @var Issue $issue */
+            /**
+             * @var Issue $issue
+             */
             $issue = $note->getTarget();
             
             if ($issue instanceof Issue) {

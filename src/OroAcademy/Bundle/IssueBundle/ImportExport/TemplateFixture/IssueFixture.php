@@ -13,6 +13,7 @@ use OroAcademy\Bundle\IssueBundle\Entity\Issue;
 
 /**
  * Class IssueFixture
+ *
  * @package OroAcademy\Bundle\IssueBundle\ImportExport\TemplateFixture
  */
 class IssueFixture extends AbstractTemplateRepository implements TemplateFixtureInterface

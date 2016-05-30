@@ -24,57 +24,57 @@ class SubtaskFormHelperTest extends \PHPUnit_Framework_TestCase
         $request->request = $this->getMock('Symfony\Component\HttpFoundation\Request');
 
         $issueType->expects($this->at(0))
-                  ->method('getName')
-                  ->will($this->returnValue(IssueType::TYPE_STORY));
+            ->method('getName')
+            ->will($this->returnValue(IssueType::TYPE_STORY));
 
         $issueType->expects($this->at(1))
-                  ->method('getName')
-                  ->will($this->returnValue(IssueType::TYPE_SUBTASK));
+            ->method('getName')
+            ->will($this->returnValue(IssueType::TYPE_SUBTASK));
 
         $issue->expects($this->at(0))
-              ->method('getType')
-              ->will($this->returnValue($issueType));
+            ->method('getType')
+            ->will($this->returnValue($issueType));
 
         $issue->expects($this->at(1))
-              ->method('getType')
-              ->will($this->returnValue($issueType));
+            ->method('getType')
+            ->will($this->returnValue($issueType));
 
         $issue->expects($this->at(2))
-              ->method('getType')
-              ->will($this->returnValue($issueType));
+            ->method('getType')
+            ->will($this->returnValue($issueType));
 
         $issue->expects($this->at(3))
-              ->method('getType')
-              ->will($this->returnValue($issueType));
+            ->method('getType')
+            ->will($this->returnValue($issueType));
 
         $issue->expects($this->at(4))
-              ->method('getType')
-              ->will($this->returnValue(null));
+            ->method('getType')
+            ->will($this->returnValue(null));
 
         $request->request->expects($this->at(0))
-                         ->method('get')
-                         ->with('subtask')
-                         ->will($this->returnValue(null));
+            ->method('get')
+            ->with('subtask')
+            ->will($this->returnValue(null));
 
         $request->request->expects($this->at(1))
-                         ->method('get')
-                         ->with('subtask')
-                         ->will($this->returnValue(null));
+            ->method('get')
+            ->with('subtask')
+            ->will($this->returnValue(null));
 
         $request->request->expects($this->at(2))
-                         ->method('get')
-                         ->with('subtask')
-                         ->will($this->returnValue(1));
+            ->method('get')
+            ->with('subtask')
+            ->will($this->returnValue(1));
 
         $request->request->expects($this->at(3))
-                         ->method('get')
-                         ->with('subtask')
-                         ->will($this->returnValue(1));
+            ->method('get')
+            ->with('subtask')
+            ->will($this->returnValue(1));
 
         $request->request->expects($this->at(4))
-                         ->method('get')
-                         ->with('subtask')
-                         ->will($this->returnValue(1));
+            ->method('get')
+            ->with('subtask')
+            ->will($this->returnValue(1));
 
         $this->assertEquals(false, $helper->isSubtask($issue, $request));
         $this->assertEquals(true, $helper->isSubtask($issue, $request));

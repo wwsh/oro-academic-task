@@ -12,7 +12,8 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 /**
  * Class RestIssueControllerTest
- * @package OroAcademy\Bundle\IssueBundle\Tests\Functional\API
+ *
+ * @package         OroAcademy\Bundle\IssueBundle\Tests\Functional\API
  * @outputBuffering enabled
  * @dbIsolation
  */
@@ -113,7 +114,9 @@ class RestIssueControllerTest extends WebTestCase
      */
     public function testSearch(array $data)
     {
-        /** @var $searchEngine EngineInterface */
+        /**
+         * @var $searchEngine EngineInterface
+         */
         $searchEngine = $this->getContainer()->get('oro_search.search.engine');
 
         $recordsCount = $searchEngine->reindex();
@@ -184,10 +187,9 @@ class RestIssueControllerTest extends WebTestCase
         $this->assertEmptyResponseStatusCodeEquals($result, 204);
 
         $repo = $this->getContainer()->get('doctrine.orm.entity_manager')
-                     ->getRepository('OroAcademyIssueBundle:Issue');
+            ->getRepository('OroAcademyIssueBundle:Issue');
 
         $issue = $repo->findOneBy([ 'code' => $issue['code'] ]);
         $this->assertNull($issue);
     }
-
 }
