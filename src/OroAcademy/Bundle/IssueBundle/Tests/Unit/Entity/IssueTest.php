@@ -203,4 +203,25 @@ class IssueTest extends KernelTestCase
         $this->assertEquals('Eddie Smith', $result[0]);
         $this->assertEquals('John Carter', $result[1]);
     }
+
+    public function testPrettyRelatedIssues()
+    {
+        $issue = new Issue();
+
+        $this->assertEquals([ ], $issue->getPrettyRelatedIssues());
+
+        $secondIssue = new Issue('ABC-123', 'Example Task');
+
+        $issue->addRelatedIssue($secondIssue);
+
+        $thirdIssue = new Issue('XYZ-123', 'Another Example Task');
+
+        $issue->addRelatedIssue($thirdIssue);
+
+        $result = $issue->getPrettyRelatedIssues();
+
+        $this->assertCount(2, $result);
+        $this->assertEquals('[ABC-123] Example Task', $result[0]);
+        $this->assertEquals('[XYZ-123] Another Example Task', $result[1]);
+    }
 }

@@ -8,6 +8,7 @@
             {{ UI.renderProperty('Reported by'|trans, entity.reporter ? entity.reporter.fullName : '') }}
             {{ UI.renderProperty('Assigned to'|trans, entity.assignee ? entity.assignee.fullName : '') }}
             {{ UI.renderHtmlProperty('Collaborators'|trans, entity.getSimpleCollaboratorArray()|join('<br />')) }}
+            {{ UI.renderHtmlProperty('Related issues'|trans, entity.getPrettyRelatedIssues()|join('<br />')) }}
             {{ UI.renderProperty('Created at'|trans, entity.createdAt|date) }}
             {{ UI.renderProperty('Updated at'|trans, entity.updatedAt|date) }}
         </div>

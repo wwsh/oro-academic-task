@@ -926,4 +926,24 @@ class Issue extends ExtendIssue
     {
         return $this->setReporter($owner);
     }
+
+    /**
+     * @return array|string
+     */
+    public function getPrettyRelatedIssues()
+    {
+        $related = $this->getRelatedIssues();
+
+        if (empty($related)) {
+            return $related;
+        }
+
+        $result = [];
+
+        foreach ($related as $item) {
+            $result[] = (string)$item;
+        }
+
+        return $result;
+    }
 }

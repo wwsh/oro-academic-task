@@ -50,11 +50,3 @@ services:
       tags:
         - { name: oro_workflow.action, alias: add_collaborator }
 
-  oroacademy_issue.widget_provider.actions.assign_task:
-      parent: oro_ui.widget_provider.action_button.abstract
-      arguments:
-        - oroacademy_create_issue_button
-        - oroacademy_create_issue_link
-      tags:
-        - { name: oro_ui.view_action_provider, group: activity }
-        - { name: oro_ui.update_action_provider, group: activity }
