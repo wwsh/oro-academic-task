@@ -76,6 +76,11 @@ workflows:
         label: Close
         step_to: closed
         transition_definition: close_definition
+        form_options:
+          attribute_fields:
+            resolution:
+              options:
+                required: true
 
       reopen:
         label: Re-Open
