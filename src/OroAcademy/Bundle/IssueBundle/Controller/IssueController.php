@@ -102,7 +102,14 @@ class IssueController extends Controller
             ->getRepository('OroAcademyIssueBundle:Issue')
             ->createSubtask($parent);
 
-        $result = $this->updateAction($issue, $request);
+        $formAction = $this->get('oro_entity.routing_helper')
+            ->generateUrlByRequest(
+                'oroacademy_create_subtask_issue',
+                $request,
+                [ 'parent' => $parent->getId() ]
+            );
+
+        $result = $this->updateAction($issue, $request, $formAction);
         if (!is_array($result)) {
             return $result;
         }

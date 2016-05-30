@@ -241,7 +241,7 @@ datagrid:
                 assignee:
                     data_name: assignee
             default:
-                model: DESC
+                updatedAt: DESC
         filters:
             columns:
                 code:

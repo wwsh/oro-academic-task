@@ -26,4 +26,5 @@ oroacademy:
   issue.related_issues.label: RelatedIssues
   issue.workflow_item.label: WorkflowItem
   issue.workflow_step.label: Status
+  issue.issueresolution.entity_label: Resolution
 
