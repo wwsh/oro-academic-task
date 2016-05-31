@@ -5,7 +5,7 @@
     {% if resource_granted('EDIT', entity) %}
         {{ UI.editButton({
             'path' : path('oroacademy_update_issue', { id: entity.id }),
-            'entity_label': 'Issue'|trans
+            'entity_label': 'oroacademy.issue.entity_label'|trans
         }) }}
     {% endif %}
 
@@ -16,7 +16,7 @@
             'aCss': 'no-hash remove-button',
             'id': 'btn-remove-issue',
             'dataId': entity.id,
-            'entity_label': 'Issue'|trans,
+            'entity_label': 'oroacademy.issue.entity_label'|trans,
         }) }}
     {% endif %}
 {% endblock navButtons %}
@@ -25,7 +25,7 @@
     {% set breadcrumbs = {
     'entity':      entity,
     'indexPath':   path('oroacademy_issue_index'),
-    'indexLabel': 'Issues'|trans,
+    'indexLabel': 'oroacademy.issue.entity_plural_label'|trans,
     'entityTitle': entity
     } %}
     {{ parent() }}
@@ -36,12 +36,12 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {{ UI.renderProperty('Code'|trans, entity.code) }}
-                    {{ UI.renderProperty('Summary'|trans, entity.summary) }}
-                    {{ UI.renderProperty('Type'|trans, entity.type) }}
-                    {{ UI.renderProperty('Priority'|trans, entity.priority) }}
-                    {{ UI.renderProperty('Resolution'|trans, entity.resolution) }}
-                    {{ UI.renderProperty('Status'|trans, entity.workflowStep.label) }}
+                    {{ UI.renderProperty('oroacademy.issue.code.label'|trans, entity.code) }}
+                    {{ UI.renderProperty('oroacademy.issue.summary.label'|trans, entity.summary) }}
+                    {{ UI.renderProperty('oroacademy.issue.type.label'|trans, entity.type) }}
+                    {{ UI.renderProperty('oroacademy.issue.priority.label'|trans, entity.priority) }}
+                    {{ UI.renderProperty('oroacademy.issue.resolution.label'|trans, entity.resolution) }}
+                    {{ UI.renderProperty('oroacademy.issue.workflow_step.label'|trans, entity.workflowStep.label) }}
                 </div>
             </div>
         </div>
@@ -67,14 +67,14 @@
 
     {% set dataBlocks = [
         {
-            'title': 'General'|trans,
+            'title': 'oroacademy.tabs.general_tab.label'|trans,
             'class': 'active',
             'subblocks': [
                 { 'data' : [data] }
             ]
         },
         {
-            'title': 'Details'|trans,
+            'title': 'oroacademy.tabs.details_tab.label'|trans,
             'class': 'active',
             'subblocks': [
                 { 'data' : [descriptionBlock, linksSection] }

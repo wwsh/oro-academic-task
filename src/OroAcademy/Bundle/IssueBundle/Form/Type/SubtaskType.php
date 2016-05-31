@@ -64,14 +64,15 @@ class SubtaskType extends AbstractType
                 'oro_resizeable_rich_text',
                 [
                     'constraints' => new NotBlank(),
-                    'required'    => true
+                    'required'    => true,
+                    'label'       => 'oroacademy.issue.description.label'
                 ]
             )
             ->add(
                 'assignee',
-                'oro_user_acl_select',
+                'oro_user_organization_acl_select',
                 [
-                    'label'    => 'Assignee',
+                    'label'    => 'oroacademy.issue.assignee.label',
                     'required' => true
                 ]
             )

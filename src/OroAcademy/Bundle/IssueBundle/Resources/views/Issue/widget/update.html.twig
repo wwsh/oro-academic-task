@@ -33,14 +33,14 @@
                         {{ form_row(form.assignee) }}
                     </div>
                     <div class="widget-actions form-actions">
-                        <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
+                        <button class="btn" type="reset">{{ 'oroacademy.actions.cancel.label'|trans }}</button>
                         {% if form.vars.value.id %}
                             <button class="btn btn-primary" type="submit">
-                                {{ 'Update Issue'|trans }}
+                                {{ 'oroacademy.buttons.update_issue.label'|trans }}
                             </button>
                         {% else %}
                             <button class="btn btn-primary" type="submit">
-                                {{ 'Create Issue'|trans }}
+                                {{ 'oroacademy.buttons.create_issue.label'|trans }}
                             </button>
                         {% endif %}
                     </div>

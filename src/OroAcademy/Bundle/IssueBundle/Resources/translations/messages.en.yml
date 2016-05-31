@@ -2,6 +2,7 @@ oroacademy:
   issue:
     entity_label: Issue
     entity_plural_label: Issues
+    navigation.menu_list.label: List of Issues
 
   issue.id.label: Id
   issue.code.label: Code
@@ -9,12 +10,13 @@ oroacademy:
   issue.issuepriority.entity_label: Priority
   issue.summary.label: Summary
   issue.description.label: Description
-  issue.reporter.label: Reporter
-  issue.assignee.label: Assignee
+  issue.reporter.label: Reported By
+  issue.assignee.label: Assigned To
   issue.parent.label: Parent
-  issue.created_at.label: CreatedAt
-  issue.updated_at.label: UpdatedAt
-  issue.collaborators.label: Collaborators
+  issue.created_at.label: Created At
+  issue.updated_at.label: Updated At
+  issue.collaborator.label_plural: Collaborators
+  issue.collaborator.label: Collaborator
   issue.type.label: Type
   issue.issuetype.name.label: IssueTypeName
   issue.priority.label: Priority
@@ -27,4 +29,28 @@ oroacademy:
   issue.workflow_item.label: WorkflowItem
   issue.workflow_step.label: Status
   issue.issueresolution.entity_label: Resolution
+  issue.parent.label: Parent Story
+  issue.children.label: Subtasks
 
+  issue.add_new_subtask.label: Add a new Subtask...
+
+  dashboard:
+    my_active_issues.title: My Active Issues
+    my_active_issues.view_all.label: View All
+    my_active_issues.description: Viewing recent issues, which you were actively taking part of
+    issues_by_status.title: Issues By Status
+    issues_by_status.description: Viewing Issues by status
+
+  actions:
+    view.label: View
+    update.label: Update
+    delete.label: Delete
+    cancel.label: Cancel
+
+  buttons:
+    create_issue.label: Create Issue
+    update_issue.label: Update Issue
+
+  tabs:
+    general_tab.label: General
+    details_tab.label: Details

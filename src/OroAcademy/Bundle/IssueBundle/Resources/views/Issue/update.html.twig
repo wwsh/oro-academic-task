@@ -21,7 +21,7 @@
             'aCss': 'no-hash remove-button',
             'id': 'btn-remove-tag',
             'dataId': form.vars.value.id,
-            'entity_label': 'Issue'|trans
+            'entity_label': 'oroacademy.issue.entity_label'|trans
         }) }}
         {{ UI.buttonSeparator() }}
     {% endif %}
@@ -38,12 +38,12 @@
         {% set breadcrumbs = {
         'entity':      form.vars.value,
         'indexPath':   path('oroacademy_issue_index'),
-        'indexLabel': 'Issues'|trans,
+        'indexLabel': 'oroacademy.issue.entity_plural_label'|trans,
         'entityTitle': form.vars.value.getTitle
         } %}
         {{ parent() }}
     {% else %}
-        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'Issue'|trans}) %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'oroacademy.issue.entity_label'|trans}) %}
         {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
     {% endif %}
 {% endblock pageHeader %}
@@ -71,7 +71,7 @@
     {% endif %}
 
     {% set dataBlocks = [{
-        'title': 'General'|trans,
+        'title': 'oroacademy.tabs.general_tab.label'|trans,
         'class': 'active',
         'subblocks': [{
             'title': '',

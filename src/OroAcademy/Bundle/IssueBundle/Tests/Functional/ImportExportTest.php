@@ -198,6 +198,10 @@ class ImportExportTest extends WebTestCase
         if (($index = array_search('UpdatedAt', $commonFields)) !== false) {
             unset($commonFields[$index]);
         }
+        // createdAt - same problem
+        if (($index = array_search('CreatedAt', $commonFields)) !== false) {
+            unset($commonFields[$index]);
+        }
         $importTemplate = $this->prepareImportTemplate($importTemplate, $commonFields);
         $exportedData   = $this->prepareExportedData($exportedData, $commonFields);
 

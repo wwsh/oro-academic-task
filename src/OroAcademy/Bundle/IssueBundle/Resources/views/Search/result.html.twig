@@ -5,10 +5,10 @@
 {% set recordUrl = indexer_item.recordUrl %}
 {% set title = indexer_item.recordTitle %}
 
-{% set entityType = 'Issue'|trans %}
+{% set entityType = 'oroacademy.issue.entity_label'|trans %}
 
 {% set entityInfo = [
 {'title': 'oro.ui.created_at'|trans, 'value': entity.createdAt ? entity.createdAt|oro_format_datetime : 'N/A'},
 {'title': 'oro.ui.updated_at'|trans, 'value': entity.updatedAt ? entity.updatedAt|oro_format_datetime : 'N/A'},
-{'title': 'Reporter'|trans, 'value': entity.reporter.getFullName() }
+{'title': 'oroacademy.issue.reporter.label'|trans, 'value': entity.reporter.getFullName() }
 ] %}

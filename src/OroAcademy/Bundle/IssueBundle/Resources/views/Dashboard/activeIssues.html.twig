@@ -2,6 +2,7 @@
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% set gridName = 'dashboard-my-issues-grid' %}
+{% set widgetTitle = 'oroacademy.dashboard.my_active_issues.title'|trans %}
 
 {% block content %}
     {{ dataGrid.renderGrid(gridName, { 'userId' : 1 }) }}
@@ -11,7 +12,7 @@
     {% set actions = [{
     'url': path('oroacademy_my_issue_grid'),
     'type': 'link',
-    'label': 'View all'|trans
+    'label': 'oroacademy.dashboard.my_active_issues.view_all.label'|trans
     }] %}
 
     {{ parent() }}

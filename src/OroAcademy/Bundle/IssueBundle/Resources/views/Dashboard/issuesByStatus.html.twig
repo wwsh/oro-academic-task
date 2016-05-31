@@ -1,5 +1,7 @@
 {% extends 'OroDashboardBundle:Dashboard:chartWidget.html.twig' %}
 
+{% set widgetTitle = 'oroacademy.dashboard.issues_by_status.title'|trans %}
+
 {% block content %}
     {{ chartView.render()|raw }}
 {% endblock %}

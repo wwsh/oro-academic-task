@@ -28,3 +28,6 @@ oro_assetic:
 
 #swiftmailer:
 #    delivery_address: me@example.com
+
+oro_translation:
+    debug_translator: true

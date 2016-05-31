@@ -1,12 +1,12 @@
 oro_dashboard_config:
     widgets:
         issues_by_status:
-          label:       Issues By Status
+          label:       oroacademy.dashboard.issues_by_status.title
           route:       oroacademy_issues_by_status_widget
           acl:         view_issue
-          description: Viewing Issues by status
+          description: oroacademy.dashboard.issues_by_status.description
         my_active_issues:
-          label:       My Recent Issues
+          label:       oroacademy.dashboard.my_active_issues.title
           route:       oroacademy_my_active_issues
           acl:         view_issue
-          description: Viewing recent issues, which you were actively taking part of
+          description: oroacademy.dashboard.my_active_issues.description

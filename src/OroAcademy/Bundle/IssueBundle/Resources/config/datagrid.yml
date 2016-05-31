@@ -65,7 +65,7 @@ datagrid:
         actions:
             view:
                 type:          navigate
-                label:         View
+                label:         oroacademy.actions.view.label
                 link:          view_link
                 icon:          eye-open
                 acl_resource:  view_issue
@@ -108,18 +108,19 @@ datagrid:
 
         columns:
             code:
-                label: Code
+                label: oroacademy.issue.code.label
             summary:
-                label: Summary
+                label: oroacademy.issue.summary.label
             type:
-                label: Type
+                label: oroacademy.issue.type.label
             priority:
-                label: Priority
+                label: oroacademy.issue.priority.label
             status:
-                label: Status
+                label: oroacademy.issue.workflow_step.label
             createdAt:
-                label: Created
+                label: oroacademy.issue.created_at.label
                 frontend_type: date
+
         properties:
             id: ~
             view_link:
@@ -137,7 +138,7 @@ datagrid:
         actions:
             view:
                 type:          navigate
-                label:         View
+                label:         oroacademy.actions.view.label
                 link:          view_link
                 icon:          eye-open
                 acl_resource:  view_issue
@@ -180,26 +181,26 @@ datagrid:
 
         columns:
             code:
-                label: Code
+                label: oroacademy.issue.code.label
             summary:
-                label: Summary
+                label: oroacademy.issue.summary.label
             type:
-                label: Type
+                label: oroacademy.issue.type.label
             priority:
-                label: Priority
+                label: oroacademy.issue.priority.label
             status:
-                label: Status
+                label: oroacademy.issue.workflow_step.label
             resolution:
-                label: Resolution
+                label: oroacademy.issue.resolution.label
             reporter:
-                label: Reporter
+                label: oroacademy.issue.reporter.label
             assignee:
-                label: Assignee
+                label: oroacademy.issue.assignee.label
             createdAt:
-                label: Created
+                label: oroacademy.issue.created_at.label
                 frontend_type: date
             updatedAt:
-                label: Updated
+                label: oroacademy.issue.updated_at.label
                 frontend_type: date
         properties:
             id: ~
@@ -252,7 +253,7 @@ datagrid:
                     data_name: i.createdAt
                 collaborated:
                     type: entity
-                    label: Collaborator
+                    label: oroacademy.issue.collaborator.label
                     data_name: collaborators
                     options:
                         field_options:
@@ -263,20 +264,20 @@ datagrid:
         actions:
             view:
                 type:          navigate
-                label:         View
+                label:         oroacademy.actions.view.label
                 link:          view_link
                 icon:          eye-open
                 acl_resource:  view_issue
                 rowAction:     true
             update:
                 type:          navigate
-                label:         Update
+                label:         oroacademy.actions.update.label
                 link:          update_link
                 icon:          edit
                 acl_resource:  update_issue
             delete:
                 type:          delete
-                label:         Delete
+                label:         oroacademy.actions.delete.label
                 link:          delete_link
                 icon:          trash
                 acl_resource:  api_delete_issue
@@ -299,3 +300,17 @@ datagrid:
            default:
                createdAt:
                   DESC
+       columns:
+           code:
+               label: oroacademy.issue.code.label
+           summary:
+               label: oroacademy.issue.summary.label
+           type:
+               label: oroacademy.issue.type.label
+           priority:
+               label: oroacademy.issue.priority.label
+           status:
+               label: oroacademy.issue.workflow_step.label
+           createdAt:
+               label: oroacademy.issue.created_at.label
+               frontend_type: date

@@ -46,7 +46,7 @@ class IssueRepositoryTest extends WebTestCase
 
     public function testGetIssuesByStatus()
     {
-        $histogram = $workflowLabels = $insertedIds = [ ];
+        $histogram = $workflowLabels = $insertedIds = $insertedSubtaskIds = [ ];
 
         $issueRepo = $this->manager
             ->getRepository('OroAcademyIssueBundle:Issue');
@@ -82,7 +82,11 @@ class IssueRepositoryTest extends WebTestCase
             }
             $histogram[$randomStep]++;
 
-            $insertedIds[] = $result['id'];
+            if ('subtask' === $demoIssue['type']) {
+                $insertedSubtaskIds[] = $result['id'];
+            } else {
+                $insertedIds[] = $result['id'];
+            }
         }
 
         $issueRepo = $this->manager
@@ -99,7 +103,15 @@ class IssueRepositoryTest extends WebTestCase
             }
         }
 
-        // Remove previously added Issues.
+        // Remove subtasks first.
+        foreach ($insertedSubtaskIds as $id) {
+            $this->client->request(
+                'DELETE',
+                $this->getUrl('oroacademy_api_delete_issue', [ 'id' => $id ])
+            );
+        }
+
+        // Now remove main tasks.
         foreach ($insertedIds as $id) {
             $this->client->request(
                 'DELETE',

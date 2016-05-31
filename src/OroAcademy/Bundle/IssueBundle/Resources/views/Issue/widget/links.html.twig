@@ -8,7 +8,7 @@
             {% if entity.type.name == constant('OroAcademy\\Bundle\\IssueBundle\\Entity\\IssueType::TYPE_SUBTASK') %}
                 {% if entity.parent %}
                     <div class="control-group">
-                        <label class="control-label">{{ 'Parent Story'|trans }}</label>
+                        <label class="control-label">{{ 'oroacademy.issue.parent.label'|trans }}</label>
                         <div class="controls">
                             <div class="control-label">
                                 <a href="{{ path('oroacademy_view_issue', {'id': entity.parent.id }) }}">
@@ -21,7 +21,7 @@
             {% endif %}
             {% if entity.type.name == constant('OroAcademy\\Bundle\\IssueBundle\\Entity\\IssueType::TYPE_STORY') %}
                 <div class="control-group">
-                    <label class="control-label">{{ 'Subtasks'|trans }}</label>
+                    <label class="control-label">{{ 'oroacademy.issue.children.label'|trans }}</label>
                     <div class="controls">
                         <div class="control-label">
                             {% for task in entity.children %}
@@ -32,8 +32,8 @@
                             {% endfor %}
                             {{ UI.button({
                                 'path': path('oroacademy_create_subtask_issue', {'parent': entity.id}),
-                                'title': 'Add a new Subtask...'|trans,
-                                'label': 'Add a new Subtask...'|trans,
+                                'title': 'oroacademy.issue.add_new_subtask.label'|trans,
+                                'label': 'oroacademy.issue.add_new_subtask.label'|trans,
                                 'iCss': 'icon-plus'
                             }) }}
                         </div>

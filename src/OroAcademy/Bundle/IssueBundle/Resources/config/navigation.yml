@@ -1,11 +1,11 @@
 oro_menu_config:
     items:
         issues:
-            label: Issues
+            label: oroacademy.issue.entity_plural_label
             uri: '#'
 
         issue_shortcut:
-            label: List of Issues
+            label: oroacademy.issue.navigation.menu_list.label
             route: oroacademy_issue_index
     tree:
         application_menu:
