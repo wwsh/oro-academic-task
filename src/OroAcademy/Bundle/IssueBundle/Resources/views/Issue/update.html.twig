@@ -1,6 +1,8 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 
+{% oro_title_set({params : {"%entity%": entity }}) %}
+
 {% set subtaskMode = form.vars.value.type and form.vars.value.type.name == constant('OroAcademy\\Bundle\\IssueBundle\\Entity\\IssueType::TYPE_SUBTASK') %}
 
 {% if form.vars.value.id %}

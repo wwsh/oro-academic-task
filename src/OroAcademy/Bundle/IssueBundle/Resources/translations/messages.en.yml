@@ -55,3 +55,11 @@ oroacademy:
   tabs:
     general_tab.label: General
     details_tab.label: Details
+
+  titles:
+    issues: Issues
+    create_issue: Create Issue
+    create_subtask: Create Subtask
+    my_issues: My Issues
+    update_issue: '%entity% - Edit'
+

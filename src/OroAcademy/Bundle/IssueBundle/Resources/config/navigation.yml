@@ -13,3 +13,11 @@ oro_menu_config:
                 issues:
                     children:
                         issue_shortcut: ~
+
+oro_titles:
+    oroacademy_issue_index: oroacademy.titles.issues
+    oroacademy_my_issue_grid: oroacademy.titles.my_issues
+    oroacademy_view_issue: '%%entity%%'
+    oroacademy_create_issue: oroacademy.titles.create_issue
+    oroacademy_create_subtask_issue: oroacademy.titles.create_subtask
+    oroacademy_update_issue: oroacademy.titles.update_issue

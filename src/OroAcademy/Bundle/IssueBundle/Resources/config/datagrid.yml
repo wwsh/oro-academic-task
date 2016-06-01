@@ -146,6 +146,7 @@ datagrid:
 
     # Main Issue grid
     issue-grid:
+        extended_entity_name: OroAcademyIssueBundle:Issue
         source:
             acl_resource: view_issue
             type: orm

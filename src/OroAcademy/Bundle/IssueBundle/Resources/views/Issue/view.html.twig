@@ -1,5 +1,8 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
+
+{% oro_title_set({params : {"%entity%": entity }}) %}
 
 {% block navButtons %}
     {% if resource_granted('EDIT', entity) %}
@@ -42,6 +45,9 @@
                     {{ UI.renderProperty('oroacademy.issue.priority.label'|trans, entity.priority) }}
                     {{ UI.renderProperty('oroacademy.issue.resolution.label'|trans, entity.resolution) }}
                     {{ UI.renderProperty('oroacademy.issue.workflow_step.label'|trans, entity.workflowStep.label) }}
+                </div>
+                <div class="responsive-block">
+                    {{ entityConfig.renderDynamicFields(entity) }}
                 </div>
             </div>
         </div>
