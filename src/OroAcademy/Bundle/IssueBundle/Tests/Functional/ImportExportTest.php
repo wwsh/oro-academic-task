@@ -195,11 +195,11 @@ class ImportExportTest extends WebTestCase
         $commonFields = array_intersect($importTemplate[0], $exportedData[0]);
         // updatedAt is an auto updated field and may interfere
         // with stability of the results
-        if (($index = array_search('UpdatedAt', $commonFields)) !== false) {
+        if (($index = array_search('Updated At', $commonFields)) !== false) {
             unset($commonFields[$index]);
         }
         // createdAt - same problem
-        if (($index = array_search('CreatedAt', $commonFields)) !== false) {
+        if (($index = array_search('Created At', $commonFields)) !== false) {
             unset($commonFields[$index]);
         }
         $importTemplate = $this->prepareImportTemplate($importTemplate, $commonFields);
