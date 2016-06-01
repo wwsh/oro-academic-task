@@ -17,6 +17,7 @@ oroacademy:
   issue.updated_at.label: Updated At
   issue.collaborator.label_plural: Collaborators
   issue.collaborator.label: Collaborator
+  issue.collaborators.label: Collaborators
   issue.type.label: Type
   issue.issuetype.name.label: IssueTypeName
   issue.priority.label: Priority
