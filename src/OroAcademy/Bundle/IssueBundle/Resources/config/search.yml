@@ -35,17 +35,13 @@ OroAcademy\Bundle\IssueBundle\Entity\Issue:
                     target_type: text
                     target_fields: [priority, all_data]
         -
-            name: status
+            name: workflowStep
             relation_type: many-to-one
             relation_fields:
                 -
-                    name: name
-                    target_type: text
-                    target_fields: [status, all_data]
-                -
                     name: label
                     target_type: text
-                    target_fields: [status, all_data]
+                    target_fields: [workflowStep, all_data]
 
         -
             name: resolution

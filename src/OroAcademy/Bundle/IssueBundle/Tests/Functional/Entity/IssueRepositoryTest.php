@@ -96,8 +96,9 @@ class IssueRepositoryTest extends WebTestCase
 
         // Compare the workflow step histogram with custom data.
         // Keep in mind there could be other Issues in the database yet.
-        foreach ($result as $resultSet) {
+        foreach ($result as $label => $resultSet) {
             $workflowLabel = $resultSet['label'];
+            $this->assertEquals($label, $resultSet['label']);
             if (isset($histogram[$workflowLabel])) {
                 $this->assertGreaterThanOrEqual($histogram[$workflowLabel], $resultSet['number']);
             }

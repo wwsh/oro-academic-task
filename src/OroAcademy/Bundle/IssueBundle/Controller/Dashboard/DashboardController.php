@@ -43,13 +43,13 @@ class DashboardController extends Controller
             ->setArrayData($items)
             ->setOptions(
                 [
-                                                'name'        => 'bar_chart',
-                                                'data_schema' => [
-                                                    'label' => [ 'field_name' => 'label' ],
-                                                    'value' => [ 'field_name' => 'number' ]
-                                                ],
-                                                'settings'    => [ 'xNoTicks' => count($items) ]
-                                            ]
+                    'name'        => 'bar_chart',
+                    'data_schema' => [
+                        'label' => [ 'field_name' => 'label' ],
+                        'value' => [ 'field_name' => 'number' ]
+                    ],
+                    'settings'    => [ 'xNoTicks' => count($items) - 1 ]
+                ]
             )
             ->getView();
 

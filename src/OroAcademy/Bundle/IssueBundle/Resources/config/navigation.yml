@@ -4,15 +4,23 @@ oro_menu_config:
             label: oroacademy.issue.entity_plural_label
             uri: '#'
 
-        issue_shortcut:
-            label: oroacademy.issue.navigation.menu_list.label
-            route: oroacademy_issue_index
+        oroacademy_issue_index:
+            label: oroacademy.issue.navigation.menu_list
+            route: 'oroacademy_issue_index'
+            extras:
+              routes: [ 'oroacademy_view_issue', 'oroacademy_update_issue', 'oroacademy_create_issue', 'oroacademy_create_subtask_issue' ]
+
+        oroacademy_my_issue_grid:
+            label: oroacademy.issue.navigation.menu_my_issues
+            route: 'oroacademy_my_issue_grid'
+
     tree:
         application_menu:
             children:
                 issues:
                     children:
-                        issue_shortcut: ~
+                        oroacademy_issue_index: ~
+                        oroacademy_my_issue_grid: ~
 
 oro_titles:
     oroacademy_issue_index: oroacademy.titles.issues

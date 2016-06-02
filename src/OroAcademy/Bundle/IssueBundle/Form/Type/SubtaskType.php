@@ -73,7 +73,7 @@ class SubtaskType extends AbstractType
                 'oro_user_organization_acl_select',
                 [
                     'label'    => 'oroacademy.issue.assignee.label',
-                    'required' => true
+                    'required' => false
                 ]
             )
             ->add(

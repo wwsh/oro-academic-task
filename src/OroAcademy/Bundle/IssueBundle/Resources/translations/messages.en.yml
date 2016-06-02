@@ -2,7 +2,9 @@ oroacademy:
   issue:
     entity_label: Issue
     entity_plural_label: Issues
-    navigation.menu_list.label: List of Issues
+    navigation:
+      menu_list: All Issues
+      menu_my_issues: My Issues
 
   issue.id.label: Id
   issue.code.label: Code
@@ -26,7 +28,7 @@ oroacademy:
   issue.issueresolution.name.label: IssueResolutionName
   issue.organization.label: Organization
   issue.children.label: Related
-  issue.related_issues.label: RelatedIssues
+  issue.related_issues.label: Related Issues
   issue.workflow_item.label: WorkflowItem
   issue.workflow_step.label: Status
   issue.issueresolution.entity_label: Resolution
