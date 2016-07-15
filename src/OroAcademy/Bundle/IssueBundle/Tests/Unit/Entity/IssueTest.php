@@ -10,6 +10,9 @@ namespace OroAcademy\Bundle\IssueBundle\Tests\Unit\Entity;
 use OroAcademy\Bundle\IssueBundle\Entity\Issue;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 class IssueTest extends KernelTestCase
 {
     /**

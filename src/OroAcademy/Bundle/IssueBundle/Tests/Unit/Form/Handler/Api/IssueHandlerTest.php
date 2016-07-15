@@ -87,7 +87,9 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->associationHelper = $this->getMockBuilder('OroAcademy\Bundle\IssueBundle\Form\Helper\EntityAssociationHelper')
+        $this->associationHelper = $this->getMockBuilder(
+            'OroAcademy\Bundle\IssueBundle\Form\Helper\EntityAssociationHelper'
+        )
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -106,7 +108,9 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
         $token->method('getUser')
             ->willReturn($this->user);
 
-        $this->tokenStorage = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage')
+        $this->tokenStorage = $this->getMockBuilder(
+            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage'
+        )
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -129,7 +133,9 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
     public function testProcessUnsupportedRequest()
     {
 
-        $organizationRepository = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository')
+        $organizationRepository = $this->getMockBuilder(
+            'Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository'
+        )
             ->disableOriginalConstructor()
             ->getMock();
         $organization           = $this->getMock('Oro\Bundle\OrganizationBundle\Entity\Organization');
@@ -180,7 +186,9 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testProcessSupportedRequest($method)
     {
-        $organizationRepository = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository')
+        $organizationRepository = $this->getMockBuilder(
+            'Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository'
+        )
             ->disableOriginalConstructor()
             ->getMock();
         $organization           = $this->getMock('Oro\Bundle\OrganizationBundle\Entity\Organization');
@@ -249,7 +257,9 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('getEntityData')
             ->will($this->returnValue($entityProcessedData));
 
-        $organizationRepository = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository')
+        $organizationRepository = $this->getMockBuilder(
+            'Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository'
+        )
             ->disableOriginalConstructor()
             ->getMock();
         $organization           = $this->getMock('Oro\Bundle\OrganizationBundle\Entity\Organization');
@@ -330,7 +340,9 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->form));
 
         $this->entity                  = $this->getMock('OroAcademy\Bundle\IssueBundle\Entity\Issue');
-        $organizationRepository = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository')
+        $organizationRepository = $this->getMockBuilder(
+            'Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository'
+        )
             ->disableOriginalConstructor()
             ->getMock();
         $organization           = $this->getMock('Oro\Bundle\OrganizationBundle\Entity\Organization');
@@ -393,7 +405,9 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('isValid')
             ->will($this->returnValue(true));
 
-        $organizationRepository = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository')
+        $organizationRepository = $this->getMockBuilder(
+            'Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository'
+        )
             ->disableOriginalConstructor()
             ->getMock();
         $organization           = $this->getMock('Oro\Bundle\OrganizationBundle\Entity\Organization');

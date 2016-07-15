@@ -1,8 +1,8 @@
 <?php
 /*******************************************************************************
- * This is closed source software, created by WWSH. 
+ * This is closed source software, created by WWSH.
  * Please do not copy nor redistribute.
- * Copyright (c) Oro 2016. 
+ * Copyright (c) Oro 2016.
  ******************************************************************************/
 
 namespace OroAcademy\Bundle\IssueBundle\Tests\Functional\Entity;
@@ -30,7 +30,7 @@ class IssueRepositoryTest extends WebTestCase
 
     protected function setUp()
     {
-        $this->initClient([ ], $this->generateWsseAuthHeader());
+        $this->initClient([], $this->generateWsseAuthHeader());
 
         $demoIssuesFile = __DIR__ . '/../../../Resources/fixtures/demo-issues.json';
 
@@ -39,54 +39,27 @@ class IssueRepositoryTest extends WebTestCase
         $this->demoIssues = array_slice($this->demoIssues, 0, 3);
 
         $this->manager = $this->getContainer()
-            ->get('doctrine');
+                              ->get('doctrine');
 
         $this->workflowManager = $this->getWorkflowManager();
     }
 
     public function testGetIssuesByStatus()
     {
-        $histogram = $workflowLabels = $insertedIds = $insertedSubtaskIds = [ ];
+        $histogram = $workflowLabels = $insertedIds = $insertedSubtaskIds = [];
 
         $issueRepo = $this->manager
             ->getRepository('OroAcademyIssueBundle:Issue');
 
         foreach ($this->demoIssues as $demoIssue) {
-            if ('subtask' === $demoIssue['type']) {
-                $this->client->request(
-                    'POST',
-                    $this->getUrl('oroacademy_api_post_issue'),
-                    [ 'subtask' => $demoIssue ]
+            list($insertedSubtaskIds, $insertedIds)
+                = $this->createIssueAndSetupWorkflow(
+                    $demoIssue,
+                    $issueRepo,
+                    $histogram,
+                    $insertedSubtaskIds,
+                    $insertedIds
                 );
-            } else {
-                $this->client->request(
-                    'POST',
-                    $this->getUrl('oroacademy_api_post_issue'),
-                    [ 'issue' => $demoIssue ]
-                );
-            }
-            $result = $this->getJsonResponseContent($this->client->getResponse(), 201);
-            $this->assertArrayHasKey('id', $result);
-            $issue      = $issueRepo->find($result['id']);
-
-            // Update the workflow randomly just by one step to keep it simple.
-            $wfItem     = $this->workflowManager->getWorkflowItemByEntity($issue);
-            $randomStep = 'Open';
-            if (rand(0, 1) === 1) {
-                $randomStep = 'In Progress';
-                $this->workflowManager->transit($wfItem, 'start_progress');
-            }
-
-            if (!isset($histogram[$randomStep])) {
-                $histogram[$randomStep] = 0;
-            }
-            $histogram[$randomStep]++;
-
-            if ('subtask' === $demoIssue['type']) {
-                $insertedSubtaskIds[] = $result['id'];
-            } else {
-                $insertedIds[] = $result['id'];
-            }
         }
 
         $issueRepo = $this->manager
@@ -108,7 +81,7 @@ class IssueRepositoryTest extends WebTestCase
         foreach ($insertedSubtaskIds as $id) {
             $this->client->request(
                 'DELETE',
-                $this->getUrl('oroacademy_api_delete_issue', [ 'id' => $id ])
+                $this->getUrl('oroacademy_api_delete_issue', ['id' => $id])
             );
         }
 
@@ -116,7 +89,7 @@ class IssueRepositoryTest extends WebTestCase
         foreach ($insertedIds as $id) {
             $this->client->request(
                 'DELETE',
-                $this->getUrl('oroacademy_api_delete_issue', [ 'id' => $id ])
+                $this->getUrl('oroacademy_api_delete_issue', ['id' => $id])
             );
         }
     }
@@ -127,5 +100,58 @@ class IssueRepositoryTest extends WebTestCase
     protected function getWorkflowManager()
     {
         return $this->client->getContainer()->get('oro_workflow.manager');
+    }
+
+    /**
+     * @param $demoIssue
+     * @param $issueRepo
+     * @param $histogram
+     * @param $insertedSubtaskIds
+     * @param $insertedIds
+     * @return array
+     * @throws \Exception
+     */
+    protected function createIssueAndSetupWorkflow(
+        $demoIssue,
+        $issueRepo,
+        &$histogram,
+        &$insertedSubtaskIds,
+        &$insertedIds
+    ) {
+        if ('subtask' === $demoIssue['type']) {
+            $this->client->request(
+                'POST',
+                $this->getUrl('oroacademy_api_post_issue'),
+                ['subtask' => $demoIssue]
+            );
+        } else {
+            $this->client->request(
+                'POST',
+                $this->getUrl('oroacademy_api_post_issue'),
+                ['issue' => $demoIssue]
+            );
+        }
+        $result = $this->getJsonResponseContent($this->client->getResponse(), 201);
+        $this->assertArrayHasKey('id', $result);
+        $issue = $issueRepo->find($result['id']);
+
+        // Update the workflow randomly just by one step to keep it simple.
+        $wfItem     = $this->workflowManager->getWorkflowItemByEntity($issue);
+        $randomStep = 'Open';
+        if (rand(0, 1) === 1) {
+            $randomStep = 'In Progress';
+            $this->workflowManager->transit($wfItem, 'start_progress');
+        }
+
+        if (!isset($histogram[$randomStep])) {
+            $histogram[$randomStep] = 0;
+        }
+        $histogram[$randomStep]++;
+
+        if ('subtask' === $demoIssue['type']) {
+            $insertedSubtaskIds[] = $result['id'];
+        } else {
+            $insertedIds[] = $result['id'];
+        }
     }
 }

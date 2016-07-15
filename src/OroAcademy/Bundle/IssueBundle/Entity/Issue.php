@@ -60,6 +60,7 @@ use OroAcademy\Bundle\IssueBundle\Model\ExtendIssue;
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.ExcessivePublicCount)
+ * @SuppressWarnings(PHPMD.TooManyFields)
  */
 class Issue extends ExtendIssue
 {
