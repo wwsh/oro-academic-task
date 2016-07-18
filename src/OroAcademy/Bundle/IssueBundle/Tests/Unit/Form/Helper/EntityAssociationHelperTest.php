@@ -8,11 +8,11 @@
 namespace OroAcademy\Bundle\IssueBundle\Tests\Unit\Form\Helper;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 use OroAcademy\Bundle\IssueBundle\Entity\Issue;
 use OroAcademy\Bundle\IssueBundle\Entity\IssuePriority;
-use OroAcademy\Bundle\IssueBundle\Entity\IssuePriorityRepository;
 use OroAcademy\Bundle\IssueBundle\Form\Helper\EntityAssociationHelper;
 
 
@@ -61,7 +61,7 @@ class EntityAssociationHelperTest extends \PHPUnit_Framework_TestCase
            ->with(IssuePriority::class)
            ->willReturn($classMetadataIssuePriority);
 
-        $issuePriorityRepo = $this->getMockBuilder(IssuePriorityRepository::class)
+        $issuePriorityRepo = $this->getMockBuilder(EntityRepository::class)
                                   ->disableOriginalConstructor()
                                   ->getMock();
 

@@ -17,7 +17,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  * @ORM\Table(
  *     name="oroacademy_issue_priority"
  * )
- * @ORM\Entity(repositoryClass="OroAcademy\Bundle\IssueBundle\Entity\IssuePriorityRepository")
+ * @ORM\Entity()
  * @Config()
  */
 class IssuePriority
