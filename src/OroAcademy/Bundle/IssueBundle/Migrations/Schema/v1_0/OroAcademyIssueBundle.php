@@ -63,7 +63,7 @@ class OroAcademyIssueBundle implements
         $this->addOroacademyIssueToIssueForeignKeys($schema);
         $this->addOroacademyIssueToUserForeignKeys($schema);
         $this->noteExtension->addNoteAssociation($schema, 'oroacademy_issue');
-        self::addActivityAssociations($schema, $this->activityExtension);
+        $this->addActivityAssociations($schema, $this->activityExtension);
     }
 
     /**
@@ -290,7 +290,7 @@ class OroAcademyIssueBundle implements
      * @param Schema            $schema
      * @param ActivityExtension $activityExtension
      */
-    public static function addActivityAssociations(
+    public function addActivityAssociations(
         Schema $schema,
         ActivityExtension $activityExtension
     ) {

@@ -7,13 +7,13 @@
 
 namespace OroAcademy\Bundle\IssueBundle\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
-use OroAcademy\Bundle\IssueBundle\Entity\IssueType as EntityIssueType;
+
+use OroAcademy\Bundle\IssueBundle\Entity\IssueTypeRepository;
 
 class IssueType extends AbstractType
 {
@@ -30,13 +30,8 @@ class IssueType extends AbstractType
                 [
                     'constraints'   => new NotNull(),
                     'required'      => true,
-                    'query_builder' => function (EntityRepository $repository) {
-                        $qb = $repository->createQueryBuilder('t');
-                        $qb = $qb->where($qb->expr()->neq('t.name', '?1'));
-                        // do not show the SUBTASK type in the dropdown
-                        // Subtasks are gonna be added from the view screen [OOT-1461]
-                        $qb->setParameter(1, EntityIssueType::TYPE_SUBTASK);
-                        return $qb;
+                    'query_builder' => function (IssueTypeRepository $repository) {
+                        return $repository->getQueryBuilderFilteringSubtask();
                     },
                 ]
             )
