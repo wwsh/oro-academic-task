@@ -19,12 +19,6 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-/**
- * Class IssueHandler.
- * Borrowing as much code as possible.
- *
- * @package OroAcademy\Bundle\IssueBundle\Form\Handler
- */
 class IssueHandler extends ApiFormHandler
 {
     /**
@@ -56,8 +50,6 @@ class IssueHandler extends ApiFormHandler
     protected $routingHelper;
 
     /**
-     * IssueHandler constructor.
-     *
      * @param SubtaskFormHelper   $subtaskFormHelper
      * @param Request             $request
      * @param ObjectManager       $manager

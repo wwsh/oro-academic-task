@@ -11,12 +11,8 @@ use Oro\Bundle\ImportExportBundle\TemplateFixture\AbstractTemplateRepository;
 use Oro\Bundle\ImportExportBundle\TemplateFixture\TemplateFixtureInterface;
 use OroAcademy\Bundle\IssueBundle\Entity\IssueType;
 
-/**
- * Class IssueTypeFixture
- *
- * @package OroAcademy\Bundle\IssueBundle\ImportExport\TemplateFixture
- */
-class IssueTypeFixture extends AbstractTemplateRepository implements TemplateFixtureInterface
+class IssueTypeFixture extends AbstractTemplateRepository
+    implements TemplateFixtureInterface
 {
     /**
      * @param string $key

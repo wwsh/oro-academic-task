@@ -24,8 +24,6 @@ class IssueHandler extends ParentIssueHandler
     protected $associationHelper;
 
     /**
-     * IssueHandler constructor.
-     *
      * @param EntityAssociationHelper $associationHelper
      * @param SubtaskFormHelper       $subtaskFormHelper
      * @param Request                 $request

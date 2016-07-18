@@ -15,11 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-/**
- * Class IssueController
- *
- * @package OroAcademy\Bundle\IssueBundle\Controller
- */
 class IssueController extends Controller
 {
     /**

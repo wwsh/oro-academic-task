@@ -15,11 +15,6 @@ use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
 use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
-/**
- * Class OroAcademyIssueBundle
- *
- * @package OroAcademy\Bundle\IssueBundle\Migrations
- */
 class OroAcademyIssueBundle implements
     Migration,
     NoteExtensionAwareInterface,

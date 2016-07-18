@@ -12,11 +12,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-/**
- * Class DashboardController
- *
- * @package OroAcademy\Bundle\IssueBundle\Controller\Dashboard
- */
 class DashboardController extends Controller
 {
     /**

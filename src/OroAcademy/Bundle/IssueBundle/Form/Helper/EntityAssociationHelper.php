@@ -11,15 +11,12 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 /**
- * Class EntityAssociationHelper
  * This helper converts raw input values in associated Doctrine fields
  * into their dictionary objects. The requirement is that dict
  * definitions have to be already set in the database.
  * Directly used by the REST controller in order to get rid of ID values
  * in POSTed requests, whenever there are associations.
  * This class supports MANY_TO_ONE associations only.
- *
- * @package OroAcademy\Bundle\IssueBundle\Form\Handler
  */
 class EntityAssociationHelper
 {
@@ -29,8 +26,6 @@ class EntityAssociationHelper
     private $manager;
 
     /**
-     * FormEntityRelationHelper constructor.
-     *
      * @param ObjectManager $manager
      */
     public function __construct(ObjectManager $manager)
