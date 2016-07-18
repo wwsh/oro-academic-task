@@ -11,8 +11,7 @@ use Oro\Bundle\ImportExportBundle\TemplateFixture\AbstractTemplateRepository;
 use Oro\Bundle\ImportExportBundle\TemplateFixture\TemplateFixtureInterface;
 use OroAcademy\Bundle\IssueBundle\Entity\IssuePriority;
 
-class IssuePriorityFixture extends AbstractTemplateRepository
-    implements TemplateFixtureInterface
+class IssuePriorityFixture extends AbstractTemplateRepository implements TemplateFixtureInterface
 {
     /**
      * @param string $key

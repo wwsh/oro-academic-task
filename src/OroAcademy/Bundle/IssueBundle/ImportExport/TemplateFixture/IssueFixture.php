@@ -11,8 +11,7 @@ use Oro\Bundle\ImportExportBundle\TemplateFixture\AbstractTemplateRepository;
 use Oro\Bundle\ImportExportBundle\TemplateFixture\TemplateFixtureInterface;
 use OroAcademy\Bundle\IssueBundle\Entity\Issue;
 
-class IssueFixture extends AbstractTemplateRepository
-    implements TemplateFixtureInterface
+class IssueFixture extends AbstractTemplateRepository implements TemplateFixtureInterface
 {
     /**
      * {@inheritdoc}

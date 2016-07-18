@@ -15,7 +15,6 @@ use OroAcademy\Bundle\IssueBundle\Entity\Issue;
 use OroAcademy\Bundle\IssueBundle\Entity\IssuePriority;
 use OroAcademy\Bundle\IssueBundle\Form\Helper\EntityAssociationHelper;
 
-
 class EntityAssociationHelperTest extends \PHPUnit_Framework_TestCase
 {
     /**
