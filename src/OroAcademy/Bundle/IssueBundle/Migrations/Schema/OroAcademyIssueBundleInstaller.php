@@ -5,18 +5,18 @@
  * Copyright (c) Oro 2016.
  ******************************************************************************/
 
-namespace OroAcademy\Bundle\IssueBundle\Migrations\Schema\v1_0;
+namespace OroAcademy\Bundle\IssueBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
-use Oro\Bundle\MigrationBundle\Migration\Migration;
+use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
 use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
-class OroAcademyIssueBundle implements
-    Migration,
+class OroAcademyIssueBundleInstaller implements
+    Installation,
     NoteExtensionAwareInterface,
     ActivityExtensionAwareInterface
 {
@@ -299,5 +299,13 @@ class OroAcademyIssueBundle implements
             'oroacademy_issue',
             true
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getMigrationVersion()
+    {
+        return 'v1_0';
     }
 }
