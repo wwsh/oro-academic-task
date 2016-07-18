@@ -77,20 +77,24 @@ class IssueRepositoryTest extends WebTestCase
             }
         }
 
-        // Remove subtasks first.
-        foreach ($insertedSubtaskIds as $id) {
-            $this->client->request(
-                'DELETE',
-                $this->getUrl('oroacademy_api_delete_issue', ['id' => $id])
-            );
+        if (!empty($insertedSubtaskIds)) {
+            // Remove subtasks first.
+            foreach ($insertedSubtaskIds as $id) {
+                $this->client->request(
+                    'DELETE',
+                    $this->getUrl('oroacademy_api_delete_issue', ['id' => $id])
+                );
+            }
         }
 
-        // Now remove main tasks.
-        foreach ($insertedIds as $id) {
-            $this->client->request(
-                'DELETE',
-                $this->getUrl('oroacademy_api_delete_issue', ['id' => $id])
-            );
+        if (!empty($insertedIds)) {
+            // Now remove main tasks.
+            foreach ($insertedIds as $id) {
+                $this->client->request(
+                    'DELETE',
+                    $this->getUrl('oroacademy_api_delete_issue', ['id' => $id])
+                );
+            }
         }
     }
 

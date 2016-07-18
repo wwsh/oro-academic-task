@@ -331,6 +331,8 @@ class Issue extends ExtendIssue
      */
     public function __construct($code = null, $summary = null)
     {
+        parent::__construct();
+
         $this->collaborators = new \Doctrine\Common\Collections\ArrayCollection();
         $this->relatedIssues = new \Doctrine\Common\Collections\ArrayCollection();
         $this->children      = new \Doctrine\Common\Collections\ArrayCollection();
