@@ -20,7 +20,7 @@ datagrid:
                     - wfs.label as status
                     - i.createdAt
                 from:
-                    - { table: OroAcademyIssueBundle:Issue, alias: i }
+                    - { table: '%issue_entity%', alias: i }
                 join:
                     left:
                         - { join: i.type, alias: t, conditionType: WITH }
@@ -94,7 +94,7 @@ datagrid:
                     - wfs.label as status
                     - i.createdAt
                 from:
-                    - { table: OroAcademyIssueBundle:Issue, alias: i }
+                    - { table: '%%issue_entity%', alias: i }
                 join:
                     left:
                         - { join: i.type, alias: t, conditionType: WITH }
@@ -146,7 +146,7 @@ datagrid:
 
     # Main Issue grid
     issue-grid:
-        extended_entity_name: OroAcademyIssueBundle:Issue
+        extended_entity_name: '%%issue_entity%'
         source:
             acl_resource: view_issue
             type: orm
@@ -168,7 +168,7 @@ datagrid:
                     - i.updatedAt
                     - u.id as collaborators
                 from:
-                    - { table: OroAcademyIssueBundle:Issue, alias: i }
+                    - { table: '%issue_entity%', alias: i }
                 join:
                     left:
                         - { join: i.type, alias: t, conditionType: WITH }

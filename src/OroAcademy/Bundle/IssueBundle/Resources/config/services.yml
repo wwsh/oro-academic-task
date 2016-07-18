@@ -1,3 +1,6 @@
+parameters:
+  issue_entity: 'OroAcademyIssueBundle:Issue'
+
 services:
   oroacademy_issue_manager.api:
       class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
