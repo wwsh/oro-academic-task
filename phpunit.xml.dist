@@ -20,11 +20,11 @@
         bootstrap                   = "app/autoload.php">
 
     <testsuites>
-        <testsuite name="Project Unit Tests">
-            <directory suffix="Test.php">src/OroAcademy/Bundle/*Bundle/Tests/Unit/</directory>
-        </testsuite>
         <testsuite name="Project Functional Tests">-->
-            <directory suffix="Test.php">src/OroAcademy/Bundle/*Bundle/Tests/Functional</directory>
+            <directory suffix="Test.php">src/OroAcademy/Bundle/IssueBundle/Tests/Functional</directory>
+        </testsuite>
+        <testsuite name="Project Unit Tests">
+            <directory suffix="Test.php">src/OroAcademy/Bundle/IssueBundle/Tests/Unit/</directory>
         </testsuite>
     </testsuites>
 

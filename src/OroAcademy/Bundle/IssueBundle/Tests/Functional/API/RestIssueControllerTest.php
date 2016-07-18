@@ -15,7 +15,6 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
  *
  * @package         OroAcademy\Bundle\IssueBundle\Tests\Functional\API
  * @outputBuffering enabled
- * @dbIsolation
  */
 class RestIssueControllerTest extends WebTestCase
 {
@@ -28,11 +27,12 @@ class RestIssueControllerTest extends WebTestCase
     {
         $issue = [
             "issue" => [
-                "code"        => 'EGH-123',
-                "summary"     => "Test summary",
-                "description" => "Test description",
-                "type"        => "bug",
-                "priority"    => "high",
+                "code"         => 'EGH-123',
+                "summary"      => "Test summary",
+                "description"  => "Test description",
+                "type"         => "bug",
+                "priority"     => "high",
+                "organization" => "ORO"
             ]
         ];
 

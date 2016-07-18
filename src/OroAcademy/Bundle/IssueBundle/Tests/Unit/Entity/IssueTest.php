@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 /**
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
-class IssueTest extends KernelTestCase
+class IssueTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var Issue
@@ -22,10 +22,6 @@ class IssueTest extends KernelTestCase
 
     public function setUp()
     {
-        // even though we are not using any kernel functionality here
-        // this is necessary in order for the sequential tests to run
-        self::bootKernel();
-
         $this->issue = new Issue();
     }
 

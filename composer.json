@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "oro/platform": "1.9.*"
+        "oro/platform": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "2.5.3"

@@ -1,21 +1,22 @@
 <?php
 /*******************************************************************************
- * This is closed source software, created by WWSH. 
+ * This is closed source software, created by WWSH.
  * Please do not copy nor redistribute.
- * Copyright (c) Oro 2016. 
+ * Copyright (c) Oro 2016.
  ******************************************************************************/
 
 namespace OroAcademy\Bundle\IssueBundle\Tests\Unit\Form\Helper;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
+
 use OroAcademy\Bundle\IssueBundle\Entity\Issue;
 use OroAcademy\Bundle\IssueBundle\Entity\IssuePriority;
-use OroAcademy\Bundle\IssueBundle\Entity\IssueType;
-use OroAcademy\Bundle\IssueBundle\Form\Handler\FormEntityRelationHelper;
+use OroAcademy\Bundle\IssueBundle\Entity\IssuePriorityRepository;
 use OroAcademy\Bundle\IssueBundle\Form\Helper\EntityAssociationHelper;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class EntityAssociationHelperTest extends KernelTestCase
+
+class EntityAssociationHelperTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var EntityAssociationHelper
@@ -27,21 +28,57 @@ class EntityAssociationHelperTest extends KernelTestCase
      */
     private $manager;
 
-    protected function setUp()
+    public function testConvertingRelationDataIntoEntityData()
     {
-        self::bootKernel();
+        $em = $this->getMockBuilder(ObjectManager::class)
+                   ->disableOriginalConstructor()
+                   ->getMock();
 
-        $container = self::$kernel->getContainer();
+        $classMetadataIssue = new \stdClass();
 
-        $em = $container->get('doctrine.orm.entity_manager');
+        $classMetadataIssue->associationMappings = [
+            'priority' => [
+                'type'         => ClassMetadataInfo::MANY_TO_ONE,
+                'targetEntity' => IssuePriority::class
+            ]
+        ];
+
+        $em->expects($this->at(0))
+           ->method('getClassMetadata')
+           ->with(Issue::class)
+           ->willReturn($classMetadataIssue);
+
+        $classMetadataIssuePriority = new \stdClass();
+
+        $classMetadataIssuePriority->fieldMappings = [
+            'name' => [
+                'type' => 'string'
+            ]
+        ];
+
+        $em->expects($this->at(1))
+           ->method('getClassMetadata')
+           ->with(IssuePriority::class)
+           ->willReturn($classMetadataIssuePriority);
+
+        $issuePriorityRepo = $this->getMockBuilder(IssuePriorityRepository::class)
+                                  ->disableOriginalConstructor()
+                                  ->getMock();
+
+        $issuePriorityRepo->expects($this->once())
+                          ->method('findOneBy')
+                          ->with(['name' => 'high'])
+                          ->willReturn(new Issue());
+
+        $em->expects($this->once())
+           ->method('getRepository')
+           ->with(IssuePriority::class)
+           ->willReturn($issuePriorityRepo);
 
         $this->manager = $em;
 
         $this->item = new EntityAssociationHelper($em);
-    }
 
-    public function testConvertingRelationDataIntoEntityData()
-    {
         $issue = new Issue();
 
         $data = [
@@ -54,17 +91,6 @@ class EntityAssociationHelperTest extends KernelTestCase
             "parent"      => ""
         ];
 
-        $newData = $this->item->getEntityData($issue, $data);
-
-        $this->assertNotNull($newData);
-
-        $repo = $this->manager->getRepository('OroAcademyIssueBundle:IssueType');
-        $issueType = $repo->findOneBy(['name'=>'bug']);
-        $repo = $this->manager->getRepository('OroAcademyIssueBundle:IssuePriority');
-        $issuePriority = $repo->findOneBy(['name'=>'high']);
-
-        $this->assertEquals($issueType->getId(), $newData['type']);
-        $this->assertEquals($issuePriority->getId(), $newData['priority']);
-        $this->assertEquals(null, $newData['parent']);
+        $this->item->getEntityData($issue, $data);
     }
 }

@@ -814,7 +814,7 @@ class Issue extends ExtendIssue
     /**
      * @param WorkflowItem $workflowItem
      */
-    public function setWorkflowItem(WorkflowItem $workflowItem)
+    public function setWorkflowItem($workflowItem)
     {
         $this->workflowItem = $workflowItem;
     }
@@ -830,7 +830,7 @@ class Issue extends ExtendIssue
     /**
      * @param WorkflowStep $workflowStep
      */
-    public function setWorkflowStep(WorkflowStep $workflowStep)
+    public function setWorkflowStep($workflowStep)
     {
         $this->workflowStep = $workflowStep;
     }
