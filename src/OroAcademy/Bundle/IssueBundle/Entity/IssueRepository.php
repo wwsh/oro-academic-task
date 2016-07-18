@@ -45,8 +45,8 @@ class IssueRepository extends \Doctrine\ORM\EntityRepository
                              ->createQueryBuilder();
 
         $queryBuilder->select('wfs.label as label', 'COUNT(issue.id) as number')
-                     ->from('OroAcademyIssueBundle:Issue', 'issue')
-                     ->leftJoin('OroWorkflowBundle:WorkflowStep', 'wfs', 'WITH', 'wfs = issue.workflowStep')
+                     ->from('OroWorkflowBundle:WorkflowStep', 'wfs')
+                     ->leftJoin('OroAcademyIssueBundle:Issue', 'issue', 'WITH', 'wfs = issue.workflowStep')
                      ->groupBy('wfs.label');
 
         $result = $queryBuilder->getQuery()->getArrayResult();
