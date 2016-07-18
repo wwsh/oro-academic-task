@@ -34,17 +34,17 @@ datagrid:
                 user_id: id
         columns:
             code:
-                label: Code
+                label: oroacademy.issue.code.label
             summary:
-                label: Summary
+                label: oroacademy.issue.summary.label
             type:
-                label: Type
+                label: oroacademy.issue.type.label
             priority:
-                label: Priority
+                label: oroacademy.issue.priority.label
             status:
-                label: Status
+                label: oroacademy.issue.workflow_step.label
             createdAt:
-                label: Created
+                label: oroacademy.issue.created_at.label
                 frontend_type: date
 
         properties:
