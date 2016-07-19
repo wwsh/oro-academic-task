@@ -7,6 +7,7 @@
 
 namespace OroAcademy\Bundle\IssueBundle\Form\Helper;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
@@ -21,16 +22,16 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 class EntityAssociationHelper
 {
     /**
-     * @var ObjectManager
+     * @var Registry
      */
     private $manager;
 
     /**
      * @param ObjectManager $manager
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(Registry $registry)
     {
-        $this->manager = $manager;
+        $this->manager = $registry->getManager();
     }
 
     /**

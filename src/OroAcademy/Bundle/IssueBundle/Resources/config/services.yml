@@ -11,7 +11,7 @@ services:
 
   oroacademy_entity_association_helper.api:
       class: OroAcademy\Bundle\IssueBundle\Form\Helper\EntityAssociationHelper
-      arguments: ["@doctrine.orm.entity_manager"]
+      arguments: ["@doctrine"]
 
   oroacademy_form_helper.subtask:
       class: OroAcademy\Bundle\IssueBundle\Form\Helper\SubtaskFormHelper
@@ -22,7 +22,7 @@ services:
       arguments:
         - '@oroacademy_form_helper.subtask'
         - '@request'
-        - '@doctrine.orm.entity_manager'
+        - '@doctrine'
         - '@form.factory'
         - '@security.token_storage'
         - '@oroacademy_entity_association_helper.api'
@@ -33,7 +33,7 @@ services:
       arguments:
         - '@oroacademy_form_helper.subtask'
         - '@request'
-        - '@doctrine.orm.entity_manager'
+        - '@doctrine'
         - '@form.factory'
         - '@security.token_storage'
         - '@oro_entity.routing_helper'

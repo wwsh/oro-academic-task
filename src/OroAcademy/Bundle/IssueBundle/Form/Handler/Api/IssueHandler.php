@@ -7,14 +7,16 @@
 
 namespace OroAcademy\Bundle\IssueBundle\Form\Handler\Api;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Bundle\DoctrineBundle\Registry;
+
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+
 use OroAcademy\Bundle\IssueBundle\Entity\Issue;
 use OroAcademy\Bundle\IssueBundle\Form\Handler\IssueHandler as ParentIssueHandler;
 use OroAcademy\Bundle\IssueBundle\Form\Helper\EntityAssociationHelper;
 use OroAcademy\Bundle\IssueBundle\Form\Helper\SubtaskFormHelper;
-use Symfony\Component\Form\FormFactory;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class IssueHandler extends ParentIssueHandler
 {
@@ -24,16 +26,17 @@ class IssueHandler extends ParentIssueHandler
     protected $associationHelper;
 
     /**
-     * @param EntityAssociationHelper $associationHelper
      * @param SubtaskFormHelper       $subtaskFormHelper
      * @param Request                 $request
-     * @param ObjectManager           $manager
+     * @param Registry                $doctrine
      * @param FormFactory             $formFactory
+     * @param TokenStorage            $tokenStorage
+     * @param EntityAssociationHelper $associationHelper
      */
     public function __construct(
         SubtaskFormHelper $subtaskFormHelper,
         Request $request,
-        ObjectManager $manager,
+        Registry $doctrine,
         FormFactory $formFactory,
         TokenStorage $tokenStorage,
         EntityAssociationHelper $associationHelper
@@ -41,7 +44,7 @@ class IssueHandler extends ParentIssueHandler
         parent::__construct(
             $subtaskFormHelper,
             $request,
-            $manager,
+            $doctrine,
             $formFactory,
             $tokenStorage,
             null // we don't need this one here

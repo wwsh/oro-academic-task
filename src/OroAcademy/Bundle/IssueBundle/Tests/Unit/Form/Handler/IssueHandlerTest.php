@@ -8,16 +8,19 @@
 namespace OroAcademy\Bundle\IssueBundle\Tests\Unit\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 
-use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
-use Oro\Bundle\UserBundle\Entity\User;
-use OroAcademy\Bundle\IssueBundle\Entity\Issue;
-use OroAcademy\Bundle\IssueBundle\Form\Handler\IssueHandler;
-use OroAcademy\Bundle\IssueBundle\Form\Helper\SubtaskFormHelper;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+
+use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
+use Oro\Bundle\UserBundle\Entity\User;
+
+use OroAcademy\Bundle\IssueBundle\Entity\Issue;
+use OroAcademy\Bundle\IssueBundle\Form\Handler\IssueHandler;
+use OroAcademy\Bundle\IssueBundle\Form\Helper\SubtaskFormHelper;
 
 class IssueHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -71,6 +74,11 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
      */
     protected $routingHelper;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|Registry
+     */
+    protected $doctrine;
+
     protected function setUp()
     {
         $this->form = $this->getMockBuilder('Symfony\Component\Form\Form')
@@ -86,6 +94,13 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
         $this->manager = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
             ->disableOriginalConstructor()
             ->getMock();
+
+        $this->doctrine = $this->getMockBuilder(Registry::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->doctrine->method('getManager')
+            ->willReturn($this->manager);
 
         $this->associationHelper = $this->getMockBuilder(
             'OroAcademy\Bundle\IssueBundle\Form\Helper\EntityAssociationHelper'
@@ -125,7 +140,7 @@ class IssueHandlerTest extends \PHPUnit_Framework_TestCase
         $this->handler = new IssueHandler(
             $this->subtaskHelper,
             $this->request,
-            $this->manager,
+            $this->doctrine,
             $this->formFactory,
             $this->tokenStorage,
             $this->routingHelper

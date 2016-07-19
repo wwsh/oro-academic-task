@@ -7,17 +7,19 @@
 
 namespace OroAcademy\Bundle\IssueBundle\Form\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Bundle\DoctrineBundle\Registry;
+
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
 use Oro\Bundle\FormBundle\Form\Handler\ApiFormHandler;
 use Oro\Bundle\FormBundle\Utils\FormUtils;
 use Oro\Bundle\UserBundle\Entity\User;
+
 use OroAcademy\Bundle\IssueBundle\Entity\Issue;
 use OroAcademy\Bundle\IssueBundle\Form\Helper\SubtaskFormHelper;
-use Symfony\Component\Form\FormFactory;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class IssueHandler extends ApiFormHandler
 {
@@ -52,7 +54,7 @@ class IssueHandler extends ApiFormHandler
     /**
      * @param SubtaskFormHelper   $subtaskFormHelper
      * @param Request             $request
-     * @param ObjectManager       $manager
+     * @param Registry            $doctrine
      * @param FormFactory         $formFactory
      * @param TokenStorage        $tokenStorage
      * @param EntityRoutingHelper $entityRoutingHelper
@@ -60,12 +62,12 @@ class IssueHandler extends ApiFormHandler
     public function __construct(
         SubtaskFormHelper $subtaskFormHelper,
         Request $request,
-        ObjectManager $manager,
+        Registry $doctrine,
         FormFactory $formFactory,
         TokenStorage $tokenStorage,
         $entityRoutingHelper
     ) {
-        parent::__construct($request, $manager);
+        parent::__construct($request, $doctrine->getManager());
 
         $this->subtaskFormHelper = $subtaskFormHelper;
         $this->formFactory       = $formFactory;

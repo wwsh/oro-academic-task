@@ -7,6 +7,7 @@
 
 namespace OroAcademy\Bundle\IssueBundle\Tests\Unit\Form\Helper;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -18,17 +19,26 @@ use OroAcademy\Bundle\IssueBundle\Form\Helper\EntityAssociationHelper;
 class EntityAssociationHelperTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var EntityAssociationHelper
+     * @var \PHPUnit_Framework_MockObject_MockObject|Registry
      */
-    private $item;
+    protected $doctrine;
 
     /**
-     * @var ObjectManager
+     * @var \PHPUnit_Framework_MockObject_MockObject|EntityAssociationHelper
      */
-    private $manager;
+    protected $item;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|ObjectManager
+     */
+    protected $manager;
 
     public function testConvertingRelationDataIntoEntityData()
     {
+        $doctrine = $this->getMockBuilder(Registry::class)
+                         ->disableOriginalConstructor()
+                         ->getMock();
+
         $em = $this->getMockBuilder(ObjectManager::class)
                    ->disableOriginalConstructor()
                    ->getMock();
@@ -76,7 +86,13 @@ class EntityAssociationHelperTest extends \PHPUnit_Framework_TestCase
 
         $this->manager = $em;
 
-        $this->item = new EntityAssociationHelper($em);
+        $doctrine->expects($this->once())
+            ->method('getManager')
+            ->willReturn($em);
+
+        $this->doctrine = $doctrine;
+
+        $this->item = new EntityAssociationHelper($doctrine);
 
         $issue = new Issue();
 
