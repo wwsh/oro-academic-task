@@ -96,6 +96,10 @@ class AddCollaboratorAction extends AbstractAction
              */
             $note = $this->contextAccessor->getValue($context, $this->notePropertyPath);
 
+            if (!$note instanceof Note || !$issue instanceof Issue) {
+                return;
+            }
+
             $user = $note->getOwner();
             $issue->addCollaborator($user);
 
