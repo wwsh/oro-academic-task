@@ -24,36 +24,39 @@ class SubtaskType extends AbstractType
         $builder
             ->add(
                 'type',
-                null,
+                'entity',
                 [
+                    'class'     => 'OroAcademyIssueBundle:IssueType',
                     'read_only' => true
                 ]
             )
             ->add(
                 'parent',
-                null,
+                'entity',
                 [
+                    'class'     => 'OroAcademyIssueBundle:Issue',
                     'read_only' => true
                 ]
             )
             ->add(
                 'code',
-                null,
+                'text',
                 [
                     'required' => false
                 ]
             )
             ->add(
                 'priority',
-                null,
+                'entity',
                 [
+                    'class'       => 'OroAcademyIssueBundle:IssuePriority',
                     'constraints' => new NotNull(),
                     'required'    => true
                 ]
             )
             ->add(
                 'summary',
-                null,
+                'text',
                 [
                     'constraints' => new NotBlank(),
                     'required'    => true
@@ -78,7 +81,10 @@ class SubtaskType extends AbstractType
             )
             ->add(
                 'reporter',
-                null
+                'entity',
+                [
+                    'class' => 'OroUserBundle:User'
+                ]
             );
     }
 

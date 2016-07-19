@@ -51,23 +51,23 @@ class SubtaskTypeTest extends FormIntegrationTestCase
 
         $builder->expects($this->at(0))
                 ->method('add')
-                ->with('type', null);
+                ->with('type', 'entity');
 
         $builder->expects($this->at(1))
                 ->method('add')
-                ->with('parent', null);
+                ->with('parent', 'entity');
 
         $builder->expects($this->at(2))
                 ->method('add')
-                ->with('code', null);
+                ->with('code', 'text');
 
         $builder->expects($this->at(3))
                 ->method('add')
-                ->with('priority', null);
+                ->with('priority', 'entity');
 
         $builder->expects($this->at(4))
                 ->method('add')
-                ->with('summary', null);
+                ->with('summary', 'text');
 
         $builder->expects($this->at(5))
                 ->method('add')
@@ -79,7 +79,7 @@ class SubtaskTypeTest extends FormIntegrationTestCase
 
         $builder->expects($this->at(7))
                 ->method('add')
-                ->with('reporter', null);
+                ->with('reporter', 'entity');
 
         $this->formType->buildForm($builder, array());
     }
