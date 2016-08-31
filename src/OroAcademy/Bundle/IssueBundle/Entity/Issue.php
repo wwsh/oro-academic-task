@@ -8,12 +8,14 @@
 namespace OroAcademy\Bundle\IssueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
+
 use OroAcademy\Bundle\IssueBundle\Model\ExtendIssue;
 
 /**
@@ -474,7 +476,7 @@ class Issue extends ExtendIssue
     /**
      * Set resolution
      *
-     * @param IssueRepository $resolution
+     * @param IssueResolution $resolution
      *
      * @return Issue
      */
@@ -498,7 +500,7 @@ class Issue extends ExtendIssue
     /**
      * Set reporter
      *
-     * @param string $reporter
+     * @param User $reporter
      *
      * @return Issue
      */

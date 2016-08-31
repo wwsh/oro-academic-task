@@ -56,7 +56,6 @@ class IssueType extends AbstractType
                 'summary',
                 'text',
                 [
-                    'constraints' => new NotBlank(),
                     'required'    => true
                 ]
             )
